@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useChat } from 'ai/react';
 import { Markdown } from '@lobehub/ui';
-import Navbar from './components/navbar'
+import Navbar from '../../components/navbar'
 export default function Chat() {
   const { messages, input, handleInputChange, handleSubmit } = useChat();
   const endOfMessagesRef = useRef(null);
