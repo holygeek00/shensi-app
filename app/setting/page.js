@@ -68,6 +68,7 @@ const UserDetailPage = () => {
           </div>
         </div>
       </div>
+
     </div>) : (<div>Loading</div>)
 
 

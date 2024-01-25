@@ -1,5 +1,6 @@
 import React from "react"
 import Link from 'next/link'
+import Navbar from "../components/navbar"
 export default function ArticleMenu () {
   const cards = [
     {
@@ -31,6 +32,7 @@ export default function ArticleMenu () {
 
   return (
     <div className=" ">
+      <Navbar title='深斯AI写作'></Navbar>
       <h1 className="text-5xl font-bold m-8 text-center mb-6">深斯 AI 写作</h1>
       <div className="flex flex-wrap justify-center gap-4 m-8 p-4">
 

@@ -15,16 +15,15 @@ export default function Navbar ({ title }) {
           </div>
           <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
             <li>
-              <a className="justify-between">
-                详情
-                <span className="badge">New</span>
-              </a>
+              <Link href="/bind" legacyBehavior>
+                <a>绑定key</a>
+              </Link>
             </li>
 
 
             <li>
               <Link href="/setting" legacyBehavior>
-                <a>设置</a>
+                <a>用户设置</a>
               </Link>
             </li>
 

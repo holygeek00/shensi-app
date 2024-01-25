@@ -2,7 +2,7 @@
 'use client'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-
+import Link from 'next/link'
 export default function BindKeyPage () {
   const [key, setKey] = useState('')
   const router = useRouter()
@@ -35,23 +35,38 @@ export default function BindKeyPage () {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="form-control w-full max-w-xs mx-auto my-10">
-      <label htmlFor="key" className="label">
-        <span className="label-text">Enter your key:</span>
-      </label>
-      <input
-        type="text"
-        id="key"
-        name="key"
-        value={key}
-        onChange={(e) => setKey(e.target.value)}
-        required
-        className="input input-bordered w-full max-w-xs"
-      />
-      <button type="submit" className="btn btn-primary mt-4">
-        Submit
-      </button>
-    </form>
+    <div>
+      <form onSubmit={handleSubmit} className="form-control w-full max-w-xs mx-auto my-10">
+        <label htmlFor="key" className="label">
+          <span className="label-text">输入你的key:</span>
+        </label>
+        <input
+          type="text"
+          id="key"
+          name="key"
+          value={key}
+          onChange={(e) => setKey(e.target.value)}
+          required
+          className="input input-bordered w-full max-w-xs"
+        />
+        <button type="submit" className="btn btn-primary mt-4">
+          绑定
+        </button>
+
+
+
+
+      </form>
+      <Link href={'/write'}>
+        <button className="flex btn btn-primary mt-4  w-full max-w-xs mx-auto my-10">
+
+          已绑定
+
+        </button>
+      </Link>
+    </div>
+
+
 
   )
 }
