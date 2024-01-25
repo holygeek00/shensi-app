@@ -29,7 +29,7 @@ export default function Register () {
 
   const handleRegister = async () => {
     const { confirmPassword, ...dataToSubmit } = formData
-    const endpoint = 'http://192.168.31.79:8000/users/register' // 替换为您的API端点
+    const endpoint = 'http://192.168.3.21:8000/users/register' // 替换为您的API端点
     try {
       const response = await fetch(endpoint, {
         method: 'POST',
@@ -66,7 +66,7 @@ export default function Register () {
   const sendVerificationCode = async () => {
     setSendingCode(true)
     const queryParams = new URLSearchParams({ mobile: formData.phone_number })
-    const url = `http://192.168.31.79:8000/users/send_verify_code?${queryParams}`
+    const url = `http://192.168.3.21:8000/users/send_verify_code?${queryParams}`
 
     try {
       const response = await fetch(url, {
@@ -126,106 +126,132 @@ export default function Register () {
     return isValid
   }
 
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="p-10 bg-white rounded-lg shadow-xl w-full max-w-sm">
-        <h2 className="text-2xl font-bold mb-2 text-gray-800">注册账号</h2>
-        <p className="text-gray-600 mb-8">使用邮箱注册新账号</p>
-        <form onSubmit={handleSubmit}>
-          {/* Email field */}
-          <div className="mb-4">
-            <label className="block text-gray-700">用户名</label>
-            <input
-              type="username"
-              name="username"
-              placeholder="用户名"
-              className="input input-bordered w-full"
-              value={formData.username}
-              onChange={handleChange}
-            />
-
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700">邮箱地址</label>
-            <input
-              type="email"
-              name="email"
-              placeholder="user@example.com"
-              className="input input-bordered w-full"
-              value={formData.email}
-              onChange={handleChange}
-            />
-            {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
-          </div>
-          <div className="mb-4 flex flex-wrap items-stretch">
-            <label className="block text-gray-700 w-full">手机号码</label>
-            <div className="relative w-full">
+      <div className="card w-full max-w-xl bg-base-100 shadow-2xl">
+        <div className="card-body">
+          <h2 className="card-title text-2xl">注册账号</h2>
+          <p className="mb-5 text-gray-600">使用邮箱注册新账号</p>
+          <form onSubmit={handleSubmit}>
+            {/* Username field */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">用户名</span>
+              </label>
               <input
-                type="text" // type应该是text，因为type="phone_number"不是有效的输入类型
-                name="phone_number"
-                placeholder="11位手机号"
-                className="input input-bordered w-full"
-                value={formData.phone_number}
+                type="text"
+                name="username"
+                placeholder="用户名"
+                className="input input-bordered"
+                value={formData.username}
                 onChange={handleChange}
               />
-              <button
-                type="button"
-                className={`absolute inset-y-0 right-0 px-4 text-white bg-blue-500 border-l disabled:bg-blue-300`}
-                onClick={sendVerificationCode}
-                disabled={sendingCode}
-              >
-                {sendingCode ? '发送中...' : '获取验证码'}
-              </button>
             </div>
-          </div>
 
-          {/* Password field */}
-          <div className="mb-4">
-            <label className="block text-gray-700">设置密码</label>
-            <input
-              type="password"
-              name="password"
-              placeholder="********"
-              className="input input-bordered w-full"
-              value={formData.password}
-              onChange={handleChange}
-            />
-            {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
+            {/* Email field */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">邮箱地址</span>
+              </label>
+              <input
+                type="email"
+                name="email"
+                placeholder="user@example.com"
+                className="input input-bordered"
+                value={formData.email}
+                onChange={handleChange}
+              />
+              {errors.email && <span className="text-error text-xs">{errors.email}</span>}
+            </div>
+
+            {/* Phone field */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">手机号码</span>
+              </label>
+              <div className="relative">
+                <input
+                  type="text"
+                  name="phone_number"
+                  placeholder="11位手机号"
+                  className="input input-bordered w-full pr-20"
+                  value={formData.phone_number}
+                  onChange={handleChange}
+                />
+                <button
+                  type="button"
+                  className="absolute top-0 right-0 rounded-l-none btn btn-primary"
+                  onClick={sendVerificationCode}
+                  disabled={sendingCode}
+                >
+                  {sendingCode ? '发送中...' : '获取验证码'}
+                </button>
+              </div>
+            </div>
+
+            {/* Password field */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">设置密码</span>
+              </label>
+              <input
+                type="password"
+                name="password"
+                placeholder="********"
+                className="input input-bordered"
+                value={formData.password}
+                onChange={handleChange}
+              />
+              {errors.password && <span className="text-error text-xs">{errors.password}</span>}
+            </div>
+
+            {/* Confirm Password field */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">确认密码</span>
+              </label>
+              <input
+                type="password"
+                name="confirmPassword"
+                placeholder="********"
+                className="input input-bordered"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+              />
+              {errors.confirmPassword && <span className="text-error text-xs">{errors.confirmPassword}</span>}
+            </div>
+
+            {/* Verification Code field */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">验证码</span>
+              </label>
+              <input
+                type="text" // 使用 type="text" 来接受验证码输入
+                name="verification_code"
+                placeholder="短信验证码"
+                className="input input-bordered"
+                value={formData.verification_code}
+                onChange={handleChange}
+              />
+            </div>
+
+            {/* Submit button */}
+            <div className="form-control mt-6">
+              <button type="submit" className="btn btn-primary">立即注册</button>
+            </div>
+          </form>
+
+          {/* Link to sign in */}
+          <div className="text-center mt-4">
+            <Link href="/login" legacyBehavior>
+              <a className="link link-primary">已有账号？立即登录</a>
+            </Link>
           </div>
-          {/* Confirm Password field */}
-          <div className="mb-6">
-            <label className="block text-gray-700">确认密码</label>
-            <input
-              type="password"
-              name="confirmPassword"
-              placeholder="********"
-              className="input input-bordered w-full"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-            />
-            {errors.confirmPassword && <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>}
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700">验证码</label>
-            <input
-              type="verification_code"
-              name="verification_code"
-              placeholder="短信验证码"
-              className="input input-bordered w-full"
-              value={formData.verification_code}
-              onChange={handleChange}
-            />
-          </div>
-          {/* Submit button */}
-          <button type="submit" className="btn btn-primary w-full mb-2">立即注册</button>
-        </form>
-        {/* Link to sign in */}
-        <div className="text-center mt-8">
-          <Link href="/login">
-            <div className="text-blue-500 hover:underline">已有账号？立即登录</div>
-          </Link>
         </div>
       </div>
     </div>
   )
+
 }

@@ -13,7 +13,7 @@ export default function Login () {
   const sendVerificationCode = async () => {
     setSendingCode(true)
     const queryParams = new URLSearchParams({ mobile: account })
-    const url = `http://192.168.31.79:8000/users/send_verify_code?${queryParams}`
+    const url = `http://192.168.3.21:8000/users/send_verify_code?${queryParams}`
 
     try {
       const response = await fetch(url, {
@@ -45,7 +45,7 @@ export default function Login () {
   const handleLogin = async (event) => {
     event.preventDefault() // 防止页面刷新
 
-    const endpoint = 'http://192.168.31.79:8000/users/login' // API端点
+    const endpoint = 'http://192.168.3.21:8000/users/login' // API端点
     const payload = {
       login: account,
       password: password,
