@@ -10,10 +10,10 @@ export default function ArticleMenu () {
     },
     // Add more card objects here if needed
     {
-      title: "AI日报周报生成器",
-      text: "AI日报周报生成器，一键生成内容丰富的工作日报、周报",
+      title: "AI诗歌生成器",
+      text: "AI诗歌生成器，一键生成优美的诗歌",
       imageUrl: "/xiezuo.webp",
-      link: './write/article'
+      link: './write/poets'
     },
     {
       title: "AI节日祝福语生成器",
@@ -35,7 +35,7 @@ export default function ArticleMenu () {
       <div className="flex flex-wrap justify-center gap-4 m-8 p-4">
 
         {cards.map((card, index) => (
-          <div key={index} className="card max-w-sm md:max-w-md lg:w-1/4 bg-base-100 shadow-xl">
+          <div key={index} className="card max-w-xs md:max-w-xs lg:w-1/5 bg-base-100 shadow-xl">
             <figure className="px-10 pt-10">
               <img src={card.imageUrl} alt="Shoes" className="rounded-xl" />
             </figure>
