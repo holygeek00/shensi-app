@@ -5,8 +5,7 @@ import Navbar from '../components/navbar'
 import React, { useState, useEffect } from 'react'
 const UserDetailPage = () => {
   // 从localStorage获取access_token和token_type
-  const accessToken = localStorage.getItem('access_token')
-  const tokenType = localStorage.getItem('token_type')
+
   const [user, setUser] = useState(null)
 
   useEffect(() => {
