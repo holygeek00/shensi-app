@@ -10,10 +10,11 @@ export default function Login () {
   const [password, setPassword] = useState('')
   const [verificationCode, setVerificationCode] = useState('')
   const [sendingCode, setSendingCode] = useState(false)
+  const backend = process.env.NEXT_PUBLIC_BACK_END
   const sendVerificationCode = async () => {
     setSendingCode(true)
     const queryParams = new URLSearchParams({ mobile: account })
-    const url = `http://192.168.3.21:8000/users/send_verify_code?${queryParams}`
+    const url = `${backend}/users/send_verify_code?${queryParams}`
 
     try {
       const response = await fetch(url, {
@@ -45,8 +46,8 @@ export default function Login () {
   }
   const handleLogin = async (event) => {
     event.preventDefault() // 防止页面刷新
-
-    const endpoint = 'http://192.168.3.21:8000/users/login' // API端点
+    const backend = process.env.NEXT_PUBLIC_BACK_END
+    const endpoint =  backend + '/users/login' // API端点
     const payload = {
       login: account,
       password: password,

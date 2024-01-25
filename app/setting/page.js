@@ -20,9 +20,9 @@ const UserDetailPage = () => {
       if (accessToken && tokenType) {
         // 设置请求的headers
         const authHeader = `${tokenType} ${accessToken}`
-
+        const backend = process.env.NEXT_PUBLIC_BACK_END
         // 发起请求
-        fetch('http://192.168.3.21:8000/users/me', {
+        fetch(+ backend + '/users/me', {
           method: 'GET',
           headers: {
             'Authorization': authHeader,

@@ -1,18 +1,26 @@
 // pages/bind-key.js
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 export default function BindKeyPage () {
   const [key, setKey] = useState('')
   const router = useRouter()
-  const accessToken = localStorage.getItem('access_token')
-  const tokenType = localStorage.getItem('token_type')
+  const [accessToken, setAccessToken] = useState('')
+  const [tokenType, setTokenType] = useState('')
+  useEffect(() => {
+    // 由于 useEffect 只在客户端执行，因此可以安全地访问 localStorage
+    const storedAccessToken = localStorage.getItem('access_token')
+    const storedTokenType = localStorage.getItem('token_type')
+    setAccessToken(storedAccessToken)
+    setTokenType(storedTokenType)
+  }, [])
+  const backend = process.env.NEXT_PUBLIC_BACK_END
   const handleSubmit = async (event) => {
     event.preventDefault()
     const authHeader = `${tokenType} ${accessToken}`
     try {
-      const response = await fetch('http://192.168.3.21:8000/bind-key/', {
+      const response = await fetch(backend + '/bind-key/', {
         method: 'POST',
         headers: {
           'Authorization': authHeader,

@@ -26,10 +26,10 @@ export default function Register () {
       }))
     }
   }
-
+  const backend = process.env.NEXT_PUBLIC_BACK_END
   const handleRegister = async () => {
     const { confirmPassword, ...dataToSubmit } = formData
-    const endpoint = 'http://192.168.3.21:8000/users/register' // 替换为您的API端点
+    const endpoint =  + backend + '/users/register' // 替换为您的API端点
     try {
       const response = await fetch(endpoint, {
         method: 'POST',
@@ -66,7 +66,7 @@ export default function Register () {
   const sendVerificationCode = async () => {
     setSendingCode(true)
     const queryParams = new URLSearchParams({ mobile: formData.phone_number })
-    const url = `http://192.168.3.21:8000/users/send_verify_code?${queryParams}`
+    const url = `${backend}/users/send_verify_code?${queryParams}`
 
     try {
       const response = await fetch(url, {
