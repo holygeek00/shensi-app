@@ -1,10 +1,9 @@
 import OpenAI from 'openai'
 import { OpenAIStream, StreamingTextResponse } from 'ai'
-
-
+import { MY_CONSTANT } from '../../../app/constants'
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: MY_CONSTANT,
   baseURL: `${process.env.PROXY_URL}/v1`
 })
 

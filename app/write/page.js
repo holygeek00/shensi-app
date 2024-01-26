@@ -28,11 +28,50 @@ export default function ArticleMenu () {
 
   ]
   const accessToken = localStorage.getItem('access_token')
-
+  
   if (!accessToken) {
     const router = useRouter()
     router.push('./login')
   }
+  function fetchUserData () {
+    // 从localStorage获取access_token和token_type
+    const accessToken = localStorage.getItem('access_token')
+    const tokenType = localStorage.getItem('token_type')
+
+    // 检查确保我们有token
+    if (accessToken && tokenType) {
+      // 设置请求的headers
+      const authHeader = `${tokenType} ${accessToken}`
+      const backend = process.env.NEXT_PUBLIC_BACK_END
+      // 发起请求
+      fetch(backend + '/users/me', {
+        method: 'GET',
+        headers: {
+          'Authorization': authHeader,
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => {
+          if (response.ok) {
+            return response.json() // 如果响应是JSON，这里将其解析
+          }
+          throw new Error('Network response was not ok.')
+        })
+        .then(userData => {
+          setUser(userData) // 将获取的用户数据存储在状态变量中
+          localStorage.setItem('key', data.key)
+        })
+        .catch(error => {
+          console.error('There has been a problem with your fetch operation:', error)
+        })
+    } else {
+      console.error('No access token or token type available in localStorage')
+    }
+  }
+
+  // 调用函数来发起请求
+  fetchUserData()
+
 
 
 
