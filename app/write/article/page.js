@@ -4,6 +4,7 @@ import { useState, useCallback } from 'react'
 import Navbar from '../../components/navbar'
 import { useChat } from 'ai/react'
 import { useCompletion } from 'ai/react'
+import { useRouter } from 'next/navigation'
 export default function PoetryGenerator () {
   const [formData, setFormData] = useState({
     theme: '',
@@ -23,6 +24,13 @@ export default function PoetryGenerator () {
       [name]: value,
     })
   }
+  const router = useRouter()
+  useEffect(() => {
+    const accessToken = localStorage.getItem('access_token')
+    if (!accessToken) {
+      router.push('../login')
+    }
+  }, [router])
 
   const checkAndPublish = useCallback(async (c) => {
     const stream = await complete(c) // Assuming this returns a stream

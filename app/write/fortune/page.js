@@ -4,6 +4,7 @@ import { useChat } from 'ai/react'
 import { Markdown } from '@lobehub/ui'
 import Navbar from '../../components/navbar'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 export default function Chat () {
   const [formData, setFormData] = useState({
     sender: '',
@@ -26,6 +27,13 @@ export default function Chat () {
       [name]: value,
     })
   }
+  const router = useRouter()
+  useEffect(() => {
+    const accessToken = localStorage.getItem('access_token')
+    if (!accessToken) {
+      router.push('../login')
+    }
+  }, [router])
 
   // 提交表单
   const handleFormSubmit = async (e) => {

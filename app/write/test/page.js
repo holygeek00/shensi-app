@@ -4,6 +4,7 @@ import { useState, useCallback } from 'react'
 import Navbar from '../../components/navbar'
 import { useChat } from 'ai/react'
 import { useCompletion } from 'ai/react'
+import { useRouter } from 'next/navigation'
 export default function PoetryGenerator () {
   const [formData, setFormData] = useState({
     theme: '',
@@ -39,6 +40,12 @@ export default function PoetryGenerator () {
     const messageContent = `以主题“${formData.theme}”和风格“${formData.style}”创作一首诗...`
     setContent('') // Clear existing content
     await checkAndPublish(messageContent)
+  }
+  const accessToken = localStorage.getItem('access_token')
+
+  if (!accessToken) {
+    const router = useRouter()
+    router.push('./login')
   }
 
   return (

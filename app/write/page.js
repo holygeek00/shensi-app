@@ -1,6 +1,9 @@
-import React from "react"
+'use client'
+import React, { useEffect } from "react"
 import Link from 'next/link'
 import Navbar from "../components/navbar"
+
+import { useRouter } from 'next/navigation'
 export default function ArticleMenu () {
   const cards = [
     {
@@ -24,6 +27,14 @@ export default function ArticleMenu () {
     },
 
   ]
+  const accessToken = localStorage.getItem('access_token')
+
+  if (!accessToken) {
+    const router = useRouter()
+    router.push('./login')
+  }
+
+
 
   return (
     <div className=" ">

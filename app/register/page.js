@@ -2,7 +2,7 @@
 'use client'
 import React, { useState } from 'react'
 import Link from 'next/link'
-
+import { useRouter } from 'next/navigation'
 export default function Register () {
   const [formData, setFormData] = useState({
     username: '',
@@ -12,7 +12,7 @@ export default function Register () {
     verification_code: '',
   })
   const [errors, setErrors] = useState({})
-
+  const router = useRouter()
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData((prevState) => ({
@@ -29,7 +29,7 @@ export default function Register () {
   const backend = process.env.NEXT_PUBLIC_BACK_END
   const handleRegister = async () => {
     const { confirmPassword, ...dataToSubmit } = formData
-    const endpoint = + backend + '/users/register' // 替换为您的API端点
+    const endpoint = backend + '/users/register' // 替换为您的API端点
     try {
       const response = await fetch(endpoint, {
         method: 'POST',
@@ -44,16 +44,22 @@ export default function Register () {
       if (response.ok) {
         // 注册成功，处理返回的数据，例如保存token或跳转到登录页
         alert('注册成功')
+
+        router.push('./login')
       } else {
 
         // 注册失败，处理错误，例如显示错误消息
-        console.error('Registration failed:', data)
+        alert('Registration failed:', data)
         // 这里可以设置错误信息以显示在表单上
         setErrors(data.errors || {})
+
+
       }
     } catch (error) {
       // 网络或其他错误，处理异常
-      console.error('Error:', error)
+      alert('Error:', error)
+
+
     }
   }
 
