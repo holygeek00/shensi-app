@@ -21,7 +21,7 @@ const UserDetailPage = () => {
         const authHeader = `${tokenType} ${accessToken}`
         const backend = process.env.NEXT_PUBLIC_BACK_END
         // 发起请求
-        fetch(+ backend + '/users/me', {
+        fetch(backend + '/users/me', {
           method: 'GET',
           headers: {
             'Authorization': authHeader,
