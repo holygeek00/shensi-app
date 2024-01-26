@@ -29,7 +29,7 @@ export default function Register () {
   const backend = process.env.NEXT_PUBLIC_BACK_END
   const handleRegister = async () => {
     const { confirmPassword, ...dataToSubmit } = formData
-    const endpoint =  + backend + '/users/register' // 替换为您的API端点
+    const endpoint = + backend + '/users/register' // 替换为您的API端点
     try {
       const response = await fetch(endpoint, {
         method: 'POST',
@@ -45,6 +45,7 @@ export default function Register () {
         // 注册成功，处理返回的数据，例如保存token或跳转到登录页
         alert('注册成功')
       } else {
+
         // 注册失败，处理错误，例如显示错误消息
         console.error('Registration failed:', data)
         // 这里可以设置错误信息以显示在表单上
@@ -86,6 +87,7 @@ export default function Register () {
         // 可能需要在这里处理验证码发送状态的显示，例如启动倒计时等
       } else {
         // 验证码发送失败，处理错误
+        alert('该手机号已注册')
         console.error('Failed to send verification code:', data)
       }
     } catch (error) {

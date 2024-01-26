@@ -22,12 +22,7 @@ export default function ArticleMenu () {
       imageUrl: "/xiezuo.webp",
       link: './write/fortune'
     },
-    {
-      title: "小学生作文写作",
-      text: "您只需要输入作文的标题和需要的字数就可以帮您生成一篇感情丰富，生动真实的作文。",
-      imageUrl: "/xiezuo.webp",
-      link: './write/article'
-    },
+
   ]
 
   return (

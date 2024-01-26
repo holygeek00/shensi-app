@@ -36,35 +36,39 @@ export default function PoetryGenerator () {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
-    const messageContent = `以主题“${formData.theme}”和风格“${formData.style}”创作一首诗...`
+    const messageContent = `以主题“${formData.theme}”和风格“${formData.style}”写一篇“${formData.length}”的小学生作文...`
     setContent('') // Clear existing content
     await checkAndPublish(messageContent)
   }
 
   return (
     <div>
-      <Navbar title='Shensi-AI写作-诗歌生成器'></Navbar>
+      <Navbar title='Shensi-AI写作-小学生作文生成器'></Navbar>
       <div className="flex flex-col items-center justify-center min-h-screen bg-blue-100 p-4">
         <div className="w-full max-w-3xl bg-white rounded-lg shadow-xl p-6">
-          <p className="mb-6 text-gray-500">AI诗歌生成器，根据主题和体裁快速创作诗歌</p>
+          <p className="mb-6 text-gray-500">AI作文生成器，根据主题和体裁快速写出作文</p>
           <form onSubmit={handleFormSubmit} className="space-y-4">
             <div>
-              <label className="text-gray-700">诗歌主题*</label>
-              <input type="text" name="theme" placeholder="请输入诗歌主题" className="input input-bordered w-full" value={formData.theme} onChange={handleFormInputChange} />
+              <label className="text-gray-700">作文主题*</label>
+              <input type="text" name="theme" placeholder="请输入作文主题" className="input input-bordered w-full" value={formData.theme} onChange={handleFormInputChange} />
             </div>
             <div>
-              <label className="text-gray-700">诗歌体裁*</label>
+              <label className="text-gray-700">作文字数*</label>
+              <input type="text" name="length" placeholder="请输入作文字数" className="input input-bordered w-full" value={formData.length} onChange={handleFormInputChange} />
+            </div>
+            <div>
+              <label className="text-gray-700">作文体裁*</label>
               <select name="style" className="select select-bordered w-full" value={formData.style} onChange={handleFormInputChange}>
                 <option value="">请选择体裁</option>
-                <option value="抒情">抒情</option>
-                <option value="叙事">叙事</option>
-                <option value="古典">古典</option>
-                <option value="现代">现代</option>
-                <option value="自由诗">自由诗</option>
-                <option value="俳句">俳句</option>
+                <option value="记叙文">记叙文</option>
+                <option value="说明文">说明文</option>
+                <option value="议论文">议论文</option>
+                <option value="小说">小说</option>
+                <option value="散文">散文</option>
               </select>
             </div>
-            <button type="submit" className="btn w-full">生成诗歌</button>
+
+            <button type="submit" className="btn w-full">生成作文</button>
           </form>
         </div>
         <div className="w-full mt-2 flex justify-center items-center">
