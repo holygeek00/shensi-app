@@ -1,10 +1,10 @@
 import OpenAI from 'openai';
 import { OpenAIStream, StreamingTextResponse } from 'ai';
-
+import { MY_CONSTANT } from '../../../app/constants'
 export const runtime = 'edge';
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: MY_CONSTANT,
   baseURL: `${process.env.PROXY_URL}/v1`
 });
 
@@ -14,7 +14,7 @@ export async function POST(req: Request) {
 
   // Request the OpenAI API for the response based on the prompt
   const response = await openai.chat.completions.create({
-    model: 'gpt-4',
+    model: 'gpt-3.5-turbo',
     stream: true,
     // a precise prompt is important for the AI to reply with the correct tokens
     messages: [
