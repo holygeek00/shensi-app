@@ -4,15 +4,14 @@ import Navbar from '../../components/navbar'
 import { useCompletion } from 'ai/react'
 import { useRouter } from 'next/navigation'
 
-export default function ReportGenerator () {
+export default function TravelGuideGenerator () {
   const [formData, setFormData] = useState({
-    workContent: '',
-    reportType: '日报', // 默认选项
-    profession: '',
-    length: '中', // 默认选项
+    destination: '',
+    days: '',
+    contentLength: '中', // 默认选项
   })
 
-  const [reportContent, setReportContent] = useState('')
+  const [generatedGuide, setGeneratedGuide] = useState('')
 
   const { complete, completion } = useCompletion({
     api: '/api/completion',
@@ -35,16 +34,16 @@ export default function ReportGenerator () {
   }, [router])
 
   const checkAndPublish = useCallback(async () => {
-    const messageContent = `生成${formData.reportType}: 工作内容 "${formData.workContent}"，职业 "${formData.profession}"，文章长度 "${formData.length}"...`
-    setReportContent('') // 清空现有内容
+    const messageContent = `生成旅游攻略: 城市/景点 "${formData.destination}"，天数 "${formData.days}"，文案长度 "${formData.contentLength}"...`
+    setGeneratedGuide('') // 清空现有内容
     const stream = await complete(messageContent) // 假设这返回一个流
     let newContent = ''
     for await (const chunk of stream) {
       newContent += chunk // 将每个块附加到新内容上
-      setReportContent(prevContent => prevContent + chunk) // 逐步更新报告内容状态
+      setGeneratedGuide(prevContent => prevContent + chunk) // 逐步更新生成的旅游攻略状态
     }
     return newContent // 如果直接更新状态，这可能不是必要的
-  }, [complete, formData.workContent, formData.reportType, formData.profession, formData.length])
+  }, [complete, formData.destination, formData.days, formData.contentLength])
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
@@ -53,30 +52,22 @@ export default function ReportGenerator () {
 
   return (
     <div>
-      <Navbar title='Shensi-AI写作-日报周报生成器'></Navbar>
+      <Navbar title='Shensi-AI写作-AI旅游攻略生成器'></Navbar>
       <div className="flex flex-col items-center justify-center min-h-screen bg-blue-100 p-4">
         <div className="w-full max-w-3xl bg-white rounded-lg shadow-xl p-6">
-          <p className="mb-6 text-gray-500">快速生成日报、周报或月报，帮助您高效记录工作进展</p>
+          <p className="mb-6 text-gray-500">AI旅游攻略生成器，一键生成高质量的新媒体平台旅游攻略</p>
           <form onSubmit={handleFormSubmit} className="space-y-4">
             <div>
-              <label className="text-gray-700">工作内容*</label>
-              <textarea name="workContent" placeholder="请输入您的工作内容" className="textarea textarea-bordered w-full" value={formData.workContent} onChange={handleFormInputChange} />
+              <label className="text-gray-700">城市/景点*</label>
+              <input type="text" name="destination" placeholder="如：杭州" className="input input-bordered w-full" value={formData.destination} onChange={handleFormInputChange} />
             </div>
             <div>
-              <label className="text-gray-700">生成类型*</label>
-              <select name="reportType" className="select select-bordered w-full" value={formData.reportType} onChange={handleFormInputChange}>
-                <option value="日报">日报</option>
-                <option value="周报">周报</option>
-                <option value="月报">月报</option>
-              </select>
+              <label className="text-gray-700">天数*</label>
+              <input type="text" name="days" placeholder="如：3" className="input input-bordered w-full" value={formData.days} onChange={handleFormInputChange} />
             </div>
             <div>
-              <label className="text-gray-700">职业*</label>
-              <input type="text" name="profession" placeholder="请输入您的职业" className="input input-bordered w-full" value={formData.profession} onChange={handleFormInputChange} />
-            </div>
-            <div>
-              <label className="text-gray-700">文章长度*</label>
-              <select name="length" className="select select-bordered w-full" value={formData.length} onChange={handleFormInputChange}>
+              <label className="text-gray-700">文案长度*</label>
+              <select name="contentLength" className="select select-bordered w-full" value={formData.contentLength} onChange={handleFormInputChange}>
                 <option value="短">短</option>
                 <option value="中">中</option>
                 <option value="长">长</option>

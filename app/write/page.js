@@ -74,6 +74,208 @@ export default function ArticleMenu () {
       imageUrl: "/xiezuo.webp",
       link: './write/zhoubao'
     },
+    {
+      title: "AI广告语生成器",
+      text: "借助AI广告语生成器，一键生成各类创意吸睛广告语",
+      imageUrl: "/xiezuo.webp",
+      link: './write/guanggao'
+    },
+    {
+      title: "AI文章风格润色工具",
+      text: "帮助用户快速改进文章的语言表达风格和整体质量",
+      imageUrl: "/xiezuo.webp",
+      link: './write/wenzhang'
+    },
+    {
+      title: "AI句子续写工具",
+      text: "帮助用户续写句子或扩展句子，适用于写作、小说创作、广告文案等领域",
+      imageUrl: "/xiezuo.webp",
+      link: './write/jvzi'
+    },
+    {
+      title: "AI种草文案生成器",
+      text: "AI种草文案生成器，一键生成文笔优美、内容丰富的种草文案",
+      imageUrl: "/xiezuo.webp",
+      link: './write/zhongcao'
+    },
+    {
+      title: "AI创意故事生成器",
+      text: "AI创意故事生成器，一键生成情节生动、结构完整的创意故事内容",
+      imageUrl: "/xiezuo.webp",
+      link: './write/chuangyi'
+    },
+    {
+      title: "AI文章标题生成器",
+      text: "AI文章标题生成器，一键生成引人注目的新媒体文章标题",
+      imageUrl: "/xiezuo.webp",
+      link: './write/biaoti'
+    },
+    {
+      title: "AI散文生成器",
+      text: "AI散文生成器，一键生成平实自然、意境深远的散文作品",
+      imageUrl: "/xiezuo.webp",
+      link: './write/sanwen'
+    },
+    //
+
+    {
+      title: "AI旅游攻略生成器",
+      text: "AI旅游攻略生成器，一键生成高质量的新媒体平台旅游攻略",
+      imageUrl: "/xiezuo.webp",
+      link: './write/lvyou'
+    },
+    {
+      title: "AI邮件生成器",
+      text: "AI邮件生成器，一键生成各种类型的电子邮件内容",
+      imageUrl: "/xiezuo.webp",
+      link: './write/youjian'
+    },
+    {
+      title: "AI幽默回复",
+      text: "AI幽默回复，根据对方的话语自动生成诙谐幽默的回复话术",
+      imageUrl: "/xiezuo.webp",
+      link: './write/youmo'
+    },
+    {
+      title: "AI打卡文案生成器",
+      text: "AI打卡文案生成器，一键生成内容丰富景点打卡文案内容",
+      imageUrl: "/xiezuo.webp",
+      link: './write/daka'
+    },
+    {
+      title: "AI新媒体回答生成器",
+      text: "AI新媒体回答生成器，一键生成简明扼要、实用性强的新媒体干货式回答文案",
+      imageUrl: "/xiezuo.webp",
+      link: './write/huida'
+    },
+    {
+      title: "AI干货分享文案生成器",
+      text: "AI干货分享文案生成器，一键生成形式多样、内容实用的干货分享类文案",
+      imageUrl: "/xiezuo.webp",
+      link: './write/ganhuo'
+    },
+    {
+      title: "AI口播稿生成器",
+      text: "AI口播稿生成器，一键生成语言生动、内容详实的带货视频口播稿文案",
+      imageUrl: "/xiezuo.webp",
+      link: './write/koubo'
+    },
+    {
+      title: "AI带货脚本文案生成器",
+      text: "AI带货脚本文案生成器，一键生成节奏紧凑、吸引力强的直播间带货脚本文案",
+      imageUrl: "/xiezuo.webp",
+      link: './write/daihuojiaoben'
+    },
+    {
+      title: "AI新媒体问题生成器",
+      text: "AI新媒体问题生成器，一键生成准确、专业、通俗的新媒体问题",
+      imageUrl: "/xiezuo.webp",
+      link: './write/wenti'
+    },
+    {
+      title: "AI藏头诗生成器",
+      text: "AI藏头诗生成器，一键生成文笔优美、富有趣味的藏头诗",
+      imageUrl: "/xiezuo.webp",
+      link: './write/cangtoushi'
+    },
+
+    {
+      title: "AI星座占卜师",
+      text: "AI星座占卜师，为用户提供星座占卜、运势预测、性格分析等服务",
+      imageUrl: "/xiezuo.webp",
+      link: './write/zhanbu'
+    },
+    {
+      title: "AI疯狂星期四文案生成器",
+      text: "AI疯狂星期四文案生成器，一键生成富有创意和吸引力的肯德基疯狂星期四文案",
+      imageUrl: "/xiezuo.webp",
+      link: './write/fengkuang'
+    },
+    {
+      title: "AI文章要点生成器",
+      text: "AI文章要点生成器，帮助用户快速梳理文章的主旨、要点",
+      imageUrl: "/xiezuo.webp",
+      link: './write/yaodian'
+    },
+    {
+      title: "AI文章摘要生成器",
+      text: "AI文章摘要生成器，自动提取文章的主体内容，生成简洁、准确、通俗易懂的文章摘要",
+      imageUrl: "/xiezuo.webp",
+      link: './write/zhaiyao'
+    },
+    {
+      title: "AI产品亮点生成器",
+      text: "AI产品亮点生成器，自动提取产品的亮点和优势，帮助用户对产品进行推广和宣传",
+      imageUrl: "/xiezuo.webp",
+      link: './write/liangdian'
+    },
+    {
+      title: "AI产品核心价值生成器",
+      text: "AI产品核心价值生成器，自动识别产品的特点和亮点，确定产品的核心价值和优势",
+      imageUrl: "/xiezuo.webp",
+      link: './write/hexinjiazhi'
+    },
+    {
+      title: "AI产品特性描述生成器",
+      text: "AI产品特性描述生成器，自动识别产品的特性和功能，确定产品的核心要素和特点",
+      imageUrl: "/xiezuo.webp",
+      link: './write/texing'
+    },
+    {
+      title: "AI产品卖点生成器",
+      text: "AI产品卖点生成器，自动生成具有吸引力和卖点的产品描述",
+      imageUrl: "/xiezuo.webp",
+      link: './write/maidian'
+    },
+    {
+      title: "AI电商产品简介生成器",
+      text: "AI电商产品简介生成器，快速生成具有吸引力的电商产品描述和卖点文案",
+      imageUrl: "/xiezuo.webp",
+      link: './write/jianjie'
+    },
+    {
+      title: "AI商品评价生成器",
+      text: "AI商品评价生成器，快速生成具有吸引力的好评内容，提高商品的美誉度和销量",
+      imageUrl: "/xiezuo.webp",
+      link: './write/pingjia'
+    },
+    {
+      title: "AI达人买家测评生成器",
+      text: "帮助您在短时间内轻松撰写出高质量的评测内容",
+      imageUrl: "/xiezuo.webp",
+      link: './write/pingce'
+    },
+    {
+      title: "AI美食探店文案生成器",
+      text: "快速生成高质量的美食探店文章，提高店铺曝光率和知名度",
+      imageUrl: "/xiezuo.webp",
+      link: './write/tandian'
+    },
+    {
+      title: "AI社会实践报告生成器",
+      text: "帮助学生更高效、规范地撰写社会实践报告，提高报告的质量和可读性",
+      imageUrl: "/xiezuo.webp",
+      link: './write/shijian'
+    },
+    {
+      title: "AI教学计划生成器",
+      text: "提高教学计划制定效率，减轻教师工作负担",
+      imageUrl: "/xiezuo.webp",
+      link: './write/jiaoxuejihua'
+    },
+    {
+      title: "AI视频标题生成器",
+      text: "快速生成符合要求的视频标题，无需花费大量时间和精力去思考",
+      imageUrl: "/xiezuo.webp",
+      link: './write/biaoti'
+    },
+    {
+      title: "AI短视频口播稿生成器",
+      text: "快速生成高质量的口播稿，提高创作效率和质量",
+      imageUrl: "/xiezuo.webp",
+      link: './write/koubogao'
+    },
+
   ]
   const router = useRouter()
   useEffect(() => {
@@ -119,9 +321,6 @@ export default function ArticleMenu () {
       console.error('No access token or token type available in localStorage')
     }
   }
-
-  // 调用函数来发起请求
-  fetchUserData()
 
 
 
