@@ -1,7 +1,8 @@
 'use client'
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import Link from 'next/link'
 import Navbar from "../components/navbar"
+import Image from 'next/image'
 
 import { useRouter } from 'next/navigation'
 export default function ArticleMenu () {
@@ -68,17 +69,20 @@ export default function ArticleMenu () {
       link: './write/neirong'
     },
   ]
-  const accessToken = localStorage.getItem('access_token')
-
-  if (!accessToken) {
-    const router = useRouter()
-    router.push('./login')
-  }
+  const router = useRouter()
+  useEffect(() => {
+    const accessToken = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null
+    if (!accessToken) {
+      router.push('../login')
+    } else {
+      fetchUserData(accessToken) // Call fetchUserData with accessToken
+    }
+  }, [router])
   function fetchUserData () {
     // 从localStorage获取access_token和token_type
-    const accessToken = localStorage.getItem('access_token')
-    const tokenType = localStorage.getItem('token_type')
+    const accessToken = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null
 
+    const tokenType = typeof window !== 'undefined' ? localStorage.getItem('token_type') : null
     // 检查确保我们有token
     if (accessToken && tokenType) {
       // 设置请求的headers
@@ -125,7 +129,7 @@ export default function ArticleMenu () {
         {cards.map((card, index) => (
           <div key={index} className="card max-w-xs md:max-w-xs lg:w-1/5 bg-base-100 shadow-xl">
             <figure className="px-10 pt-10">
-              <img src={card.imageUrl} alt="Shoes" className="rounded-xl" />
+              <Image src={card.imageUrl} alt="Shoes" className="rounded-xl" />
             </figure>
             <div className="card-body items-center text-center">
               <h2 className="card-title">{card.title}</h2>

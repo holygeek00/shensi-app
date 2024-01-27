@@ -41,12 +41,13 @@ export default function PoetryGenerator () {
     setContent('') // Clear existing content
     await checkAndPublish(messageContent)
   }
-  const accessToken = localStorage.getItem('access_token')
-
-  if (!accessToken) {
-    const router = useRouter()
-    router.push('./login')
-  }
+  const router = useRouter()
+  useEffect(() => {
+    const accessToken = localStorage.getItem('access_token')
+    if (!accessToken) {
+      router.push('../login')
+    }
+  }, [router])
 
   return (
     <div>
