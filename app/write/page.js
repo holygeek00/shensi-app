@@ -68,6 +68,12 @@ export default function ArticleMenu () {
       imageUrl: "/xiezuo.webp",
       link: './write/neirong'
     },
+    {
+      title: "AI日报周报生成器",
+      text: "AI日报周报生成器，一键生成内容丰富的工作日报、周报",
+      imageUrl: "/xiezuo.webp",
+      link: './write/zhoubao'
+    },
   ]
   const router = useRouter()
   useEffect(() => {
@@ -129,7 +135,7 @@ export default function ArticleMenu () {
         {cards.map((card, index) => (
           <div key={index} className="card max-w-xs md:max-w-xs lg:w-1/5 bg-base-100 shadow-xl">
             <figure className="px-10 pt-10">
-              <Image src={card.imageUrl} alt="Shoes" className="rounded-xl" />
+              <Image src={card.imageUrl} alt="Shoes" className="rounded-xl" width={500} height={500} />
             </figure>
             <div className="card-body items-center text-center">
               <h2 className="card-title">{card.title}</h2>
