@@ -31,7 +31,30 @@ export default function ArticleMenu () {
       imageUrl: "/xiezuo.webp",
       link: './write/duilian'
     },
-
+    {
+      title: "AI专业论文生成器",
+      text: "输入论文标题和关键词，在短时间内生成高质量的专业论文内容",
+      imageUrl: "/xiezuo.webp",
+      link: './write/lunwen'
+    },
+    {
+      title: "AI文献综述生成器",
+      text: "帮助您在短时间内轻松撰写出高质量的论文文献综述",
+      imageUrl: "/xiezuo.webp",
+      link: './write/wenxian'
+    },
+    {
+      title: "AI文章风格润色工具",
+      text: "帮助用户快速改进文章的语言表达风格和整体质量",
+      imageUrl: "/xiezuo.webp",
+      link: './write/runse'
+    },
+    {
+      title: "AI短视频脚本生成器",
+      text: "帮助用户快速改进文章的语言表达风格和整体质量",
+      imageUrl: "/xiezuo.webp",
+      link: './write/jiaoben'
+    },
   ]
   const accessToken = localStorage.getItem('access_token')
 
