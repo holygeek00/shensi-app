@@ -55,6 +55,18 @@ export default function ArticleMenu () {
       imageUrl: "/xiezuo.webp",
       link: './write/jiaoben'
     },
+    {
+      title: "AI头脑风暴生成器",
+      text: "AI头脑风暴生成器，一键生成各种主题的头脑风暴案例",
+      imageUrl: "/xiezuo.webp",
+      link: './write/tounao'
+    },
+    {
+      title: "AI内容改写工具",
+      text: "利用人工智能算法和自然语言处理技术，快速改写原文内容",
+      imageUrl: "/xiezuo.webp",
+      link: './write/neirong'
+    },
   ]
   const accessToken = localStorage.getItem('access_token')
 
