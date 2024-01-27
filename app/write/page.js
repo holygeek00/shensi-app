@@ -186,7 +186,7 @@ export default function ArticleMenu () {
       title: "AI星座占卜师",
       text: "AI星座占卜师，为用户提供星座占卜、运势预测、性格分析等服务",
       imageUrl: "/xiezuo.webp",
-      link: './write/xingzuo'
+      link: './write/zhanbu'
     },
     {
       title: "AI疯狂星期四文案生成器",
@@ -272,12 +272,7 @@ export default function ArticleMenu () {
       imageUrl: "/xiezuo.webp",
       link: './write/biaoti'
     },
-    {
-      title: "AI短视频口播稿生成器",
-      text: "快速生成高质量的口播稿，提高创作效率和质量",
-      imageUrl: "/xiezuo.webp",
-      link: './write/koubogao'
-    },
+
   ]
   const router = useRouter()
   useEffect(() => {
