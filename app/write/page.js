@@ -25,10 +25,16 @@ export default function ArticleMenu () {
       imageUrl: "/xiezuo.webp",
       link: './write/fortune'
     },
+    {
+      title: "AI对联生成器",
+      text: "AI对联生成器，根据上联内容自动生成内容呼应、对仗工整的下联",
+      imageUrl: "/xiezuo.webp",
+      link: './write/duilian'
+    },
 
   ]
   const accessToken = localStorage.getItem('access_token')
-  
+
   if (!accessToken) {
     const router = useRouter()
     router.push('./login')

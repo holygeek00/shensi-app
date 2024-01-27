@@ -1,10 +1,9 @@
 'use client'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
 import { useChat } from 'ai/react'
-import { Markdown } from '@lobehub/ui'
 import Navbar from '../../components/navbar'
-import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useCompletion } from 'ai/react'
 export default function Chat () {
   const [formData, setFormData] = useState({
     sender: '',
@@ -12,14 +11,27 @@ export default function Chat () {
     relationship: '',
     festival: '',
   })
-
-  const { messages, input, handleInputChange, handleSubmit, append } = useChat({
-    // 提供必要的配置参数
+  const { complete, completion } = useCompletion({
+    api: '/api/completion',
   })
+  const [messages, setMessages] = useState([])
+  const router = useRouter()
 
-  const endOfMessagesRef = useRef(null)
+  // Function to handle completion (AI generation)
+  const checkAndPublish = useCallback(async (messageContent) => {
+    // Call to your AI service to generate a message
+    // Replace with your actual API call
+    const stream = await complete(messageContent) // Assuming this returns a stream
+    let newContent = ''
+    const response = await fetch('/api/completion', {
+      method: 'POST',
+      body: JSON.stringify({ prompt: messageContent }),
+      headers: { 'Content-Type': 'application/json' },
+    })
+    const data = await response.json()
+    return data.text // Assuming the API returns a response with a 'text' field
+  }, [complete])
 
-  // 处理表单输入变化
   const handleFormInputChange = (e) => {
     const { name, value } = e.target
     setFormData({
@@ -27,7 +39,7 @@ export default function Chat () {
       [name]: value,
     })
   }
-  const router = useRouter()
+
   useEffect(() => {
     const accessToken = localStorage.getItem('access_token')
     if (!accessToken) {
@@ -35,24 +47,24 @@ export default function Chat () {
     }
   }, [router])
 
-  // 提交表单
   const handleFormSubmit = async (e) => {
     e.preventDefault()
-    // 生成祝福语请求
     const messageContent = `生成祝福语: ${formData.sender} 致 ${formData.recipient} 的 ${formData.festival} 祝福`
-    await append({ content: messageContent, role: 'user' })
+    const completion = await checkAndPublish(messageContent)
+    setMessages(prevMessages => [...prevMessages, { role: 'assistant', content: completion }])
   }
 
-  // 滚动到消息列表的底部
+  // Scroll to the bottom of the message list
+  const endOfMessagesRef = useRef(null)
   useEffect(() => {
     endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
+
   return (
     <div>
       <Navbar title='Shensi-AI写作-祝福语生成器'></Navbar>
       <div className="flex flex-col items-center justify-center min-h-screen bg-blue-100 p-4">
-
-
+        {/* Rest of the component */}
         <div className="w-full max-w-3xl bg-white rounded-lg shadow-xl p-6">
 
           <p className="mb-6 text-gray-500">AI节日祝福语生成器，快速生成具有温馨感和独特性的节日祝福语</p>
@@ -88,18 +100,14 @@ export default function Chat () {
             <button type="submit" className="btn w-full">生成祝福</button>
           </form>
         </div>
-        <div className="messages mt-4">
-          {messages.map((message, index) => (
-            message.role === 'assistant' && (
-              <div key={index} className="p-3 my-2 bg-white-200 rounded-lg">
-                {message.content}
-              </div>
-            )
-          ))}
-          <div ref={endOfMessagesRef} />
+        <div className="w-full mt-2 flex justify-center items-center">
+          <div className="p-3 mb-2 bg-white rounded-lg shadow w-full max-w-3xl">
+            <div className="flex justify-center">
+              <textarea className="text-gray-800 w-full h-64" value={completion} readOnly />
+            </div>
+          </div>
         </div>
       </div>
-
     </div>
   )
 }
