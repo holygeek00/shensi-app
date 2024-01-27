@@ -117,11 +117,6 @@ export default function ArticleMenu () {
       link: './write/sanwen'
     },
     {
-      title: "AI散文生成器",
-      text: "AI散文生成器，一键生成平实自然、意境深远的散文作品",
-      imageUrl: "/xiezuo.webp",
-      link: './write/sanwen'
-    }, {
       title: "AI旅游攻略生成器",
       text: "AI旅游攻略生成器，一键生成高质量的新媒体平台旅游攻略",
       imageUrl: "/xiezuo.webp",
@@ -245,43 +240,43 @@ export default function ArticleMenu () {
       title: "AI商品评价生成器",
       text: "AI商品评价生成器，快速生成具有吸引力的好评内容，提高商品的美誉度和销量",
       imageUrl: "/xiezuo.webp",
-      link: './write/ pingjia'
+      link: './write/pingjia'
     },
     {
       title: "AI达人买家测评生成器",
       text: "帮助您在短时间内轻松撰写出高质量的评测内容",
       imageUrl: "/xiezuo.webp",
-      link: './write/ pingce'
+      link: './write/pingce'
     },
     {
       title: "AI美食探店文案生成器",
       text: "快速生成高质量的美食探店文章，提高店铺曝光率和知名度",
       imageUrl: "/xiezuo.webp",
-      link: './write/ tandian'
+      link: './write/tandian'
     },
     {
       title: "AI社会实践报告生成器",
       text: "帮助学生更高效、规范地撰写社会实践报告，提高报告的质量和可读性",
       imageUrl: "/xiezuo.webp",
-      link: './write/ shijian'
+      link: './write/shijian'
     },
     {
       title: "AI教学计划生成器",
       text: "提高教学计划制定效率，减轻教师工作负担",
       imageUrl: "/xiezuo.webp",
-      link: './write/ jiaoxuejihua'
+      link: './write/jiaoxuejihua'
     },
     {
       title: "AI视频标题生成器",
       text: "快速生成符合要求的视频标题，无需花费大量时间和精力去思考",
       imageUrl: "/xiezuo.webp",
-      link: './write/ biaoti'
+      link: './write/biaoti'
     },
     {
       title: "AI短视频口播稿生成器",
       text: "快速生成高质量的口播稿，提高创作效率和质量",
       imageUrl: "/xiezuo.webp",
-      link: './write/ koubogao'
+      link: './write/koubogao'
     },
   ]
   const router = useRouter()
