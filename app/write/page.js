@@ -116,9 +116,12 @@ export default function ArticleMenu () {
       imageUrl: "/xiezuo.webp",
       link: './write/sanwen'
     },
-    //
-
     {
+      title: "AI散文生成器",
+      text: "AI散文生成器，一键生成平实自然、意境深远的散文作品",
+      imageUrl: "/xiezuo.webp",
+      link: './write/sanwen'
+    }, {
       title: "AI旅游攻略生成器",
       text: "AI旅游攻略生成器，一键生成高质量的新媒体平台旅游攻略",
       imageUrl: "/xiezuo.webp",
@@ -164,7 +167,7 @@ export default function ArticleMenu () {
       title: "AI带货脚本文案生成器",
       text: "AI带货脚本文案生成器，一键生成节奏紧凑、吸引力强的直播间带货脚本文案",
       imageUrl: "/xiezuo.webp",
-      link: './write/daihuojiaoben'
+      link: './write/jiaoben'
     },
     {
       title: "AI新媒体问题生成器",
@@ -178,12 +181,17 @@ export default function ArticleMenu () {
       imageUrl: "/xiezuo.webp",
       link: './write/cangtoushi'
     },
-
+    {
+      title: "AI对联生成器",
+      text: "AI对联生成器，根据上联内容自动生成内容呼应、对仗工整的下联",
+      imageUrl: "/xiezuo.webp",
+      link: './write/duilian'
+    },
     {
       title: "AI星座占卜师",
       text: "AI星座占卜师，为用户提供星座占卜、运势预测、性格分析等服务",
       imageUrl: "/xiezuo.webp",
-      link: './write/zhanbu'
+      link: './write/xingzuo'
     },
     {
       title: "AI疯狂星期四文案生成器",
@@ -237,45 +245,44 @@ export default function ArticleMenu () {
       title: "AI商品评价生成器",
       text: "AI商品评价生成器，快速生成具有吸引力的好评内容，提高商品的美誉度和销量",
       imageUrl: "/xiezuo.webp",
-      link: './write/pingjia'
+      link: './write/ pingjia'
     },
     {
       title: "AI达人买家测评生成器",
       text: "帮助您在短时间内轻松撰写出高质量的评测内容",
       imageUrl: "/xiezuo.webp",
-      link: './write/pingce'
+      link: './write/ pingce'
     },
     {
       title: "AI美食探店文案生成器",
       text: "快速生成高质量的美食探店文章，提高店铺曝光率和知名度",
       imageUrl: "/xiezuo.webp",
-      link: './write/tandian'
+      link: './write/ tandian'
     },
     {
       title: "AI社会实践报告生成器",
       text: "帮助学生更高效、规范地撰写社会实践报告，提高报告的质量和可读性",
       imageUrl: "/xiezuo.webp",
-      link: './write/shijian'
+      link: './write/ shijian'
     },
     {
       title: "AI教学计划生成器",
       text: "提高教学计划制定效率，减轻教师工作负担",
       imageUrl: "/xiezuo.webp",
-      link: './write/jiaoxuejihua'
+      link: './write/ jiaoxuejihua'
     },
     {
       title: "AI视频标题生成器",
       text: "快速生成符合要求的视频标题，无需花费大量时间和精力去思考",
       imageUrl: "/xiezuo.webp",
-      link: './write/biaoti'
+      link: './write/ biaoti'
     },
     {
       title: "AI短视频口播稿生成器",
       text: "快速生成高质量的口播稿，提高创作效率和质量",
       imageUrl: "/xiezuo.webp",
-      link: './write/koubogao'
+      link: './write/ koubogao'
     },
-
   ]
   const router = useRouter()
   useEffect(() => {
@@ -306,13 +313,15 @@ export default function ArticleMenu () {
       })
         .then(response => {
           if (response.ok) {
+
             return response.json() // 如果响应是JSON，这里将其解析
           }
           throw new Error('Network response was not ok.')
         })
         .then(userData => {
-          setUser(userData) // 将获取的用户数据存储在状态变量中
-          localStorage.setItem('key', data.key)
+
+          localStorage.setItem('key', userData.bound_keys)
+          console.log(userData.bound_keys)
         })
         .catch(error => {
           console.error('There has been a problem with your fetch operation:', error)

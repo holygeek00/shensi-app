@@ -8,9 +8,22 @@ export default function ContentRewriter () {
   const [originalContent, setOriginalContent] = useState('')
   const [rewrittenContent, setRewrittenContent] = useState('')
 
+  const [key, setKey] = useState('')
+  useEffect(() => {
+    // 在组件挂载后从 localStorage 中获取数据
+    const storedKey = localStorage.getItem('key')
+    if (storedKey) {
+      setKey(storedKey)
+    }
+  }, [])
   const { complete, completion } = useCompletion({
     api: '/api/completion',
+    headers: {
+      'Authorization': key,
+      // 其他头部信息
+    },
   })
+
 
   const handleInputChange = (e) => {
     setOriginalContent(e.target.value)

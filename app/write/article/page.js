@@ -10,11 +10,24 @@ export default function PoetryGenerator () {
     theme: '',
     style: '',
   })
-
   const [content, setContent] = useState('')
+  const [key, setKey] = useState('')
+  useEffect(() => {
+    // 在组件挂载后从 localStorage 中获取数据
+    const storedKey = localStorage.getItem('key')
+    if (storedKey) {
+      setKey(storedKey)
+    }
+  }, [])
+
+
 
   const { complete, completion } = useCompletion({
     api: '/api/completion',
+    headers: {
+      'Authorization': key,
+      // 其他头部信息
+    },
   })
 
   const handleFormInputChange = (e) => {
