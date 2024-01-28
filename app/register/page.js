@@ -1,9 +1,10 @@
 
 'use client'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 export default function Register () {
+  const [countdown, setCountdown] = useState(0)
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -100,7 +101,7 @@ export default function Register () {
       // 网络或其他错误，处理异常
       console.error('Error:', error)
     }
-
+    setCountdown(60)
     setSendingCode(false)
   }
 
@@ -133,7 +134,13 @@ export default function Register () {
     setErrors(newErrors)
     return isValid
   }
-
+  useEffect(() => {
+    let timer
+    if (countdown > 0) {
+      timer = setTimeout(() => setCountdown(countdown - 1), 1000)
+    }
+    return () => clearTimeout(timer)
+  }, [countdown])
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -191,9 +198,9 @@ export default function Register () {
                   type="button"
                   className="absolute top-0 right-0 rounded-l-none btn btn-primary"
                   onClick={sendVerificationCode}
-                  disabled={sendingCode}
+                  disabled={countdown > 0}
                 >
-                  {sendingCode ? '发送中...' : '获取验证码'}
+                  {countdown > 0 ? `重新获取 (${countdown}s)` : '获取验证码'}
                 </button>
               </div>
             </div>

@@ -68,7 +68,7 @@ export default function BindKeyPage () {
       <Link href={'/write'}>
         <button className="flex btn btn-primary mt-4  w-full max-w-xs mx-auto my-10">
 
-          已绑定
+          稍后绑定
 
         </button>
       </Link>

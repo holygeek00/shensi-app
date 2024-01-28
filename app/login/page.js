@@ -20,7 +20,7 @@ export default function Login () {
       const response = await fetch(url, {
         method: 'POST', // 使用POST方法
         headers: {
-          'Authorization': authHeader,
+
           'Content-Type': 'application/json'
         }
         // 由于 '-d' 是空的，这里不需要设置body属性
@@ -47,7 +47,7 @@ export default function Login () {
   const handleLogin = async (event) => {
     event.preventDefault() // 防止页面刷新
     const backend = process.env.NEXT_PUBLIC_BACK_END
-    const endpoint =  backend + '/users/login' // API端点
+    const endpoint = backend + '/users/login' // API端点
     const payload = {
       login: account,
       password: password,
