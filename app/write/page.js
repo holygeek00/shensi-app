@@ -300,7 +300,7 @@ export default function ArticleMenu () {
         .then(userData => {
 
           localStorage.setItem('key', userData.bound_keys)
-          console.log(userData.bound_keys)
+          // console.log(userData.bound_keys)
         })
         .catch(error => {
           console.error('There has been a problem with your fetch operation:', error)
