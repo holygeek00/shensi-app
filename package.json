@@ -9,21 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@lobehub/ui": "^1.128.4",
-    "@nanostores/react": "ai/react",
-    "@prisma/client": "^5.8.1",
     "ai": "^2.2.31",
-    "antd": "^5.13.2",
     "antd-style": "^3.6.1",
     "daisyui": "^4.6.0",
-    "http": "^0.0.1-security",
-    "https-proxy-agent": "^7.0.2",
-    "lowdb": "^7.0.1",
     "next": "14.1.0",
-    "nextjs-openai": "^7.2.0",
     "openai": "^4.24.7",
     "openai-streams": "^6.2.0",
-    "prisma": "^5.8.1",
     "react": "^18",
     "react-dom": "^18"
   },
