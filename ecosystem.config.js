@@ -1,8 +1,8 @@
 module.exports = {
-  apps : [{
+  apps: [{
     name: 'nextjs-app',
     script: 'yarn',
-    args: 'start',
+    args: 'start -p 3888',
     watch: '.',
     env: {
       NODE_ENV: 'development',
@@ -11,4 +11,4 @@ module.exports = {
       NODE_ENV: 'production',
     }
   }],
-};
+}
