@@ -2,15 +2,21 @@
 'use client'
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
+
 import { useRouter } from 'next/navigation'
 export default function Register () {
   const [countdown, setCountdown] = useState(0)
+  const [captchaImage, setCaptchaImage] = useState('')
+  const [showCaptchaLoading, setShowCaptchaLoading] = useState(false) // 弹窗状态
+
   const [formData, setFormData] = useState({
     username: '',
     email: '',
     phone_number: '',
     password: '',
     verification_code: '',
+    captchaInput: '', // 添加图片验证码字段
   })
   const [errors, setErrors] = useState({})
   const router = useRouter()
@@ -29,6 +35,7 @@ export default function Register () {
   }
   const backend = process.env.NEXT_PUBLIC_BACK_END
   const handleRegister = async () => {
+
     const { confirmPassword, ...dataToSubmit } = formData
     const endpoint = backend + '/users/register' // 替换为您的API端点
     try {
@@ -63,15 +70,43 @@ export default function Register () {
 
     }
   }
+  // 修改 sendVerificationCode 函数
+  const getCaptcha = async () => {
+    setShowCaptchaLoading(true) // 显示加载弹窗
+    const url = `${backend}/captcha/${formData.phone_number}`
+    try {
+      const response = await fetch(url)
+      if (response.ok) {
+        response.blob().then(blob => {
+          const url = URL.createObjectURL(blob)
+          setCaptchaImage(url) // 设置验证码图片
+          setShowCaptchaLoading(false) // 关闭加载弹窗
+        })
+      } else {
+        console.error('Failed to fetch captcha:', data)
+        setShowCaptchaLoading(false) // 关闭加载弹窗
+      }
+    } catch (error) {
+      console.error('Error fetching captcha:', error)
+      setShowCaptchaLoading(false) // 关闭加载弹窗
+    }
+  }
+
 
   const handleSubmit = (event) => {
     event.preventDefault()
     // 可以在这里添加表单验证逻辑
+
     handleRegister() // 调用注册处理函数
   }
+
   const [sendingCode, setSendingCode] = useState(false)
 
   const sendVerificationCode = async () => {
+    if (!formData.captchaInput) {
+      alert('请先输入图片中的验证码')
+      return
+    }
     setSendingCode(true)
     const queryParams = new URLSearchParams({ mobile: formData.phone_number })
     const url = `${backend}/users/send_verify_code?${queryParams}`
@@ -94,7 +129,7 @@ export default function Register () {
         // 可能需要在这里处理验证码发送状态的显示，例如启动倒计时等
       } else {
         // 验证码发送失败，处理错误
-        alert('该手机号已注册')
+
         console.error('Failed to send verification code:', data)
       }
     } catch (error) {
@@ -141,6 +176,14 @@ export default function Register () {
     }
     return () => clearTimeout(timer)
   }, [countdown])
+  // 弹窗组件
+  const CaptchaLoadingModal = () => (
+    <div className={`modal ${showCaptchaLoading ? 'modal-open' : ''}`}>
+      <div className="modal-box">
+        <p>正在加载验证码...</p>
+      </div>
+    </div>
+  )
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -197,14 +240,61 @@ export default function Register () {
                 <button
                   type="button"
                   className="absolute top-0 right-0 rounded-l-none btn btn-primary"
+                  onClick={getCaptcha}
+                  disabled={countdown > 0}
+                >
+                  获取图片验证码
+                </button>
+
+              </div>
+            </div>
+            <CaptchaLoadingModal />
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">图片验证码</span>
+              </label>
+              <div className="relative">
+                <input
+                  type="text"
+                  name="captchaInput"
+                  placeholder="请输入图片中的验证码"
+                  className="input input-bordered"
+                  value={formData.captchaInput}
+                  onChange={handleChange}
+                />
+
+                <button
+                  type="button"
+                  className="absolute top-0 right-0 rounded-l-none btn btn-primary"
                   onClick={sendVerificationCode}
                   disabled={countdown > 0}
                 >
-                  {countdown > 0 ? `重新获取 (${countdown}s)` : '获取验证码'}
+                  {countdown > 0 ? `重新获取 (${countdown}s)` : '获取短信验证码'}
                 </button>
               </div>
             </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">验证码图片</span>
+              </label>
+              {captchaImage && <img src={captchaImage} alt="Captcha" className="w-32 h-8" />
+              }
 
+
+            </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">验证码</span>
+              </label>
+              <input
+                type="text" // 使用 type="text" 来接受验证码输入
+                name="verification_code"
+                placeholder="短信验证码"
+                className="input input-bordered"
+                value={formData.verification_code}
+                onChange={handleChange}
+              />
+            </div>
             {/* Password field */}
             <div className="form-control">
               <label className="label">
@@ -237,20 +327,9 @@ export default function Register () {
               {errors.confirmPassword && <span className="text-error text-xs">{errors.confirmPassword}</span>}
             </div>
 
+
             {/* Verification Code field */}
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text">验证码</span>
-              </label>
-              <input
-                type="text" // 使用 type="text" 来接受验证码输入
-                name="verification_code"
-                placeholder="短信验证码"
-                className="input input-bordered"
-                value={formData.verification_code}
-                onChange={handleChange}
-              />
-            </div>
+
 
             {/* Submit button */}
             <div className="form-control mt-6">
