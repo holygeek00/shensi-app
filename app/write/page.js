@@ -314,10 +314,10 @@ export default function ArticleMenu () {
 
 
   return (
-    <div className=" ">
-      <Navbar title='深斯AI写作'></Navbar>
+    <div className="bg-blue-200 ">
+      <Navbar title='深斯AI写作' ></Navbar>
       <h1 className="text-5xl font-bold m-8 text-center mb-6">深斯 AI 写作</h1>
-      <div className="flex flex-wrap justify-center gap-10 m-8 p-4">
+      <div className="flex flex-wrap justify-center gap-10 m-8 p-4 ">
 
         {cards.map((card, index) => (
           <div key={index} className="card max-w-xs md:max-w-xs lg:w-1/5 bg-base-100 shadow-xl">
