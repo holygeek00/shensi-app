@@ -108,7 +108,10 @@ export default function Register () {
       return
     }
     setSendingCode(true)
-    const queryParams = new URLSearchParams({ mobile: formData.phone_number })
+    const queryParams = new URLSearchParams({
+      mobile: formData.phone_number,
+      captcha: formData.captchaInput
+    })
     const url = `${backend}/users/send_verify_code?${queryParams}`
 
     try {
