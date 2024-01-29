@@ -67,8 +67,7 @@ export default function Login () {
       if (data.access_token) {
         localStorage.setItem('access_token', data.access_token)
         localStorage.setItem('token_type', data.token_type)
-        // router.push('./bind')
-        router.push('./write')
+        router.push('./bind')
       }
       if (response.ok) {
         // 登录成功，处理返回的数据，例如保存token
