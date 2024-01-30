@@ -240,18 +240,18 @@ export default function Register () {
                   value={formData.phone_number}
                   onChange={handleChange}
                 />
-                <button
+                {/* <button
                   type="button"
                   className="absolute top-0 right-0 rounded-l-none btn btn-primary"
                   onClick={getCaptcha}
                   disabled={countdown > 0}
                 >
                   获取图片验证码
-                </button>
+                </button> */}
 
               </div>
             </div>
-            <CaptchaLoadingModal />
+            {/* <CaptchaLoadingModal />
             <div className="form-control">
               <label className="label">
                 <span className="label-text">图片验证码</span>
@@ -297,7 +297,7 @@ export default function Register () {
                 value={formData.verification_code}
                 onChange={handleChange}
               />
-            </div>
+            </div> */}
             {/* Password field */}
             <div className="form-control">
               <label className="label">
