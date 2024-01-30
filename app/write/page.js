@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react"
 import Link from 'next/link'
 import Navbar from "../components/navbar"
 import Image from 'next/image'
-
+import NavbarIndex from "../components/navbarIndex"
 import { useRouter } from 'next/navigation'
 export default function ArticleMenu () {
 
@@ -315,8 +315,20 @@ export default function ArticleMenu () {
 
   return (
     <div className="bg-blue-200 ">
-      <Navbar title='深斯AI写作' ></Navbar>
-      <h1 className="text-5xl font-bold m-8 text-center mb-6">深斯 AI 写作</h1>
+      <Navbar title='深斯AI'></Navbar>
+
+      {/* <h1 className="text-5xl font-bold m-8 text-center mb-6">深斯 AI 写作</h1> */}
+      <div className="flex justify-center">
+        <div role="tablist" className="tabs tabs-boxed  ">
+          <a role="tab" className="tab tab-active">AI写作</a>
+          <Link href='./talk' legacyBehavior>
+            <a role="tab" className="tab ">AI对话</a>
+          </Link>
+
+
+        </div>
+      </div>
+
       <div className="flex flex-wrap justify-center gap-10 m-8 p-4 ">
 
         {cards.map((card, index) => (

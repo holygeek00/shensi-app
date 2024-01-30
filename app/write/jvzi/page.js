@@ -10,6 +10,7 @@ export default function SentenceExtender () {
   })
 
   const [extendedSentence, setExtendedSentence] = useState('')
+  const [isGenerating, setIsGenerating] = useState(false)
 
   const [key, setKey] = useState('')
   useEffect(() => {
@@ -45,6 +46,8 @@ export default function SentenceExtender () {
   }, [router])
 
   const checkAndPublish = useCallback(async () => {
+    setIsGenerating(true) // 开始生成时设置为 true
+
     const messageContent = `续写句子: "${formData.sentence}"...`
     setExtendedSentence('') // 清空现有内容
     const stream = await complete(messageContent) // 假设这返回一个流
@@ -53,11 +56,15 @@ export default function SentenceExtender () {
       newContent += chunk // 将每个块附加到新内容上
       setExtendedSentence(prevContent => prevContent + chunk) // 逐步更新续写后的句子状态
     }
+    setIsGenerating(false) // 生成完毕后设置为 false
+
     return newContent // 如果直接更新状态，这可能不是必要的
   }, [complete, formData.sentence])
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
+    if (isGenerating) return // 如果正在生成内容，则不执行任何操作
+
     await checkAndPublish()
   }
 
@@ -73,7 +80,8 @@ export default function SentenceExtender () {
               <textarea name="sentence" placeholder="请填写段落相关的关键词或关键句" className="textarea textarea-bordered w-full" value={formData.sentence} onChange={handleFormInputChange} />
             </div>
 
-            <button type="submit" className="btn w-full">生成内容</button>
+            <button type="submit" disabled={isGenerating}
+              className="btn w-full">生成内容</button>
           </form>
         </div>
         <div className="w-full mt-2 flex justify-center items-center">

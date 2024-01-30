@@ -11,6 +11,8 @@ export default function Chat () {
     relationship: '',
     festival: '',
   })
+  const [isGenerating, setIsGenerating] = useState(false)
+
   const [key, setKey] = useState('')
   useEffect(() => {
     // 在组件挂载后从 localStorage 中获取数据
@@ -34,6 +36,8 @@ export default function Chat () {
   const checkAndPublish = useCallback(async (messageContent) => {
     // Call to your AI service to generate a message
     // Replace with your actual API call
+    setIsGenerating(true) // 开始生成时设置为 true
+
     const stream = await complete(messageContent) // Assuming this returns a stream
     let newContent = ''
     const response = await fetch('/api/completion', {
@@ -43,6 +47,7 @@ export default function Chat () {
     })
     const data = await response.json()
     return data.text // Assuming the API returns a response with a 'text' field
+    setIsGenerating(false) // 生成完毕后设置为 false
   }, [complete])
 
   const handleFormInputChange = (e) => {
@@ -62,6 +67,8 @@ export default function Chat () {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
+    if (isGenerating) return // 如果正在生成内容，则不执行任何操作
+
     const messageContent = `生成祝福语: ${formData.sender} 致 ${formData.recipient} 的 ${formData.festival} 祝福`
     const completion = await checkAndPublish(messageContent)
     setMessages(prevMessages => [...prevMessages, { role: 'assistant', content: completion }])
@@ -110,7 +117,8 @@ export default function Chat () {
                 <option value="中秋">中秋</option>
               </select>
             </div>
-            <button type="submit" className="btn w-full">生成祝福</button>
+            <button type="submit" disabled={isGenerating}
+              className="btn w-full">生成祝福</button>
           </form>
         </div>
         <div className="w-full mt-2 flex justify-center items-center">

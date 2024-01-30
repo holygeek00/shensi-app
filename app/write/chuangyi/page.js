@@ -8,6 +8,7 @@ export default function CreativeStoryGenerator () {
   const [formData, setFormData] = useState({
     plotDescription: '张三和李四是生活在热带雨林的两位疯狂的科学家。一天，张三发现了一个神秘的发光物体，他们被吓坏了。', // 示例默认值
   })
+  const [isGenerating, setIsGenerating] = useState(false)
 
   const [storyContent, setStoryContent] = useState('')
   const [key, setKey] = useState('')
@@ -43,6 +44,7 @@ export default function CreativeStoryGenerator () {
   }, [router])
 
   const checkAndPublish = useCallback(async () => {
+    setIsGenerating(true) // 开始生成时设置为 true
     const messageContent = `生成创意故事: 剧情描述 "${formData.plotDescription}"...`
     setStoryContent('') // 清空现有内容
     const stream = await complete(messageContent) // 假设这返回一个流
@@ -51,11 +53,15 @@ export default function CreativeStoryGenerator () {
       newContent += chunk // 将每个块附加到新内容上
       setStoryContent(prevContent => prevContent + chunk) // 逐步更新创意故事内容
     }
+    setIsGenerating(false) // 生成完毕后设置为 false
+
     return newContent // 如果直接更新状态，这可能不是必要的
   }, [complete, formData.plotDescription])
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
+    if (isGenerating) return // 如果正在生成内容，则不执行任何操作
+
     await checkAndPublish()
   }
 
@@ -71,7 +77,7 @@ export default function CreativeStoryGenerator () {
               <textarea name="plotDescription" placeholder="如：张三和李四是生活在热带雨林的两位疯狂的科学家。一天，张三发现了一个神秘的发光物体，他们被吓坏了。" className="textarea textarea-bordered w-full h-64" value={formData.plotDescription} onChange={handleFormInputChange} />
             </div>
 
-            <button type="submit" className="btn w-full">生成内容</button>
+            <button type="submit" disabled={isGenerating} className="btn w-full">生成内容</button>
           </form>
         </div>
         <div className="w-full mt-2 flex justify-center items-center">

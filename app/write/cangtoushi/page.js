@@ -9,6 +9,7 @@ export default function AcrosticPoemGenerator () {
     inputText: '高考加油', // 示例默认值
     poemLength: '五言', // 示例默认值
   })
+  const [isGenerating, setIsGenerating] = useState(false)
 
   const [poemContent, setPoemContent] = useState('')
   const [key, setKey] = useState('')
@@ -45,6 +46,7 @@ export default function AcrosticPoemGenerator () {
   }, [router])
 
   const checkAndPublish = useCallback(async () => {
+    setIsGenerating(true) // 开始生成时设置为 true
     const messageContent = `生成藏头诗: 文字 "${formData.inputText}"，诗词字数 "${formData.poemLength}"...`
     setPoemContent('') // 清空现有内容
     const stream = await complete(messageContent) // 假设这返回一个流
@@ -53,11 +55,13 @@ export default function AcrosticPoemGenerator () {
       newContent += chunk // 将每个块附加到新内容上
       setPoemContent(prevContent => prevContent + chunk) // 逐步更新藏头诗内容
     }
+    setIsGenerating(false) // 生成完毕后设置为 false
     return newContent // 如果直接更新状态，这可能不是必要的
   }, [complete, formData.inputText, formData.poemLength])
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
+    if (isGenerating) return
     await checkAndPublish()
   }
 
@@ -80,7 +84,7 @@ export default function AcrosticPoemGenerator () {
               </select>
             </div>
 
-            <button type="submit" className="btn w-full">生成内容</button>
+            <button type="submit" disabled={isGenerating} className="btn w-full">生成内容</button>
           </form>
         </div>
         <div className="w-full mt-2 flex justify-center items-center">

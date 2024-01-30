@@ -6,6 +6,8 @@ import { useChat } from 'ai/react'
 import { useCompletion } from 'ai/react'
 import { useRouter } from 'next/navigation'
 export default function PoetryGenerator () {
+
+
   const [formData, setFormData] = useState({
     theme: '',
     style: '',
@@ -19,6 +21,8 @@ export default function PoetryGenerator () {
       setKey(storedKey)
     }
   }, [])
+
+  const [isGenerating, setIsGenerating] = useState(false)
 
 
 
@@ -46,19 +50,23 @@ export default function PoetryGenerator () {
   }, [router])
 
   const checkAndPublish = useCallback(async (c) => {
-    const stream = await complete(c) // Assuming this returns a stream
+    setIsGenerating(true) // 开始生成时设置为 true
+    const stream = await complete(c)
     let newContent = ''
     for await (const chunk of stream) {
-      newContent += chunk // Append each chunk to the newContent
-      setContent(prevContent => prevContent + chunk) // Update the content state progressively
+      newContent += chunk
+      setContent(prevContent => prevContent + chunk)
     }
-    return newContent // This may not be necessary if you're updating the state directly
+    setIsGenerating(false) // 生成完毕后设置为 false
+    return newContent
   }, [complete])
+
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
+    if (isGenerating) return // 如果正在生成内容，则不执行任何操作
     const messageContent = `以主题“${formData.theme}”和风格“${formData.style}”写一篇“${formData.length}”的小学生作文...`
-    setContent('') // Clear existing content
+    setContent('')
     await checkAndPublish(messageContent)
   }
 
@@ -89,7 +97,7 @@ export default function PoetryGenerator () {
               </select>
             </div>
 
-            <button type="submit" className="btn w-full">生成作文</button>
+            <button type="submit" className="btn w-full" disabled={isGenerating}>生成作文</button>
           </form>
         </div>
         <div className="w-full mt-2 flex justify-center items-center">
