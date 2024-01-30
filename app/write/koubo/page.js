@@ -8,6 +8,7 @@ export default function LiveBroadcastCopyGenerator () {
   const [formData, setFormData] = useState({
     keywords: '',
   })
+  const [isGenerating, setIsGenerating] = useState(false)
 
   const [generatedCopy, setGeneratedCopy] = useState('')
 
@@ -45,6 +46,8 @@ export default function LiveBroadcastCopyGenerator () {
   }, [router])
 
   const checkAndPublish = useCallback(async () => {
+    setIsGenerating(true) // 开始生成时设置为 true
+
     const messageContent = `生成口播稿: 关键词 "${formData.keywords}"...`
     setGeneratedCopy('') // 清空现有内容
     const stream = await complete(messageContent) // 假设这返回一个流
@@ -53,11 +56,15 @@ export default function LiveBroadcastCopyGenerator () {
       newContent += chunk // 将每个块附加到新内容上
       setGeneratedCopy(prevContent => prevContent + chunk) // 逐步更新生成的口播稿文案状态
     }
+    setIsGenerating(false) // 生成完毕后设置为 false
+
     return newContent // 如果直接更新状态，这可能不是必要的
   }, [complete, formData.keywords])
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
+    if (isGenerating) return // 如果正在生成内容，则不执行任何操作
+
     await checkAndPublish()
   }
 
@@ -73,7 +80,8 @@ export default function LiveBroadcastCopyGenerator () {
               <textarea name="keywords" placeholder="如：羊毛，羊驼绒，纯色，厚，宽松型，加长款西装领，长袖，2022年秋季，气质通勤，双排扣，通勤风" className="textarea textarea-bordered w-full" value={formData.keywords} onChange={handleFormInputChange} />
             </div>
 
-            <button type="submit" className="btn w-full">生成内容</button>
+            <button type="submit" disabled={isGenerating}
+              className="btn w-full">生成内容</button>
           </form>
         </div>
         <div className="w-full mt-2 flex justify-center items-center">

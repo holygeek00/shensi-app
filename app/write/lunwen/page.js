@@ -9,6 +9,7 @@ export default function AcademicPaperGenerator () {
     title: '',
     keywords: '',
   })
+  const [isGenerating, setIsGenerating] = useState(false)
 
   const [paperContent, setPaperContent] = useState('')
 
@@ -46,6 +47,8 @@ export default function AcademicPaperGenerator () {
   }, [router])
 
   const checkAndPublish = useCallback(async () => {
+    setIsGenerating(true) // 开始生成时设置为 true
+
     const messageContent = `
 生成长论文:
 标题: "${formData.title}"
@@ -67,11 +70,15 @@ export default function AcademicPaperGenerator () {
       newContent += chunk // Append each chunk to the newContent
       setPaperContent(prevContent => prevContent + chunk) // Update the paperContent state progressively
     }
+    setIsGenerating(false) // 生成完毕后设置为 false
+
     return newContent // This may not be necessary if you're updating the state directly
   }, [complete, formData.title, formData.keywords])
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
+    if (isGenerating) return // 如果正在生成内容，则不执行任何操作
+
     await checkAndPublish()
   }
 
@@ -91,7 +98,8 @@ export default function AcademicPaperGenerator () {
               <input type="text" name="keywords" placeholder="请输入关键词" className="input input-bordered w-full" value={formData.keywords} onChange={handleFormInputChange} />
             </div>
 
-            <button type="submit" className="btn w-full">生成论文</button>
+            <button type="submit" disabled={isGenerating}
+              className="btn w-full">生成论文</button>
           </form>
         </div>
         <div className="w-full mt-2 flex justify-center items-center">
