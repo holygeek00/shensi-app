@@ -15,8 +15,8 @@ export default function Register () {
     email: '',
     phone_number: '',
     password: '',
-    verification_code: '',
-    captchaInput: '', // 添加图片验证码字段
+    // verification_code: '',
+    // captchaInput: '', // 添加图片验证码字段
   })
   const [errors, setErrors] = useState({})
   const router = useRouter()
