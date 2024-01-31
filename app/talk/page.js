@@ -34,7 +34,7 @@ export default function Chat () {
                 <div className="chat-header">
                   {m.role === 'user' ? '用户: ' : 'AI: '}
                 </div>
-                <p className='chat-bubble'>{m.content}</p>
+                <p className='chat-bubble bg-orange-400'>{m.content}</p>
               </div>
             </div>
           ))}
