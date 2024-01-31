@@ -15,6 +15,19 @@ export default function RootLayout ({ children }) {
   ReactGA.initialize("G-0BKCT3XTPZ")
   return (
     <html lang="en">
+      <Head>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-0BKCT3XTPZ"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-0BKCT3XTPZ');
+              `,
+          }}
+        />
+      </Head>
       <body className={inter.className}>{children}
 
       </body>
