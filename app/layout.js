@@ -15,7 +15,7 @@ export default function RootLayout ({ children }) {
   ReactGA.initialize("G-0BKCT3XTPZ")
   return (
     <html lang="en">
-      <Head>
+      <head>
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-0BKCT3XTPZ"></script>
         <script
           dangerouslySetInnerHTML={{
@@ -27,7 +27,7 @@ export default function RootLayout ({ children }) {
               `,
           }}
         />
-      </Head>
+      </head>
       <body className={inter.className}>{children}
 
       </body>
