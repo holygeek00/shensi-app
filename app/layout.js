@@ -2,7 +2,7 @@
 import { Inter } from "next/font/google"
 import "./globals.css"
 import dynamic from 'next/dynamic'
-
+import ReactGA from "react-ga4"
 const inter = Inter({ subsets: ["latin"] })
 
 
@@ -12,6 +12,7 @@ export const metadata = {
 }
 
 export default function RootLayout ({ children }) {
+  ReactGA.initialize("G-0BKCT3XTPZ")
   return (
     <html lang="en">
       <body className={inter.className}>{children}

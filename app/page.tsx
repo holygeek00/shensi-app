@@ -1,5 +1,4 @@
 'use client'
-
 // pages/landing.js
 import MaxWidthWrapper from "./components/MaxWidthWrapper";
 import { buttonVariants } from "./components/ui/button";
