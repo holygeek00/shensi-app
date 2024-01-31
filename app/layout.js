@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic'
 import ReactGA from "react-ga4"
 const inter = Inter({ subsets: ["latin"] })
 
-
+ReactGA.initialize("G-0BKCT3XTPZ")
 export const metadata = {
   title: "深斯AI",
   description: "南昌深斯科技",
