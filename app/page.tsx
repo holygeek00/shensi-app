@@ -4,16 +4,18 @@
 import MaxWidthWrapper from "./components/MaxWidthWrapper";
 import { buttonVariants } from "./components/ui/button";
 import { Card, CardDescription, CardTitle } from "./components/ui/card";
-
+import ChatwootWidget from "./components/chatwoot"
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "./lib/utils";
 import Footer from "./components/Footer";
 import NavbarNew from "./components/NavbarNew";
+import Head from 'next/head';
 
 export default function Home() {
   return (
     <>
+
       <NavbarNew />
 
       {/* Hero */}
@@ -319,7 +321,7 @@ export default function Home() {
           </div>
         </div>
       </MaxWidthWrapper>
-
+      <ChatwootWidget></ChatwootWidget>
       <Footer />
     </>
   );

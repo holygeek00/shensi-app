@@ -34,21 +34,9 @@ const Navbar = () => {
             <span className="text-2xl font-semibold">Shensi</span>
           </Link>
           <div className="flex gap-1 sm:gap-4 items-center">
-            {!isUserSignedIn ? (
-              <MobileNav />
-            ) : (
-              <Link
-                className={buttonVariants({
-                  size: "sm",
-                  className: "sm:hidden mr-3",
-                })}
-                href="/dashboard"
-              >
-                Dashboard
-              </Link>
-            )}
 
-            <div className="hidden items-center space-x-4 sm:flex">
+
+            <div className=" items-center space-x-4 sm:flex">
               {!isUserSignedIn ? (
                 <>
                   {/* <Link
