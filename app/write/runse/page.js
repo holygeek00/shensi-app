@@ -5,6 +5,7 @@ import { useCompletion } from 'ai/react'
 import { useRouter } from 'next/navigation'
 
 export default function StyleEnhancementTool () {
+  const [isGenerating, setIsGenerating] = useState(false);
   const [formData, setFormData] = useState({
     keywordsOrSentence: '',
     style: '',
@@ -46,6 +47,8 @@ export default function StyleEnhancementTool () {
   }, [router])
 
   const checkAndPublish = useCallback(async () => {
+    setIsGenerating(true); // 开始生成时设置为 true
+
     const messageContent = `改进文章风格: 关键词或中心句 "${formData.keywordsOrSentence}"，应用风格 "${formData.style}"...`
     setEnhancedContent('') // Clear existing content
     const stream = await complete(messageContent) // Assuming this returns a stream
@@ -53,12 +56,14 @@ export default function StyleEnhancementTool () {
     for await (const chunk of stream) {
       newContent += chunk // Append each chunk to the newContent
       setEnhancedContent(prevContent => prevContent + chunk) // Update the enhancedContent state progressively
-    }
+    } 
+    setIsGenerating(false); // 生成完毕后设置为 false
     return newContent // This may not be necessary if you're updating the state directly
   }, [complete, formData.keywordsOrSentence, formData.style])
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
+    if (isGenerating) return; // 如果正在生成内容，则不执行任何操作
     await checkAndPublish()
   }
 
@@ -84,7 +89,7 @@ export default function StyleEnhancementTool () {
               </select>
             </div>
 
-            <button type="submit" className="btn w-full">生成内容</button>
+            <button type="submit" disabled={isGenerating} className="btn w-full">生成内容</button>
           </form>
         </div>
         <div className="w-full mt-2 flex justify-center items-center">

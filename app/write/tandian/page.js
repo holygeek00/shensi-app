@@ -4,13 +4,13 @@ import Navbar from '../../components/navbar'
 import { useCompletion } from 'ai/react'
 import { useRouter } from 'next/navigation'
 
-export default function FoodExplorationCopyGenerator () {
+export default function FoodExplorationCopyGenerator() {
   const [formData, setFormData] = useState({
     restaurantName: '川渝食府', // 示例默认值
     location: '杭州市西湖区西园二路', // 示例默认值
     signatureDishes: '麻婆豆腐、回锅肉', // 示例默认值
   })
-
+  const [isGenerating, setIsGenerating] = useState(false);
   const [explorationCopy, setExplorationCopy] = useState('')
 
   const [key, setKey] = useState('')
@@ -47,6 +47,8 @@ export default function FoodExplorationCopyGenerator () {
   }, [router])
 
   const checkAndPublish = useCallback(async () => {
+    setIsGenerating(true); // 开始生成时设置为 true
+
     const messageContent = `生成美食探店文案: 餐馆名称 "${formData.restaurantName}"，位置 "${formData.location}"，招牌菜 "${formData.signatureDishes}"...`
     setExplorationCopy('') // 清空现有内容
     const stream = await complete(messageContent) // 假设这返回一个流
@@ -55,11 +57,15 @@ export default function FoodExplorationCopyGenerator () {
       newContent += chunk // 将每个块附加到新内容上
       setExplorationCopy(prevContent => prevContent + chunk) // 逐步更新美食探店文案
     }
+    setIsGenerating(false); // 生成完毕后设置为 false
+
     return newContent // 如果直接更新状态，这可能不是必要的
   }, [complete, formData.restaurantName, formData.location, formData.signatureDishes])
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
+    if (isGenerating) return; // 如果正在生成内容，则不执行任何操作
+
     await checkAndPublish()
   }
 
@@ -83,7 +89,8 @@ export default function FoodExplorationCopyGenerator () {
               <input type="text" name="signatureDishes" placeholder="麻婆豆腐、回锅肉" className="input input-bordered w-full" value={formData.signatureDishes} onChange={handleFormInputChange} />
             </div>
 
-            <button type="submit" className="btn w-full">生成内容</button>
+            <button type="submit" disabled={isGenerating}
+              className="btn w-full">生成内容</button>
           </form>
         </div>
         <div className="w-full mt-2 flex justify-center items-center">

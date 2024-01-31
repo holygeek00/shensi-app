@@ -4,14 +4,14 @@ import Navbar from '../../components/navbar'
 import { useCompletion } from 'ai/react'
 import { useRouter } from 'next/navigation'
 
-export default function NewMediaQuestionGenerator () {
+export default function NewMediaQuestionGenerator() {
   const [formData, setFormData] = useState({
     topic: '',
     audience: '',
   })
 
   const [generatedQuestion, setGeneratedQuestion] = useState('')
-
+  const [isGenerating, setIsGenerating] = useState(false);
   const [key, setKey] = useState('')
   useEffect(() => {
     // 在组件挂载后从 localStorage 中获取数据
@@ -46,6 +46,8 @@ export default function NewMediaQuestionGenerator () {
   }, [router])
 
   const checkAndPublish = useCallback(async () => {
+    setIsGenerating(true); // 开始生成时设置为 true
+
     const messageContent = `生成新媒体问题: 话题 "${formData.topic}"，受众 "${formData.audience}"...`
     setGeneratedQuestion('') // 清空现有内容
     const stream = await complete(messageContent) // 假设这返回一个流
@@ -54,11 +56,15 @@ export default function NewMediaQuestionGenerator () {
       newContent += chunk // 将每个块附加到新内容上
       setGeneratedQuestion(prevContent => prevContent + chunk) // 逐步更新生成的问题状态
     }
+    setIsGenerating(false); // 生成完毕后设置为 false
+
     return newContent // 如果直接更新状态，这可能不是必要的
   }, [complete, formData.topic, formData.audience])
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
+    if (isGenerating) return; // 如果正在生成内容，则不执行任何操作
+
     await checkAndPublish()
   }
 
@@ -78,7 +84,8 @@ export default function NewMediaQuestionGenerator () {
               <input type="text" name="audience" placeholder="如：黄金投资者" className="input input-bordered w-full" value={formData.audience} onChange={handleFormInputChange} />
             </div>
 
-            <button type="submit" className="btn w-full">生成内容</button>
+            <button type="submit" disabled={isGenerating}
+              className="btn w-full">生成内容</button>
           </form>
         </div>
         <div className="w-full mt-2 flex justify-center items-center">

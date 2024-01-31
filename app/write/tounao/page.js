@@ -4,11 +4,11 @@ import Navbar from '../../components/navbar'
 import { useCompletion } from 'ai/react'
 import { useRouter } from 'next/navigation'
 
-export default function BrainstormingGenerator () {
+export default function BrainstormingGenerator() {
   const [formData, setFormData] = useState({
     topic: '',
   })
-
+  const [isGenerating, setIsGenerating] = useState(false);
   const [brainstormContent, setBrainstormContent] = useState('')
 
   const [key, setKey] = useState('')
@@ -45,6 +45,8 @@ export default function BrainstormingGenerator () {
   }, [router])
 
   const checkAndPublish = useCallback(async () => {
+    setIsGenerating(true); // 开始生成时设置为 true
+
     const messageContent = `生成头脑风暴案例: 主题/话题/问题 "${formData.topic}"...`
     setBrainstormContent('') // Clear existing content
     const stream = await complete(messageContent) // Assuming this returns a stream
@@ -53,11 +55,15 @@ export default function BrainstormingGenerator () {
       newContent += chunk // Append each chunk to the newContent
       setBrainstormContent(prevContent => prevContent + chunk) // Update the brainstormContent state progressively
     }
+    setIsGenerating(false); // 生成完毕后设置为 false
+
     return newContent // This may not be necessary if you're updating the state directly
   }, [complete, formData.topic])
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
+    if (isGenerating) return; // 如果正在生成内容，则不执行任何操作
+
     await checkAndPublish()
   }
 
@@ -73,7 +79,8 @@ export default function BrainstormingGenerator () {
               <input type="text" name="topic" placeholder="如：列出5种吃了不长胖的食物" className="input input-bordered w-full" value={formData.topic} onChange={handleFormInputChange} />
             </div>
 
-            <button type="submit" className="btn w-full">生成内容</button>
+            <button type="submit" disabled={isGenerating}
+              className="btn w-full">生成内容</button>
           </form>
         </div>
         <div className="w-full mt-2 flex justify-center items-center">

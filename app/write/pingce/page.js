@@ -11,7 +11,7 @@ export default function ExpertReviewerGenerator () {
   })
 
   const [reviewContent, setReviewContent] = useState('')
-
+  const [isGenerating, setIsGenerating] = useState(false);
   const [key, setKey] = useState('')
   useEffect(() => {
     // 在组件挂载后从 localStorage 中获取数据
@@ -46,6 +46,8 @@ export default function ExpertReviewerGenerator () {
   }, [router])
 
   const checkAndPublish = useCallback(async () => {
+
+    setIsGenerating(true); // 开始生成时设置为 true
     const messageContent = `生成买家测评: 产品名称 "${formData.productName}"，产品特点 "${formData.productFeatures}"...`
     setReviewContent('') // 清空现有内容
     const stream = await complete(messageContent) // 假设这返回一个流
@@ -54,11 +56,13 @@ export default function ExpertReviewerGenerator () {
       newContent += chunk // 将每个块附加到新内容上
       setReviewContent(prevContent => prevContent + chunk) // 逐步更新买家测评内容
     }
+    setIsGenerating(false); // 生成完毕后设置为 false
     return newContent // 如果直接更新状态，这可能不是必要的
   }, [complete, formData.productName, formData.productFeatures])
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
+    if (isGenerating) return; // 如果正在生成内容，则不执行任何操作
     await checkAndPublish()
   }
 
@@ -78,7 +82,7 @@ export default function ExpertReviewerGenerator () {
               <textarea name="productFeatures" placeholder="质地柔软 版型好" className="textarea textarea-bordered w-full" value={formData.productFeatures} onChange={handleFormInputChange} />
             </div>
 
-            <button type="submit" className="btn w-full">生成内容</button>
+            <button type="submit" disabled={isGenerating} className="btn w-full">生成内容</button>
           </form>
         </div>
         <div className="w-full mt-2 flex justify-center items-center">

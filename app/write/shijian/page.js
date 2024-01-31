@@ -8,7 +8,7 @@ export default function SocialPracticeReportGenerator () {
   const [formData, setFormData] = useState({
     practiceContent: '',
   })
-
+  const [isGenerating, setIsGenerating] = useState(false);
   const [reportContent, setReportContent] = useState('')
 
   const [key, setKey] = useState('')
@@ -45,7 +45,10 @@ export default function SocialPracticeReportGenerator () {
   }, [router])
 
   const checkAndPublish = useCallback(async () => {
+    setIsGenerating(true); // 开始生成时设置为 true
+
     const messageContent = `生成社会实践报告: 实践内容 "${formData.practiceContent}"...`
+    
     setReportContent('') // 清空现有内容
     const stream = await complete(messageContent) // 假设这返回一个流
     let newContent = ''
@@ -53,11 +56,13 @@ export default function SocialPracticeReportGenerator () {
       newContent += chunk // 将每个块附加到新内容上
       setReportContent(prevContent => prevContent + chunk) // 逐步更新社会实践报告内容
     }
+    setIsGenerating(false); // 生成完毕后设置为 false
     return newContent // 如果直接更新状态，这可能不是必要的
   }, [complete, formData.practiceContent])
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
+    if (isGenerating) return; // 如果正在生成内容，则不执行任何操作
     await checkAndPublish()
   }
 
@@ -73,7 +78,7 @@ export default function SocialPracticeReportGenerator () {
               <textarea name="practiceContent" placeholder="请描述你的实践内容" className="textarea textarea-bordered w-full h-64" value={formData.practiceContent} onChange={handleFormInputChange} />
             </div>
 
-            <button type="submit" className="btn w-full">生成内容</button>
+            <button type="submit" disabled={isGenerating} className="btn w-full">生成内容</button>
           </form>
         </div>
         <div className="w-full mt-2 flex justify-center items-center">

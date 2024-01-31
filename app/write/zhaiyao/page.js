@@ -4,11 +4,11 @@ import Navbar from '../../components/navbar'
 import { useCompletion } from 'ai/react'
 import { useRouter } from 'next/navigation'
 
-export default function ArticleSummaryGenerator () {
+export default function ArticleSummaryGenerator() {
   const [formData, setFormData] = useState({
     articleContent: '', // 用户填写的文章内容
   })
-
+  const [isGenerating, setIsGenerating] = useState(false);
   const [summaryContent, setSummaryContent] = useState('')
 
   const [key, setKey] = useState('')
@@ -43,6 +43,8 @@ export default function ArticleSummaryGenerator () {
   }, [router])
 
   const checkAndPublish = useCallback(async () => {
+    setIsGenerating(true); // 开始生成时设置为 true
+
     const messageContent = `生成文章摘要: 文章内容 "${formData.articleContent}"...`
     setSummaryContent('') // 清空现有内容
     const stream = await complete(messageContent) // 假设这返回一个流
@@ -51,11 +53,15 @@ export default function ArticleSummaryGenerator () {
       newContent += chunk // 将每个块附加到新内容上
       setSummaryContent(prevContent => prevContent + chunk) // 逐步更新文章摘要内容
     }
+    setIsGenerating(false); // 生成完毕后设置为 false
+
     return newContent // 如果直接更新状态，这可能不是必要的
   }, [complete, formData.articleContent])
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
+    if (isGenerating) return; // 如果正在生成内容，则不执行任何操作
+
     await checkAndPublish()
   }
 
@@ -71,7 +77,8 @@ export default function ArticleSummaryGenerator () {
               <textarea name="articleContent" placeholder="填写文章和核心描述内容" className="textarea textarea-bordered w-full h-64" value={formData.articleContent} onChange={handleFormInputChange} />
             </div>
 
-            <button type="submit" className="btn w-full">生成内容</button>
+            <button type="submit" disabled={isGenerating}
+              className="btn w-full">生成内容</button>
           </form>
         </div>
         <div className="w-full mt-2 flex justify-center items-center">

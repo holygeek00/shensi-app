@@ -4,12 +4,12 @@ import Navbar from '../../components/navbar'
 import { useCompletion } from 'ai/react'
 import { useRouter } from 'next/navigation'
 
-export default function LiteratureReviewGenerator () {
+export default function LiteratureReviewGenerator() {
   const [formData, setFormData] = useState({
     title: '',
     keywords: '',
   })
-
+  const [isGenerating, setIsGenerating] = useState(false);
   const [reviewContent, setReviewContent] = useState('')
 
   const [key, setKey] = useState('')
@@ -46,6 +46,8 @@ export default function LiteratureReviewGenerator () {
   }, [router])
 
   const checkAndPublish = useCallback(async () => {
+    setIsGenerating(true); // 开始生成时设置为 true
+
     const messageContent = `生成文献综述: 题目 "${formData.title}"，关键词 "${formData.keywords}"...`
     setReviewContent('') // Clear existing content
     const stream = await complete(messageContent) // Assuming this returns a stream
@@ -54,11 +56,15 @@ export default function LiteratureReviewGenerator () {
       newContent += chunk // Append each chunk to the newContent
       setReviewContent(prevContent => prevContent + chunk) // Update the reviewContent state progressively
     }
+    setIsGenerating(false); // 生成完毕后设置为 false
+
     return newContent // This may not be necessary if you're updating the state directly
   }, [complete, formData.title, formData.keywords])
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
+    if (isGenerating) return; // 如果正在生成内容，则不执行任何操作
+
     await checkAndPublish()
   }
 
@@ -78,7 +84,8 @@ export default function LiteratureReviewGenerator () {
               <input type="text" name="keywords" placeholder="如：跨栏跑；体育运动；运动史。" className="input input-bordered w-full" value={formData.keywords} onChange={handleFormInputChange} />
             </div>
 
-            <button type="submit" className="btn w-full">生成内容</button>
+            <button type="submit" disabled={isGenerating}
+              className="btn w-full">生成内容</button>
           </form>
         </div>
         <div className="w-full mt-2 flex justify-center items-center">

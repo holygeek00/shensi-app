@@ -4,7 +4,7 @@ import Navbar from '../../components/navbar'
 import { useCompletion } from 'ai/react'
 import { useRouter } from 'next/navigation'
 
-export default function ReportGenerator () {
+export default function ReportGenerator() {
   const [formData, setFormData] = useState({
     workContent: '',
     reportType: '日报', // 默认选项
@@ -13,7 +13,7 @@ export default function ReportGenerator () {
   })
 
   const [reportContent, setReportContent] = useState('')
-
+  const [isGenerating, setIsGenerating] = useState(false);
   const [key, setKey] = useState('')
   useEffect(() => {
     // 在组件挂载后从 localStorage 中获取数据
@@ -48,6 +48,8 @@ export default function ReportGenerator () {
   }, [router])
 
   const checkAndPublish = useCallback(async () => {
+    setIsGenerating(true); // 开始生成时设置为 true
+
     const messageContent = `生成${formData.reportType}: 工作内容 "${formData.workContent}"，职业 "${formData.profession}"，文章长度 "${formData.length}"...`
     setReportContent('') // 清空现有内容
     const stream = await complete(messageContent) // 假设这返回一个流
@@ -56,11 +58,15 @@ export default function ReportGenerator () {
       newContent += chunk // 将每个块附加到新内容上
       setReportContent(prevContent => prevContent + chunk) // 逐步更新报告内容状态
     }
+    setIsGenerating(false); // 生成完毕后设置为 false
+
     return newContent // 如果直接更新状态，这可能不是必要的
   }, [complete, formData.workContent, formData.reportType, formData.profession, formData.length])
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
+    if (isGenerating) return; // 如果正在生成内容，则不执行任何操作
+
     await checkAndPublish()
   }
 
@@ -96,7 +102,8 @@ export default function ReportGenerator () {
               </select>
             </div>
 
-            <button type="submit" className="btn w-full">生成内容</button>
+            <button type="submit" disabled={isGenerating}
+              className="btn w-full">生成内容</button>
           </form>
         </div>
         <div className="w-full mt-2 flex justify-center items-center">
