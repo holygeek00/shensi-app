@@ -4,7 +4,7 @@ import { useChat } from 'ai/react'
 import Navbar from '../components/navbar'
 import Link from 'next/link'
 import { useEffect, useRef } from 'react'
-
+import Markdown from 'react-markdown'
 
 export default function Chat () {
   const { messages, input, handleInputChange, handleSubmit } = useChat()
@@ -34,7 +34,11 @@ export default function Chat () {
                 <div className="chat-header">
                   {m.role === 'user' ? '用户: ' : 'AI: '}
                 </div>
-                <p className='chat-bubble bg-purple-400 text-black'>{m.content}</p>
+                <p className='chat-bubble bg-white text-black prose'>
+                  <Markdown>
+                    {m.content}
+                  </Markdown>
+                </p>
               </div>
             </div>
           ))}
