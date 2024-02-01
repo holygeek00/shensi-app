@@ -44,7 +44,7 @@ export default function Chat () {
       <div className="flex flex-col w-full min-h-screen mx-auto bg-blue-200">
         <div className="flex flex-col flex-grow overflow-auto pb-20">
           {messages.map(m => (
-            <div key={m.id} className="bg-blue-200 w-2/3 self-center m-5">
+            <div key={m.id} className="bg-blue-200 lg:w-2/3 sm:w-full self-center m-5">
               <div className={m.role === 'user' ? "chat chat-start" : "chat chat-end"}>
                 <div className="chat-header">
                   {m.role === 'user' ? '用户: ' : 'AI: '}
