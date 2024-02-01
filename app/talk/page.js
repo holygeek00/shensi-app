@@ -3,11 +3,26 @@
 import { useChat } from 'ai/react'
 import Navbar from '../components/navbar'
 import Link from 'next/link'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef,useState } from 'react'
 import Markdown from 'react-markdown'
 
 export default function Chat () {
-  const { messages, input, handleInputChange, handleSubmit } = useChat()
+  const [key, setKey] = useState('')
+  useEffect(() => {
+    // 在组件挂载后从 localStorage 中获取数据
+    const storedKey = localStorage.getItem('key')
+    if (storedKey) {
+      setKey(storedKey)
+    }
+  }, [])
+  const { messages, input, handleInputChange, handleSubmit } = useChat({
+    api: '/api/completion',
+    headers: {
+      'Authorization': key,
+      // 其他头部信息
+    },
+  })
+  
   const endOfMessagesRef = useRef(null)
 
   useEffect(() => {

@@ -73,6 +73,7 @@ export default function Login () {
         // 登录成功，处理返回的数据，例如保存token
         console.log('Login successful:', data)
       } else {
+        alert('登陆失败')
         // 登录失败，处理错误
         console.error('Login failed:', data)
       }
