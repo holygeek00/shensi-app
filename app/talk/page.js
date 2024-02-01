@@ -16,7 +16,7 @@ export default function Chat () {
     }
   }, [])
   const { messages, input, handleInputChange, handleSubmit } = useChat({
-    api: '/api/completion',
+    api: '/api/chat',
     headers: {
       'Authorization': key,
       // 其他头部信息
