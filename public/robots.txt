@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://ai.shensi.co
+
+# Sitemaps
+Sitemap: https://ai.shensi.co/sitemap.xml
