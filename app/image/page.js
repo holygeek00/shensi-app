@@ -114,18 +114,22 @@ export default function Chat () {
 
         </div>
 
-        <form onSubmit={handleFormSubmit} className="fixed 
-        self-center bottom-0 w-full px-4 md:max-w-md">
-          <div className="form-control">
+        <form onSubmit={handleFormSubmit} className="fixed self-center bottom-0 w-full px-4 pb-4 md:max-w-md   rounded-lg">
+          <div className="form-control flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
             <input
               type="text"
-              className="input input-bordered w-full"
+              className="input flex-grow input-bordered h-12 text-lg rounded-3xl px-4" // 使用flex-grow让输入框填满可用空间
               value={input}
-              placeholder="输入您想画的东西"
+              placeholder="输入您的问题"
               onChange={handleInputChange}
               required
             />
-            <button className="btn btn-primary mt-2 hover:bg-blue-400 w-full md:w-auto">发送</button>
+            <button
+              type="submit"
+              className="btn w-full md:w-auto h-12 rounded-3xl bg-blue-500 hover:bg-blue-600 text-white" // 将按钮和输入框并排放置
+            >
+              发 送
+            </button>
           </div>
         </form>
       </div>
