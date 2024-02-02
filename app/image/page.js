@@ -114,7 +114,7 @@ export default function Chat () {
                   <span className="loading loading-spinner w-10 h-10 flex items-center justify-center"></span>
                 </div>
               ) :
-                <div key={index} className="flex flex-col items-center space-y-2">
+                <div className="flex flex-col items-center space-y-2">
                   <div>
                     <div className="mx-auto flex max-w-6xl justify-center px-6 lg:px-8">
                       <div className="mt-8 flow-root sm:mt-16">
