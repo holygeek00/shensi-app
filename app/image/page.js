@@ -7,7 +7,7 @@ import Markdown from 'react-markdown'
 
 export default function Chat () {
 
-  const [imageUrls, setImageUrls] = useState([]) // New state variable
+
 
   const [key, setKey] = useState('')
   const [imageUrl, setImageUrl] = useState('')
@@ -44,7 +44,7 @@ export default function Chat () {
         body: JSON.stringify({ messages: input })
       })
       const data = await response.json()
-      setImageUrls(prevUrls => [...prevUrls, data.image_url]) // Add new image URL to the array
+      setImageUrl(data.image_url) // Add new image URL to the array
     } catch (error) {
       console.error('Error generating image:', error)
     } finally {
@@ -113,20 +113,20 @@ export default function Chat () {
                   {"稍等片刻即生成您想要的图片"}
                   <span className="loading loading-spinner w-10 h-10 flex items-center justify-center"></span>
                 </div>
-              ) : imageUrls.map((url, index) => (
+              ) :
                 <div key={index} className="flex flex-col items-center space-y-2">
                   <div>
                     <div className="mx-auto flex max-w-6xl justify-center px-6 lg:px-8">
                       <div className="mt-8 flow-root sm:mt-16">
                         <div className="-m-2 w-fit rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10  lg:-m-4 lg:rounded-2xl lg:p-4">
-                          <img src={url} alt={`Generated from AI ${index + 1}`} className="mx-auto" />
+                          <img src={imageUrl} alt={`Generated from AI ${index + 1}`} className="mx-auto" />
                         </div>
                       </div>
                     </div>
                   </div>
 
                 </div>
-              ))}
+              }
             </div>
 
           </div>
