@@ -80,32 +80,7 @@ export default function Chat () {
       <div className="flex flex-col w-full min-h-screen mx-auto bg-white">
         <div className="flex flex-col flex-grow overflow-auto pb-20">
           <div className="flex flex-col flex-grow overflow-auto pb-20">
-            {/* {lastMessage && (
-              <div key={lastMessage.id} className="bg-white w-2/3 self-center m-5">
-                <div className={lastMessage.role === 'user' ? "chat chat-start" : "chat chat-end"}>
-                  <div className="chat-header">
-                    {lastMessage.role === 'user' ? '用户: ' : 'AI: '}
-                  </div>
-                  <p className='chat-bubble bg-white text-black prose'>
-                    {lastMessage.role === 'user' ? lastMessage.content : (
-                      <>
-                        {isLoading ? (
-                          <div className="flex flex-col items-center space-y-2">
-                            {"稍等片刻即生成您想要的图片"}
-                            <span className="loading loading-spinner w-10 h-10 flex items-center justify-center"></span>
-                          </div>
-                        ) : imageUrls.map((url, index) => (
-                          <div key={index}>
-                            {'为您生成的图片'}
-                            <img src={url} alt={`Generated from AI ${index + 1}`} />
-                          </div>
-                        ))}
-                      </>
-                    )}
-                  </p>
-                </div>
-              </div>
-            )} */}
+
 
             <div className="flex flex-col items-center justify-center h-full">
               {isLoading ? (
@@ -118,13 +93,18 @@ export default function Chat () {
                   <div>
                     <div className="mx-auto flex max-w-6xl justify-center px-6 lg:px-8">
                       <div className="mt-8 flow-root sm:mt-16">
-                        <div className="-m-2 w-fit rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10  lg:-m-4 lg:rounded-2xl lg:p-4">
-                          <img src={imageUrl} alt={`Generated from AI `} className="mx-auto" />
-                        </div>
+                        {imageUrl ? (
+                          <div className="-m-2 w-fit rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10  lg:-m-4 lg:rounded-2xl lg:p-4">
+                            <img src={imageUrl} alt={`Generated from AI `} className="mx-auto" />
+                          </div>
+                        ) : (
+                          <div className="text-center text-gray-500">
+                            No image available
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
-
                 </div>
               }
             </div>
