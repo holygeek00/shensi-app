@@ -115,8 +115,8 @@ const UserDetailPage = () => {
           <div key={quota.user_id} className='card-body'>
             <h2 className='card-title'>用户额度详情 </h2>
 
-            <p><strong>已使用额度: {(quota.used_quota * 2) / 1000000}$</strong></p>
-            <p><strong>剩余额度: {(quota.remain_quota * 2) / 1000000}$</strong></p>
+            <p><strong>已使用额度: {(quota.used_quota * 2) / 100000}¥</strong></p>
+            <p><strong>剩余额度: {(quota.remain_quota * 2) / 100000}¥</strong></p>
             <p><strong>是否无限额度: {quota.unlimited_quota ? '是' : '否'}</strong></p>
             {/* 可以继续添加其他需要的信息 */}
           </div>
