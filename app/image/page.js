@@ -141,7 +141,7 @@ export default function Chat () {
               type="text"
               className="input input-bordered w-full"
               value={input}
-              placeholder="输入您的问题或评论..."
+              placeholder="输入您想画的东西"
               onChange={handleInputChange}
               required
             />
