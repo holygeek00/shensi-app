@@ -3,7 +3,7 @@
 import { useChat } from 'ai/react'
 import Navbar from '../components/navbar'
 import Link from 'next/link'
-import { useEffect, useRef,useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Markdown from 'react-markdown'
 
 export default function Chat () {
@@ -22,34 +22,38 @@ export default function Chat () {
       // 其他头部信息
     },
   })
-  
+
   const endOfMessagesRef = useRef(null)
 
   useEffect(() => {
     endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
   return (
-    <div className="bg-blue-200">
+    <div className="bg-white">
       <Navbar title='深斯AI'></Navbar>
       {/* <h1 className="text-5xl font-bold m-8 text-center mb-6">深斯 AI 对话</h1> */}
-      <div className="flex justify-center">
+      <div className="flex justify-center my-5">
         <div role="tablist" className="tabs tabs-boxed">
           <Link href='./write' legacyBehavior>
-            <a role="tab" className="tab hover:bg-blue-300">AI写作</a>
+            <a role="tab" className="tab hover:bg-blue-200">AI写作</a>
           </Link>
-          <a role="tab" className="tab tab-active bg-blue-300">AI对话</a>
+          <a role="tab" className="tab tab-active hover:bg-blue-200">AI对话</a>
+          <Link href='./image' legacyBehavior>
+            <a role="tab" className="tab hover:bg-blue-200">AI绘画</a>
+          </Link>
+
         </div>
       </div>
 
-      <div className="flex flex-col w-full min-h-screen mx-auto bg-blue-200">
+      <div className="flex flex-col w-full min-h-screen mx-auto bg-white">
         <div className="flex flex-col flex-grow overflow-auto pb-20">
           {messages.map(m => (
-            <div key={m.id} className="bg-blue-200 w-2/3 self-center m-5">
+            <div key={m.id} className="bg-white w-2/3 self-center m-5">
               <div className={m.role === 'user' ? "chat chat-start" : "chat chat-end"}>
                 <div className="chat-header">
                   {m.role === 'user' ? '用户: ' : 'AI: '}
                 </div>
-                <p className='chat-bubble bg-white text-black prose'>
+                <p className='chat-bubble bg-gray-100 text-black prose'>
                   <Markdown>
                     {m.content}
                   </Markdown>

@@ -5,10 +5,10 @@ import Navbar from "../components/navbar"
 import Image from 'next/image'
 import NavbarIndex from "../components/navbarIndex"
 import { useRouter } from 'next/navigation'
+import CategoryCardGroup from './components/CategoryCardGroup'
 export default function ArticleMenu () {
 
-  const cards = [
-    // 社交媒体类
+  const socialMediaCards = [
     {
       title: "AI新媒体回答生成器",
       text: "AI新媒体回答生成器，一键生成简明扼要、实用性强的新媒体干货式回答文案",
@@ -28,7 +28,9 @@ export default function ArticleMenu () {
       link: './write/biaoti'
     },
 
-    // 写作类
+  ]
+
+  const educationLiteratureCards = [
     {
       title: "小学生作文写作",
       text: "您只需要输入作文的标题和需要的字数就可以帮您生成一篇感情丰富，生动真实的作文。",
@@ -114,21 +116,10 @@ export default function ArticleMenu () {
       link: './write/duilian'
     },
 
-    // 教育/文学类
-    {
-      title: "AI社会实践报告生成器",
-      text: "帮助学生更高效、规范地撰写社会实践报告，提高报告的质量和可读性",
-      imageUrl: "/shsjbg.png",
-      link: './write/shijian'
-    },
-    {
-      title: "AI教学计划生成器",
-      text: "提高教学计划制定效率，减轻教师工作负担",
-      imageUrl: "/jxjh.png",
-      link: './write/jiaoxuejihua'
-    },
+    // ... 其他教育/文学类卡片
+  ]
 
-    // 工作类
+  const workCards = [
     {
       title: "AI日报周报生成器",
       text: "AI日报周报生成器，一键生成内容丰富的工作日报、周报",
@@ -148,7 +139,10 @@ export default function ArticleMenu () {
       link: './write/zhaiyao'
     },
 
-    // 短视频类
+    // ... 其他工作类卡片
+  ]
+
+  const shortVideoCards = [
     {
       title: "AI短视频脚本生成器",
       text: "帮助用户快速改进文章的语言表达风格和整体质量",
@@ -162,7 +156,10 @@ export default function ArticleMenu () {
       link: './write/biaoti'
     },
 
-    // 电商类
+    // ... 其他短视频类卡片
+  ]
+
+  const ecommerceCards = [
     {
       title: "AI广告语生成器",
       text: "借助AI广告语生成器，一键生成各类创意吸睛广告语",
@@ -212,7 +209,10 @@ export default function ArticleMenu () {
       link: './write/pingce'
     },
 
-    // 娱乐类
+    // ... 其他电商类卡片
+  ]
+
+  const entertainmentCards = [
     {
       title: "AI幽默回复",
       text: "AI幽默回复，根据对方的话语自动生成诙谐幽默的回复话术",
@@ -261,7 +261,15 @@ export default function ArticleMenu () {
       imageUrl: "/mstdwa.png",
       link: './write/tandian'
     },
+    // ... 其他娱乐类卡片
   ]
+
+  // 现在每个类别的卡片都在它们自己的数组中，可以分别处理
+  const [activeTab, setActiveTab] = useState('tab1')
+
+  const handleTabChange = (tabId) => {
+    setActiveTab(tabId)
+  }
 
   const router = useRouter()
   useEffect(() => {
@@ -314,25 +322,51 @@ export default function ArticleMenu () {
 
 
   return (
-    <div className="bg-blue-200 ">
+    <div className="bg-white ">
       <Navbar title='深斯AI'></Navbar>
 
       {/* <h1 className="text-5xl font-bold m-8 text-center mb-6">深斯 AI 写作</h1> */}
       <div className="flex justify-center">
-        <div role="tablist" className="tabs tabs-boxed  ">
-          <a role="tab" className="tab tab-active">AI写作</a>
+        <div role="tablist" className="tabs tabs-boxed my-5">
+          <a role="tab" className="tab tab-active hover:bg-blue-300">AI写作</a>
           <Link href='./talk' legacyBehavior>
-            <a role="tab" className="tab ">AI对话</a>
+            <a role="tab" className="tab hover:bg-blue-300">AI对话</a>
           </Link>
 
+          <Link href='./image' legacyBehavior>
+            <a role="tab" className="tab hover:bg-blue-300">AI绘画</a>
+          </Link>
 
         </div>
       </div>
 
-      <div className="flex flex-wrap justify-center gap-10 m-8 p-4 ">
 
-        {cards.map((card, index) => (
-          <div key={index} className="card max-w-xs md:max-w-xs lg:w-1/5 bg-base-100 shadow-xl">
+      <div role="tablist" className="tabs tabs-boxed text-center">
+        <a role="tab" className={`tab tabs-sm  ${activeTab === 'tab1' ? 'tab-active' : ''}`} onClick={() => handleTabChange('tab1')}>社媒</a>
+        <a role="tab" className={`tab tabs-sm  ${activeTab === 'tab2' ? 'tab-active' : ''}`} onClick={() => handleTabChange('tab2')}>写作</a>
+        <a role="tab" className={`tab tabs-sm  ${activeTab === 'tab3' ? 'tab-active' : ''}`} onClick={() => handleTabChange('tab3')}>工作</a>
+        <a role="tab" className={`tab tabs-sm  ${activeTab === 'tab4' ? 'tab-active' : ''}`} onClick={() => handleTabChange('tab4')}>视频</a>
+        <a role="tab" className={`tab tabs-sm  ${activeTab === 'tab5' ? 'tab-active' : ''}`} onClick={() => handleTabChange('tab5')}>电商</a>
+        <a role="tab" className={`tab tabs-sm  ${activeTab === 'tab6' ? 'tab-active' : ''}`} onClick={() => handleTabChange('tab6')}>娱乐</a>
+      </div>
+      {activeTab === 'tab1' && <CategoryCardGroup categoryTitle="社交媒体类" cards={socialMediaCards} />}
+      {activeTab === 'tab2' && <CategoryCardGroup categoryTitle="写作类" cards={educationLiteratureCards} />}
+      {activeTab === 'tab3' && <CategoryCardGroup categoryTitle="工作类" cards={workCards} />}
+      {activeTab === 'tab4' && <CategoryCardGroup categoryTitle="短视频类" cards={shortVideoCards} />}
+      {activeTab === 'tab5' && <CategoryCardGroup categoryTitle="社交媒体类" cards={ecommerceCards} />}
+      {activeTab === 'tab6' && <CategoryCardGroup categoryTitle="娱乐类" cards={entertainmentCards} />}
+
+
+      {/* <CategoryCardGroup categoryTitle="社交媒体类" cards={socialMediaCards} />
+      <CategoryCardGroup categoryTitle="写作类" cards={educationLiteratureCards} />
+      <CategoryCardGroup categoryTitle="社交媒体类" cards={workCards} />
+      <CategoryCardGroup categoryTitle="短视频类" cards={shortVideoCards} />
+      <CategoryCardGroup categoryTitle="社交媒体类" cards={ecommerceCards} />
+      <CategoryCardGroup categoryTitle="娱乐类" cards={entertainmentCards} /> */}
+      <div className="flex flex-wrap justify-center  gap-10 m-8 p-4 ">
+
+        {/* {cards.map((card, index) => (
+          <div key={index} className="card max-w-xs md:max-w-xs lg:w-1/5 bg-gradient-to-b from-base-200 to-base-400 shadow-xl">
             <figure className="px-10 pt-10">
               <Image src={card.imageUrl} alt="logo" className="rounded" width={60} height={60} />
             </figure>
@@ -347,9 +381,9 @@ export default function ArticleMenu () {
             </div>
           </div>
 
-        ))}
+        ))} */}
       </div>
-    </div>
+    </div >
 
 
   )
