@@ -342,8 +342,8 @@ export default function ArticleMenu () {
 
 
       <div role="tablist" className="tabs tabs-boxed text-center">
-        <a role="tab" className={`tab tabs-sm  ${activeTab === 'tab1' ? 'tab-active' : ''}`} onClick={() => handleTabChange('tab2')}>写作</a>
-        <a role="tab" className={`tab tabs-sm  ${activeTab === 'tab2' ? 'tab-active' : ''}`} onClick={() => handleTabChange('tab1')}>社媒</a>
+        <a role="tab" className={`tab tabs-sm  ${activeTab === 'tab1' ? 'tab-active' : ''}`} onClick={() => handleTabChange('tab1')}>写作</a>
+        <a role="tab" className={`tab tabs-sm  ${activeTab === 'tab2' ? 'tab-active' : ''}`} onClick={() => handleTabChange('tab2')}>社媒</a>
 
         <a role="tab" className={`tab tabs-sm  ${activeTab === 'tab3' ? 'tab-active' : ''}`} onClick={() => handleTabChange('tab3')}>工作</a>
         <a role="tab" className={`tab tabs-sm  ${activeTab === 'tab4' ? 'tab-active' : ''}`} onClick={() => handleTabChange('tab4')}>视频</a>
