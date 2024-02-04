@@ -342,15 +342,16 @@ export default function ArticleMenu () {
 
 
       <div role="tablist" className="tabs tabs-boxed text-center">
-        <a role="tab" className={`tab tabs-sm  ${activeTab === 'tab1' ? 'tab-active' : ''}`} onClick={() => handleTabChange('tab1')}>社媒</a>
-        <a role="tab" className={`tab tabs-sm  ${activeTab === 'tab2' ? 'tab-active' : ''}`} onClick={() => handleTabChange('tab2')}>写作</a>
+        <a role="tab" className={`tab tabs-sm  ${activeTab === 'tab1' ? 'tab-active' : ''}`} onClick={() => handleTabChange('tab2')}>写作</a>
+        <a role="tab" className={`tab tabs-sm  ${activeTab === 'tab2' ? 'tab-active' : ''}`} onClick={() => handleTabChange('tab1')}>社媒</a>
+
         <a role="tab" className={`tab tabs-sm  ${activeTab === 'tab3' ? 'tab-active' : ''}`} onClick={() => handleTabChange('tab3')}>工作</a>
         <a role="tab" className={`tab tabs-sm  ${activeTab === 'tab4' ? 'tab-active' : ''}`} onClick={() => handleTabChange('tab4')}>视频</a>
         <a role="tab" className={`tab tabs-sm  ${activeTab === 'tab5' ? 'tab-active' : ''}`} onClick={() => handleTabChange('tab5')}>电商</a>
         <a role="tab" className={`tab tabs-sm  ${activeTab === 'tab6' ? 'tab-active' : ''}`} onClick={() => handleTabChange('tab6')}>娱乐</a>
       </div>
-      {activeTab === 'tab1' && <CategoryCardGroup categoryTitle="社交媒体类" cards={socialMediaCards} />}
-      {activeTab === 'tab2' && <CategoryCardGroup categoryTitle="写作类" cards={educationLiteratureCards} />}
+      {activeTab === 'tab2' && <CategoryCardGroup categoryTitle="社交媒体类" cards={socialMediaCards} />}
+      {activeTab === 'tab1' && <CategoryCardGroup categoryTitle="写作类" cards={educationLiteratureCards} />}
       {activeTab === 'tab3' && <CategoryCardGroup categoryTitle="工作类" cards={workCards} />}
       {activeTab === 'tab4' && <CategoryCardGroup categoryTitle="短视频类" cards={shortVideoCards} />}
       {activeTab === 'tab5' && <CategoryCardGroup categoryTitle="社交媒体类" cards={ecommerceCards} />}
