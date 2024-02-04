@@ -48,7 +48,7 @@ export default function ProductRecommendationCopyGenerator () {
   const checkAndPublish = useCallback(async () => {
     setIsGenerating(true) // 开始生成时设置为 true
 
-    const messageContent = `生成种草文案: 品类 "${formData.category}"，产品名称 "${formData.productName}"，产品描述 "${formData.productDescription}"，文章长度 "${formData.contentLength}"...`
+    const messageContent = `生成种草文案: 品类 "${formData.category}"，产品名称 "${formData.productName}"，产品描述 "${formData.productDescription}"，文章长度 "${formData.contentLength}"The copy should be designed to "seed" interest in potential customers or clients. Focus on highlighting the product's features, benefits, and advantages in a compelling and enticing manner. Be creative, original, and persuasive, while keeping the copy clear, concise, and accurate. Ensure that the content excites the target audience, encourages them to learn more about the product, and ultimately leads them to make a purchase.`
     setRecommendationCopy('') // 清空现有内容
     const stream = await complete(messageContent) // 假设这返回一个流
     let newContent = ''

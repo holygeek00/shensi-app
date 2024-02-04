@@ -50,7 +50,7 @@ export default function ReportGenerator () {
   const checkAndPublish = useCallback(async () => {
     setIsGenerating(true) // 开始生成时设置为 true
 
-    const messageContent = `生成${formData.reportType}: 工作内容 "${formData.workContent}"，职业 "${formData.profession}"，文章长度 "${formData.length}"...`
+    const messageContent = `生成${formData.reportType}: 工作内容 "${formData.workContent}"，职业 "${formData.profession}"，文章长度 "${formData.length}"的日报，Your report should include insights into key activities, achievements, issues faced, and future plans. Aim to write in a structured manner with clear, direct information. Feel free to be creatively flexible—for instance, provide original solutions to problems or suggest ways to improve workflow efficiency. Ensure the content of the report is concise, clear, accurate, and relevant.`
     setReportContent('') // 清空现有内容
     const stream = await complete(messageContent) // 假设这返回一个流
     let newContent = ''
