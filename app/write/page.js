@@ -354,7 +354,7 @@ export default function ArticleMenu () {
       {activeTab === 'tab1' && <CategoryCardGroup categoryTitle="写作类" cards={educationLiteratureCards} />}
       {activeTab === 'tab3' && <CategoryCardGroup categoryTitle="工作类" cards={workCards} />}
       {activeTab === 'tab4' && <CategoryCardGroup categoryTitle="短视频类" cards={shortVideoCards} />}
-      {activeTab === 'tab5' && <CategoryCardGroup categoryTitle="社交媒体类" cards={ecommerceCards} />}
+      {activeTab === 'tab5' && <CategoryCardGroup categoryTitle="电商类" cards={ecommerceCards} />}
       {activeTab === 'tab6' && <CategoryCardGroup categoryTitle="娱乐类" cards={entertainmentCards} />}
 
 

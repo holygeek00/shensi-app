@@ -255,7 +255,7 @@ export default function Home() {
                   />
                 </Card>
                 <Card className="flex flex-col items-center justify-center gap-2 p-6 md:flex-1">
-                  <CardTitle>GPT 4</CardTitle>
+                  <CardTitle>超越 GPT 4 模型</CardTitle>
                   <CardDescription className="mb-3 text-center">
                     理解和生成
                   </CardDescription>
