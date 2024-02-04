@@ -3,15 +3,15 @@ import React, { useState, useCallback, useEffect } from 'react'
 import Navbar from '../../components/navbar'
 import { useCompletion } from 'ai/react'
 import { useRouter } from 'next/navigation'
-
-export default function ProductRecommendationCopyGenerator() {
+import Link from 'next/link'
+export default function ProductRecommendationCopyGenerator () {
   const [formData, setFormData] = useState({
     category: '通用', // 示例默认值
     productName: 'iPhone 13', // 示例默认值
     productDescription: '灵动岛功能，全天候显示，A16仿生芯片。', // 示例默认值
     contentLength: '中', // 示例默认值
   })
-  const [isGenerating, setIsGenerating] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false)
   const [recommendationCopy, setRecommendationCopy] = useState('')
   const [key, setKey] = useState('')
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function ProductRecommendationCopyGenerator() {
   }, [router])
 
   const checkAndPublish = useCallback(async () => {
-    setIsGenerating(true); // 开始生成时设置为 true
+    setIsGenerating(true) // 开始生成时设置为 true
 
     const messageContent = `生成种草文案: 品类 "${formData.category}"，产品名称 "${formData.productName}"，产品描述 "${formData.productDescription}"，文章长度 "${formData.contentLength}"...`
     setRecommendationCopy('') // 清空现有内容
@@ -56,14 +56,14 @@ export default function ProductRecommendationCopyGenerator() {
       newContent += chunk // 将每个块附加到新内容上
       setRecommendationCopy(prevContent => prevContent + chunk) // 逐步更新种草文案
     }
-    setIsGenerating(false); // 生成完毕后设置为 false
+    setIsGenerating(false) // 生成完毕后设置为 false
 
     return newContent // 如果直接更新状态，这可能不是必要的
   }, [complete, formData.category, formData.productName, formData.productDescription, formData.contentLength])
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
-    if (isGenerating) return; // 如果正在生成内容，则不执行任何操作
+    if (isGenerating) return // 如果正在生成内容，则不执行任何操作
 
     await checkAndPublish()
   }
@@ -71,7 +71,21 @@ export default function ProductRecommendationCopyGenerator() {
   return (
     <div>
       <Navbar title='Shensi-AI写作-AI种草文案生成器'></Navbar>
-      <div className="flex flex-col items-center justify-center min-h-screen bg-blue-100 p-4">
+      <div className="flex justify-center">
+        <div role="tablist" className="tabs tabs-boxed my-5">
+          <a role="tab" className="tab tab-active hover:bg-blue-300">AI写作</a>
+          <Link href='../talk' legacyBehavior>
+            <a role="tab" className="tab hover:bg-blue-300">AI对话</a>
+          </Link>
+
+          <Link href='../image' legacyBehavior>
+            <a role="tab" className="tab hover:bg-blue-300">AI绘画</a>
+          </Link>
+
+        </div>
+      </div>
+
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-base-200 to-base-400 p-4">
         <div className="w-full max-w-3xl bg-white rounded-lg shadow-xl p-6">
           <p className="mb-6 text-gray-500">AI种草文案生成器，一键生成文笔优美、内容丰富的种草文案</p>
           <form onSubmit={handleFormSubmit} className="space-y-4">

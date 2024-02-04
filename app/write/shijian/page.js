@@ -3,12 +3,12 @@ import React, { useState, useCallback, useEffect } from 'react'
 import Navbar from '../../components/navbar'
 import { useCompletion } from 'ai/react'
 import { useRouter } from 'next/navigation'
-
+import Link from 'next/link'
 export default function SocialPracticeReportGenerator () {
   const [formData, setFormData] = useState({
     practiceContent: '',
   })
-  const [isGenerating, setIsGenerating] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false)
   const [reportContent, setReportContent] = useState('')
 
   const [key, setKey] = useState('')
@@ -45,10 +45,10 @@ export default function SocialPracticeReportGenerator () {
   }, [router])
 
   const checkAndPublish = useCallback(async () => {
-    setIsGenerating(true); // 开始生成时设置为 true
+    setIsGenerating(true) // 开始生成时设置为 true
 
     const messageContent = `生成社会实践报告: 实践内容 "${formData.practiceContent}"...`
-    
+
     setReportContent('') // 清空现有内容
     const stream = await complete(messageContent) // 假设这返回一个流
     let newContent = ''
@@ -56,20 +56,33 @@ export default function SocialPracticeReportGenerator () {
       newContent += chunk // 将每个块附加到新内容上
       setReportContent(prevContent => prevContent + chunk) // 逐步更新社会实践报告内容
     }
-    setIsGenerating(false); // 生成完毕后设置为 false
+    setIsGenerating(false) // 生成完毕后设置为 false
     return newContent // 如果直接更新状态，这可能不是必要的
   }, [complete, formData.practiceContent])
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
-    if (isGenerating) return; // 如果正在生成内容，则不执行任何操作
+    if (isGenerating) return // 如果正在生成内容，则不执行任何操作
     await checkAndPublish()
   }
 
   return (
     <div>
       <Navbar title='Shensi-AI写作-AI社会实践报告生成器'></Navbar>
-      <div className="flex flex-col items-center justify-center min-h-screen bg-blue-100 p-4">
+      <div className="flex justify-center">
+        <div role="tablist" className="tabs tabs-boxed my-5">
+          <a role="tab" className="tab tab-active hover:bg-blue-300">AI写作</a>
+          <Link href='../talk' legacyBehavior>
+            <a role="tab" className="tab hover:bg-blue-300">AI对话</a>
+          </Link>
+
+          <Link href='../image' legacyBehavior>
+            <a role="tab" className="tab hover:bg-blue-300">AI绘画</a>
+          </Link>
+
+        </div>
+      </div>
+      <div className="flex flex-col items-center justify-center bg-gradient-to-b min-h-screen from-base-200 to-base-400 p-4">
         <div className="w-full max-w-3xl bg-white rounded-lg shadow-xl p-6">
           <p className="mb-6 text-gray-500">帮助学生更高效、规范地撰写社会实践报告，提高报告的质量和可读性</p>
           <form onSubmit={handleFormSubmit} className="space-y-4">

@@ -3,7 +3,7 @@ import React, { useState, useCallback, useEffect } from 'react'
 import Navbar from '../../components/navbar'
 import { useCompletion } from 'ai/react'
 import { useRouter } from 'next/navigation'
-
+import Link from 'next/link'
 export default function ProductSellingPointsGenerator () {
   const [formData, setFormData] = useState({
     productName: '',
@@ -72,7 +72,20 @@ export default function ProductSellingPointsGenerator () {
   return (
     <div>
       <Navbar title='Shensi-AI写作-AI产品卖点生成器'></Navbar>
-      <div className="flex flex-col items-center justify-center min-h-screen bg-blue-100 p-4">
+      <div className="flex justify-center">
+        <div role="tablist" className="tabs tabs-boxed my-5">
+          <a role="tab" className="tab tab-active hover:bg-blue-300">AI写作</a>
+          <Link href='../talk' legacyBehavior>
+            <a role="tab" className="tab hover:bg-blue-300">AI对话</a>
+          </Link>
+
+          <Link href='../image' legacyBehavior>
+            <a role="tab" className="tab hover:bg-blue-300">AI绘画</a>
+          </Link>
+
+        </div>
+      </div>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-base-200 to-base-400 p-4">
         <div className="w-full max-w-3xl bg-white rounded-lg shadow-xl p-6">
           <p className="mb-6 text-gray-500">AI产品卖点生成器，自动生成具有吸引力和卖点的产品描述</p>
           <form onSubmit={handleFormSubmit} className="space-y-4">

@@ -3,14 +3,14 @@ import React, { useState, useCallback, useEffect } from 'react'
 import Navbar from '../../components/navbar'
 import { useCompletion } from 'ai/react'
 import { useRouter } from 'next/navigation'
-
-export default function FoodExplorationCopyGenerator() {
+import Link from 'next/link'
+export default function FoodExplorationCopyGenerator () {
   const [formData, setFormData] = useState({
     restaurantName: '川渝食府', // 示例默认值
     location: '杭州市西湖区西园二路', // 示例默认值
     signatureDishes: '麻婆豆腐、回锅肉', // 示例默认值
   })
-  const [isGenerating, setIsGenerating] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false)
   const [explorationCopy, setExplorationCopy] = useState('')
 
   const [key, setKey] = useState('')
@@ -47,7 +47,7 @@ export default function FoodExplorationCopyGenerator() {
   }, [router])
 
   const checkAndPublish = useCallback(async () => {
-    setIsGenerating(true); // 开始生成时设置为 true
+    setIsGenerating(true) // 开始生成时设置为 true
 
     const messageContent = `生成美食探店文案: 餐馆名称 "${formData.restaurantName}"，位置 "${formData.location}"，招牌菜 "${formData.signatureDishes}"...`
     setExplorationCopy('') // 清空现有内容
@@ -57,14 +57,14 @@ export default function FoodExplorationCopyGenerator() {
       newContent += chunk // 将每个块附加到新内容上
       setExplorationCopy(prevContent => prevContent + chunk) // 逐步更新美食探店文案
     }
-    setIsGenerating(false); // 生成完毕后设置为 false
+    setIsGenerating(false) // 生成完毕后设置为 false
 
     return newContent // 如果直接更新状态，这可能不是必要的
   }, [complete, formData.restaurantName, formData.location, formData.signatureDishes])
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
-    if (isGenerating) return; // 如果正在生成内容，则不执行任何操作
+    if (isGenerating) return // 如果正在生成内容，则不执行任何操作
 
     await checkAndPublish()
   }
@@ -72,7 +72,20 @@ export default function FoodExplorationCopyGenerator() {
   return (
     <div>
       <Navbar title='Shensi-AI写作-AI美食探店文案生成器'></Navbar>
-      <div className="flex flex-col items-center justify-center min-h-screen bg-blue-100 p-4">
+      <div className="flex justify-center">
+        <div role="tablist" className="tabs tabs-boxed my-5">
+          <a role="tab" className="tab tab-active hover:bg-blue-300">AI写作</a>
+          <Link href='../talk' legacyBehavior>
+            <a role="tab" className="tab hover:bg-blue-300">AI对话</a>
+          </Link>
+
+          <Link href='../image' legacyBehavior>
+            <a role="tab" className="tab hover:bg-blue-300">AI绘画</a>
+          </Link>
+
+        </div>
+      </div>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-base-200 to-base-400 p-4">
         <div className="w-full max-w-3xl bg-white rounded-lg shadow-xl p-6">
           <p className="mb-6 text-gray-500">快速生成高质量的美食探店文章，提高店铺曝光率和知名度</p>
           <form onSubmit={handleFormSubmit} className="space-y-4">

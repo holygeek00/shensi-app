@@ -3,12 +3,12 @@ import React, { useState, useCallback, useEffect } from 'react'
 import Navbar from '../../components/navbar'
 import { useCompletion } from 'ai/react'
 import { useRouter } from 'next/navigation'
-
-export default function BrainstormingGenerator() {
+import Link from 'next/link'
+export default function BrainstormingGenerator () {
   const [formData, setFormData] = useState({
     topic: '',
   })
-  const [isGenerating, setIsGenerating] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false)
   const [brainstormContent, setBrainstormContent] = useState('')
 
   const [key, setKey] = useState('')
@@ -45,7 +45,7 @@ export default function BrainstormingGenerator() {
   }, [router])
 
   const checkAndPublish = useCallback(async () => {
-    setIsGenerating(true); // 开始生成时设置为 true
+    setIsGenerating(true) // 开始生成时设置为 true
 
     const messageContent = `生成头脑风暴案例: 主题/话题/问题 "${formData.topic}"...`
     setBrainstormContent('') // Clear existing content
@@ -55,14 +55,14 @@ export default function BrainstormingGenerator() {
       newContent += chunk // Append each chunk to the newContent
       setBrainstormContent(prevContent => prevContent + chunk) // Update the brainstormContent state progressively
     }
-    setIsGenerating(false); // 生成完毕后设置为 false
+    setIsGenerating(false) // 生成完毕后设置为 false
 
     return newContent // This may not be necessary if you're updating the state directly
   }, [complete, formData.topic])
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
-    if (isGenerating) return; // 如果正在生成内容，则不执行任何操作
+    if (isGenerating) return // 如果正在生成内容，则不执行任何操作
 
     await checkAndPublish()
   }
@@ -70,7 +70,20 @@ export default function BrainstormingGenerator() {
   return (
     <div>
       <Navbar title='Shensi-AI写作-头脑风暴生成器'></Navbar>
-      <div className="flex flex-col items-center justify-center min-h-screen bg-blue-100 p-4">
+      <div className="flex justify-center">
+        <div role="tablist" className="tabs tabs-boxed my-5">
+          <a role="tab" className="tab tab-active hover:bg-blue-300">AI写作</a>
+          <Link href='../talk' legacyBehavior>
+            <a role="tab" className="tab hover:bg-blue-300">AI对话</a>
+          </Link>
+
+          <Link href='../image' legacyBehavior>
+            <a role="tab" className="tab hover:bg-blue-300">AI绘画</a>
+          </Link>
+
+        </div>
+      </div>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-base-200 to-base-400 p-4">
         <div className="w-full max-w-3xl bg-white rounded-lg shadow-xl p-6">
           <p className="mb-6 text-gray-500">一键生成各种主题的头脑风暴案例</p>
           <form onSubmit={handleFormSubmit} className="space-y-4">

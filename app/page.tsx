@@ -41,7 +41,7 @@ export default function Home() {
             }),
             "text-lg",
           )}
-          href={"/register"}
+          href={"/login"}
         >
           开始使用
         </Link>

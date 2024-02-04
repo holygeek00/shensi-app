@@ -4,6 +4,7 @@ import { useChat } from 'ai/react'
 import Navbar from '../../components/navbar'
 import { useRouter } from 'next/navigation'
 import { useCompletion } from 'ai/react'
+import Link from 'next/link'
 export default function Chat () {
   const [formData, setFormData] = useState({
     sender: '',
@@ -83,7 +84,20 @@ export default function Chat () {
   return (
     <div>
       <Navbar title='Shensi-AI写作-祝福语生成器'></Navbar>
-      <div className="flex flex-col items-center justify-center min-h-screen bg-blue-100 p-4">
+      <div className="flex justify-center">
+        <div role="tablist" className="tabs tabs-boxed my-5">
+          <a role="tab" className="tab tab-active hover:bg-blue-300">AI写作</a>
+          <Link href='../talk' legacyBehavior>
+            <a role="tab" className="tab hover:bg-blue-300">AI对话</a>
+          </Link>
+
+          <Link href='../image' legacyBehavior>
+            <a role="tab" className="tab hover:bg-blue-300">AI绘画</a>
+          </Link>
+
+        </div>
+      </div>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-base-200 to-base-400 p-4">
         {/* Rest of the component */}
         <div className="w-full max-w-3xl bg-white rounded-lg shadow-xl p-6">
 

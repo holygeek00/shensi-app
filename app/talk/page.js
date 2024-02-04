@@ -7,6 +7,8 @@ import { useEffect, useRef, useState } from 'react'
 import Markdown from 'react-markdown'
 
 export default function Chat () {
+  const [isSending, setIsSending] = useState(false) // 新增状态来追踪消息是否正在发送
+
   const [key, setKey] = useState('')
   useEffect(() => {
     // 在组件挂载后从 localStorage 中获取数据
@@ -15,19 +17,30 @@ export default function Chat () {
       setKey(storedKey)
     }
   }, [])
-  const { messages, input, handleInputChange, handleSubmit } = useChat({
+  const { messages, input, handleInputChange, handleSubmit: handleChatSubmit, } = useChat({
     api: '/api/chat',
     headers: {
       'Authorization': key,
       // 其他头部信息
     },
+    onFinish: (message) => {
+      // 当消息发送完成且聊天流结束时，这里的代码会被执行
+      setIsSending(false)
+      // 你可以在这里更新UI或执行其他需要的逻辑
+    },
   })
 
   const endOfMessagesRef = useRef(null)
 
-  useEffect(() => {
-    endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages])
+  const handleSubmit = (e) => {
+    e.preventDefault() // 阻止表单默认提交行为
+    setIsSending(true) // 开始发送消息，设置 isSending 为 true
+    handleChatSubmit(e) // 调用 useChat 钩子提供的 handleSubmit 方法
+  }
+
+  // useEffect(() => {
+  //   endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth' })
+  // }, [messages])
   return (
     <div className="bg-white">
       <Navbar title='深斯AI'></Navbar>
@@ -47,20 +60,34 @@ export default function Chat () {
 
       <div className="flex flex-col w-full min-h-screen mx-auto bg-white">
         <div className="flex flex-col flex-grow overflow-auto pb-20">
-          {messages.map(m => (
-            <div key={m.id} className="bg-white w-2/3 self-center m-5">
-              <div className={m.role === 'user' ? "chat chat-start" : "chat chat-end"}>
-                <div className="chat-header">
-                  {m.role === 'user' ? '用户: ' : 'AI: '}
-                </div>
-                <p className='chat-bubble bg-gray-100 text-black prose'>
-                  <Markdown>
-                    {m.content}
-                  </Markdown>
+          {messages.length === 0 ? (
+            // 当messages为空时显示的AI初始对话
+            <div className="bg-white w-2/3 self-center m-5">
+              <div className="chat chat-start">
+                <div className="chat-header">AI: </div>
+                <p className='chat-bubble bg-gray-100 text-black'>
+                  您好！我是AI助手。有什么可以帮助您的吗？
                 </p>
               </div>
             </div>
-          ))}
+          ) : (
+            // 显示messages数组中的消息
+            messages.map(m => (
+              <div key={m.id} className="bg-white w-2/3 self-center m-5">
+                <div className={m.role === 'user' ? "chat chat-end" : "chat chat-start"}>
+                  <div className="chat-header">
+                    {m.role === 'user' ? '用户: ' : 'AI: '}
+                  </div>
+                  <p className='chat-bubble bg-gray-100 text-black'>
+                    <Markdown>
+                      {m.content}
+                    </Markdown>
+
+                  </p>
+                </div>
+              </div>
+            ))
+          )}
           <div ref={endOfMessagesRef} />
         </div>
 
@@ -76,9 +103,10 @@ export default function Chat () {
             />
             <button
               type="submit"
-              className="btn w-full md:w-auto h-12 rounded-3xl bg-blue-500 hover:bg-blue-600 text-white" // 将按钮和输入框并排放置
+              className="btn w-full md:w-auto h-12 rounded-3xl bg-blue-500 hover:bg-blue-600 text-white"
+              disabled={isSending} // 当消息正在发送时禁用按钮
             >
-              发 送
+              {isSending ? 'AI生成中...' : '发 送'} {/* 按钮文本根据发送状态变化 */}
             </button>
           </div>
         </form>

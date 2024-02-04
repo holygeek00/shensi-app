@@ -3,13 +3,13 @@ import React, { useState, useCallback, useEffect } from 'react'
 import Navbar from '../../components/navbar'
 import { useCompletion } from 'ai/react'
 import { useRouter } from 'next/navigation'
-
-export default function StyleEnhancer() {
+import Link from 'next/link'
+export default function StyleEnhancer () {
   const [formData, setFormData] = useState({
     keywords: '',
     style: '专业的', // 默认选项
   })
-  const [isGenerating, setIsGenerating] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false)
   const [enhancedContent, setEnhancedContent] = useState('')
 
   const [key, setKey] = useState('')
@@ -46,7 +46,7 @@ export default function StyleEnhancer() {
   }, [router])
 
   const checkAndPublish = useCallback(async () => {
-    setIsGenerating(true); // 开始生成时设置为 true
+    setIsGenerating(true) // 开始生成时设置为 true
 
     const messageContent = `润色文章: 关键词/中心句 "${formData.keywords}"，风格 "${formData.style}"...`
     setEnhancedContent('') // 清空现有内容
@@ -56,14 +56,14 @@ export default function StyleEnhancer() {
       newContent += chunk // 将每个块附加到新内容上
       setEnhancedContent(prevContent => prevContent + chunk) // 逐步更新润色后的内容状态
     }
-    setIsGenerating(false); // 生成完毕后设置为 false
+    setIsGenerating(false) // 生成完毕后设置为 false
 
     return newContent // 如果直接更新状态，这可能不是必要的
   }, [complete, formData.keywords, formData.style])
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
-    if (isGenerating) return; // 如果正在生成内容，则不执行任何操作
+    if (isGenerating) return // 如果正在生成内容，则不执行任何操作
 
     await checkAndPublish()
   }
@@ -71,7 +71,20 @@ export default function StyleEnhancer() {
   return (
     <div>
       <Navbar title='Shensi-AI写作-AI文章风格润色工具'></Navbar>
-      <div className="flex flex-col items-center justify-center min-h-screen bg-blue-100 p-4">
+      <div className="flex justify-center">
+        <div role="tablist" className="tabs tabs-boxed my-5">
+          <a role="tab" className="tab tab-active hover:bg-blue-300">AI写作</a>
+          <Link href='../talk' legacyBehavior>
+            <a role="tab" className="tab hover:bg-blue-300">AI对话</a>
+          </Link>
+
+          <Link href='../image' legacyBehavior>
+            <a role="tab" className="tab hover:bg-blue-300">AI绘画</a>
+          </Link>
+
+        </div>
+      </div>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-base-200 to-base-400 p-4">
         <div className="w-full max-w-3xl bg-white rounded-lg shadow-xl p-6">
           <p className="mb-6 text-gray-500">帮助用户快速改进文章的语言表达风格和整体质量</p>
           <form onSubmit={handleFormSubmit} className="space-y-4">

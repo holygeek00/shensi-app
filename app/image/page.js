@@ -99,7 +99,7 @@ export default function Chat () {
                           </div>
                         ) : (
                           <div className="text-center text-gray-500">
-                            No image available
+                            例如输入关键词：一只可爱的小猫
                           </div>
                         )}
                       </div>

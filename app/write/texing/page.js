@@ -3,13 +3,13 @@ import React, { useState, useCallback, useEffect } from 'react'
 import Navbar from '../../components/navbar'
 import { useCompletion } from 'ai/react'
 import { useRouter } from 'next/navigation'
-
-export default function ProductFeatureDescriptionGenerator() {
+import Link from 'next/link'
+export default function ProductFeatureDescriptionGenerator () {
   const [formData, setFormData] = useState({
     productName: '',
     productFeatures: '',
   })
-  const [isGenerating, setIsGenerating] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false)
   const [featureDescription, setFeatureDescription] = useState('')
 
   const [key, setKey] = useState('')
@@ -46,7 +46,7 @@ export default function ProductFeatureDescriptionGenerator() {
   }, [router])
 
   const checkAndPublish = useCallback(async () => {
-    setIsGenerating(true); // 开始生成时设置为 true
+    setIsGenerating(true) // 开始生成时设置为 true
 
     const messageContent = `产品特性描述: 产品名称 "${formData.productName}"，产品特点 "${formData.productFeatures}"...`
     setFeatureDescription('') // 清空现有内容
@@ -56,14 +56,14 @@ export default function ProductFeatureDescriptionGenerator() {
       newContent += chunk // 将每个块附加到新内容上
       setFeatureDescription(prevContent => prevContent + chunk) // 逐步更新产品特性的描述
     }
-    setIsGenerating(false); // 生成完毕后设置为 false
+    setIsGenerating(false) // 生成完毕后设置为 false
 
     return newContent // 如果直接更新状态，这可能不是必要的
   }, [complete, formData.productName, formData.productFeatures])
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
-    if (isGenerating) return; // 如果正在生成内容，则不执行任何操作
+    if (isGenerating) return // 如果正在生成内容，则不执行任何操作
 
     await checkAndPublish()
   }
@@ -71,7 +71,20 @@ export default function ProductFeatureDescriptionGenerator() {
   return (
     <div>
       <Navbar title='Shensi-AI写作-AI产品特性描述生成器'></Navbar>
-      <div className="flex flex-col items-center justify-center min-h-screen bg-blue-100 p-4">
+      <div className="flex justify-center">
+        <div role="tablist" className="tabs tabs-boxed my-5">
+          <a role="tab" className="tab tab-active hover:bg-blue-300">AI写作</a>
+          <Link href='../talk' legacyBehavior>
+            <a role="tab" className="tab hover:bg-blue-300">AI对话</a>
+          </Link>
+
+          <Link href='../image' legacyBehavior>
+            <a role="tab" className="tab hover:bg-blue-300">AI绘画</a>
+          </Link>
+
+        </div>
+      </div>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-base-200 to-base-400 p-4">
         <div className="w-full max-w-3xl bg-white rounded-lg shadow-xl p-6">
           <p className="mb-6 text-gray-500">AI产品特性描述生成器，自动识别产品的特性和功能，确定产品的核心要素和特点</p>
           <form onSubmit={handleFormSubmit} className="space-y-4">
