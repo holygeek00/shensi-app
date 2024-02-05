@@ -20,11 +20,11 @@ export default function Navbar ({ title }) {
               />            </div>
           </div>
           <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
-            <li>
+            {/* <li>
               <Link href="/bind" legacyBehavior>
                 <a>绑定key</a>
               </Link>
-            </li>
+            </li> */}
 
 
             <li>
@@ -32,7 +32,11 @@ export default function Navbar ({ title }) {
                 <a>用户设置</a>
               </Link>
             </li>
-
+            <li>
+              <Link href="/pay" legacyBehavior>
+                <a>充值额度</a>
+              </Link>
+            </li>
             {/* <li><a>Logout</a></li> */}
           </ul>
         </div>
