@@ -15,8 +15,8 @@ export default function Register () {
     email: '',
     phone_number: '',
     password: '',
-    // verification_code: '',
-    // captchaInput: '', // 添加图片验证码字段
+    verification_code: '',
+    captchaInput: '', // 添加图片验证码字段
   })
   const [errors, setErrors] = useState({})
   const router = useRouter()
@@ -156,12 +156,12 @@ export default function Register () {
       newErrors.email = '请输入有效的邮箱地址。'
     }
 
-    // Password complexity validation
-    // const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/
-    // if (!passwordRegex.test(formData.password)) {
-    //   isValid = false
-    //   newErrors.password = '密码至少包含8个字符，且必须包含数字、大小写字母。'
-    // }
+    Password complexity validation
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/
+    if (!passwordRegex.test(formData.password)) {
+      isValid = false
+      newErrors.password = '密码至少包含8个字符，且必须包含数字、大小写字母。'
+    }
 
     // Confirm password validation
     if (formData.password !== formData.confirmPassword) {
@@ -240,18 +240,18 @@ export default function Register () {
                   value={formData.phone_number}
                   onChange={handleChange}
                 />
-                {/* <button
+                <button
                   type="button"
                   className="absolute top-0 right-0 rounded-l-none btn btn-primary"
                   onClick={getCaptcha}
                   disabled={countdown > 0}
                 >
                   获取图片验证码
-                </button> */}
+                </button>
 
               </div>
             </div>
-            {/* <CaptchaLoadingModal />
+            <CaptchaLoadingModal />
             <div className="form-control">
               <label className="label">
                 <span className="label-text">图片验证码</span>
@@ -297,7 +297,7 @@ export default function Register () {
                 value={formData.verification_code}
                 onChange={handleChange}
               />
-            </div> */}
+            </div>
             {/* Password field */}
             <div className="form-control">
               <label className="label">
