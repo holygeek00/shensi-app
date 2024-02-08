@@ -156,7 +156,7 @@ export default function Register () {
       newErrors.email = '请输入有效的邮箱地址。'
     }
 
-    Password complexity validation
+    //Password complexity validation
     const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/
     if (!passwordRegex.test(formData.password)) {
       isValid = false
