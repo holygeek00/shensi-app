@@ -64,6 +64,8 @@ export default function SloganGenerator () {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
+    console.log("Form submission prevented.")
+
     if (isGenerating) return // 如果正在生成内容，则不执行任何操作
 
     await checkAndPublish()
