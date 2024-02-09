@@ -164,7 +164,7 @@ export default function ArticleMenu () {
       title: "AI广告语生成器",
       text: "借助AI广告语生成器，一键生成各类创意吸睛广告语",
       imageUrl: "/marketing.png",
-      link: './write/guanggao'
+      link: './write/guanggaogen'
     },
     {
       title: "AI产品亮点生成器",
