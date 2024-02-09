@@ -4,14 +4,14 @@ import Navbar from '../../components/navbar'
 import { useCompletion } from 'ai/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-export default function SloganGenerator () {
+export default function ProductHighlightGenerator () {
   const [formData, setFormData] = useState({
+    productFeatures: '',
     productName: '',
-    sloganLength: '中', // 默认选项
   })
   const [isGenerating, setIsGenerating] = useState(false)
 
-  const [generatedSlogan, setGeneratedSlogan] = useState('')
+  const [highlightDetails, setHighlightDetails] = useState('')
 
   const [key, setKey] = useState('')
   useEffect(() => {
@@ -49,23 +49,21 @@ export default function SloganGenerator () {
   const checkAndPublish = useCallback(async () => {
     setIsGenerating(true) // 开始生成时设置为 true
 
-    const messageContent = `生成广告语: 产品/品类/主题 "${formData.productName}"，文章长度 "${formData.sloganLength}"...`
-    //setGeneratedSlogan('') // 清空现有内容
+    const messageContent = `生成产品广告: 产品特点 "${formData.productFeatures}"，产品名称 "${formData.productName}"...`
+    setHighlightDetails('') // 清空现有内容
     const stream = await complete(messageContent) // 假设这返回一个流
     let newContent = ''
     for await (const chunk of stream) {
       newContent += chunk // 将每个块附加到新内容上
-      setGeneratedSlogan(prevContent => prevContent + chunk) // 逐步更新广告语状态
+      setHighlightDetails(prevContent => prevContent + chunk) // 逐步更新产品亮点和优势的内容
     }
     setIsGenerating(false) // 生成完毕后设置为 false
 
     return newContent // 如果直接更新状态，这可能不是必要的
-  }, [complete, formData.productName, formData.sloganLength])
+  }, [complete, formData.productFeatures, formData.productName])
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
-    console.log("Form submission prevented.")
-
     if (isGenerating) return // 如果正在生成内容，则不执行任何操作
 
     await checkAndPublish()
@@ -73,7 +71,7 @@ export default function SloganGenerator () {
 
   return (
     <div>
-      <Navbar title='Shensi-AI写作-AI广告语生成器'></Navbar>
+      <Navbar title='Shensi-AI写作-AI产品亮点生成器'></Navbar>
       <div className="flex justify-center">
         <div role="tablist" className="tabs tabs-boxed my-5">
           <a role="tab" className="tab tab-active hover:bg-blue-300">AI写作</a>
@@ -92,19 +90,15 @@ export default function SloganGenerator () {
           <p className="mb-6 text-gray-500">借助AI广告语生成器，一键生成各类创意吸睛广告语</p>
           <form onSubmit={handleFormSubmit} className="space-y-4">
             <div>
-              <label className="text-gray-700">请输入产品名称/品类/主题*</label>
-              <input type="text" name="productName" placeholder="如：iPhone 13, 保温杯，保护野生动物" className="input input-bordered w-full" value={formData.productName} onChange={handleFormInputChange} />
+              <label className="text-gray-700">产品特点*</label>
+              <textarea name="productFeatures" placeholder="输入想要描述的产品特点" className="textarea textarea-bordered w-full" value={formData.productFeatures} onChange={handleFormInputChange} />
             </div>
             <div>
-              <label className="text-gray-700">文章长度*</label>
-              <select name="sloganLength" className="select select-bordered w-full" value={formData.sloganLength} onChange={handleFormInputChange}>
-                <option value="短">短</option>
-                <option value="中">中</option>
-                <option value="长">长</option>
-              </select>
+              <label className="text-gray-700">产品名称*</label>
+              <input type="text" name="productName" placeholder="请输入提供的产品名称" className="input input-bordered w-full" value={formData.productName} onChange={handleFormInputChange} />
             </div>
 
-            <button onClick={handleFormSubmit} disabled={isGenerating}
+            <button type="submit" disabled={isGenerating}
               className="btn w-full">生成内容</button>
           </form>
         </div>
