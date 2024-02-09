@@ -104,7 +104,7 @@ export default function SloganGenerator () {
               </select>
             </div>
 
-            <button type="submit" disabled={isGenerating}
+            <button onClick={handleFormSubmit} disabled={isGenerating}
               className="btn w-full">生成内容</button>
           </form>
         </div>
