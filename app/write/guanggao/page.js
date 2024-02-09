@@ -71,7 +71,7 @@ export default function ProductHighlightGenerator () {
 
   return (
     <div>
-      <Navbar title='Shensi-AI写作-AI产品亮点生成器'></Navbar>
+      <Navbar title='Shensi-AI写作-AI产品广告生成器'></Navbar>
       <div className="flex justify-center">
         <div role="tablist" className="tabs tabs-boxed my-5">
           <a role="tab" className="tab tab-active hover:bg-blue-300">AI写作</a>
