@@ -148,7 +148,7 @@ export default function Login () {
           >
             {loginMethod === 'password' ? '验证码登录' : '密码登录'}
           </button>
-          <Link href="./register">
+          <Link href="./register" legacyBehavior>
             <a className="text-sm text-primary hover:underline">免费注册</a>
           </Link>
         </div>
