@@ -50,7 +50,7 @@ export default function SloganGenerator () {
     setIsGenerating(true) // 开始生成时设置为 true
 
     const messageContent = `生成广告语: 产品/品类/主题 "${formData.productName}"，文章长度 "${formData.sloganLength}"...`
-    setGeneratedSlogan('') // 清空现有内容
+    //setGeneratedSlogan('') // 清空现有内容
     const stream = await complete(messageContent) // 假设这返回一个流
     let newContent = ''
     for await (const chunk of stream) {
