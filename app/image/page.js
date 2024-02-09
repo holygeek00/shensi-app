@@ -4,7 +4,7 @@ import Navbar from '../components/navbar'
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import Markdown from 'react-markdown'
-
+import { useRouter } from 'next/navigation'
 export default function Chat () {
 
 
@@ -27,7 +27,13 @@ export default function Chat () {
   })
 
   const endOfMessagesRef = useRef(null)
-
+  const router = useRouter()
+  useEffect(() => {
+    const accessToken = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null
+    if (!accessToken) {
+      router.push('../login')
+    }
+  }, [router])
   useEffect(() => {
     endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])

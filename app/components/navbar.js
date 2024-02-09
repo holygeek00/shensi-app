@@ -1,7 +1,8 @@
 import Link from 'next/link'
 import Image from 'next/image'
-
+import useAuth from './auth' // 导入 useAuth 钩子
 export default function Navbar ({ title }) {
+  const { logout } = useAuth()
   return (
     <div className="navbar bg-base-100">
       <div className="flex-1">
@@ -35,6 +36,11 @@ export default function Navbar ({ title }) {
             <li>
               <Link href="/pay" legacyBehavior>
                 <a>充值额度</a>
+              </Link>
+            </li>
+            <li>
+              <Link href="/" legacyBehavior>
+                <a onClick={logout}>退出登录</a>
               </Link>
             </li>
             {/* <li><a>Logout</a></li> */}

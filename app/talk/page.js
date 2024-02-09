@@ -5,7 +5,7 @@ import Navbar from '../components/navbar'
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import Markdown from 'react-markdown'
-
+import { useRouter } from 'next/navigation'
 export default function Chat () {
   const [isSending, setIsSending] = useState(false) // 新增状态来追踪消息是否正在发送
 
@@ -37,7 +37,13 @@ export default function Chat () {
     setIsSending(true) // 开始发送消息，设置 isSending 为 true
     handleChatSubmit(e) // 调用 useChat 钩子提供的 handleSubmit 方法
   }
-
+  const router = useRouter()
+  useEffect(() => {
+    const accessToken = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null
+    if (!accessToken) {
+      router.push('../login')
+    }
+  }, [router])
   // useEffect(() => {
   //   endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth' })
   // }, [messages])

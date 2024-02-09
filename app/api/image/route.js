@@ -10,7 +10,7 @@ export async function POST (req, res) {
       baseURL: `${process.env.PROXY_URL}/v1`
     })
 
-    console.log('header: ' + authHeader)
+    //console.log('header: ' + authHeader)
     const { messages } = await req.json()
     const response = await openai.images.generate({
       model: "dall-e-3",
@@ -19,7 +19,7 @@ export async function POST (req, res) {
       size: "1024x1024",
     })
     const image_url = response.data[0].url
-    console.log(image_url)
+    //console.log(image_url)
 
     return Response.json({ image_url: image_url })
   } catch (error) {

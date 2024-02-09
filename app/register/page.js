@@ -128,7 +128,7 @@ export default function Register () {
       if (response.ok) {
         // 验证码发送成功，处理返回的数据
         alert('验证码发送成功')
-        console.log('Verification code sent:', data)
+        //console.log('Verification code sent:', data)
         // 可能需要在这里处理验证码发送状态的显示，例如启动倒计时等
       } else {
         // 验证码发送失败，处理错误

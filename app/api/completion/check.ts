@@ -20,7 +20,7 @@ export async function textCensorHandler(text) {
       return data.conclusion;
     } else {
       const message = data.data[0].msg;
-      console.log(message)
+      //console.log(message)
       return message;
     }
   } catch (error) {

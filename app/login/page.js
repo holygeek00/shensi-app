@@ -31,7 +31,7 @@ export default function Login () {
       if (response.ok) {
         // 验证码发送成功，处理返回的数据
         alert('验证码发送成功')
-        console.log('Verification code sent:', data)
+        //console.log('Verification code sent:', data)
         // 可能需要在这里处理验证码发送状态的显示，例如启动倒计时等
       } else {
         // 验证码发送失败，处理错误
@@ -71,7 +71,7 @@ export default function Login () {
       }
       if (response.ok) {
         // 登录成功，处理返回的数据，例如保存token
-        console.log('Login successful:', data)
+        //console.log('Login successful:', data)
       } else {
         alert('登陆失败')
         // 登录失败，处理错误

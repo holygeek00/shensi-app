@@ -27,7 +27,7 @@ const Pay = () => {
         const backend = process.env.NEXT_PUBLIC_BACK_END;
         const requestUrl = `${backend}/pay?${queryParams}`;
         const authHeader = `${tokenType} ${accessToken}`;
-        console.log(authHeader)
+       // console.log(authHeader)
        
             
 
@@ -40,7 +40,7 @@ const Pay = () => {
             })
                 .then(response => response.json()) // 解析响应为JSON
                 .then(responseData => {
-                    console.log(responseData);
+                    //console.log(responseData);
                     if (typeof window !== 'undefined' && responseData && responseData.url) {
                         window.location.href = responseData.url;
                     } else {
