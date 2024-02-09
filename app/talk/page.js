@@ -70,6 +70,11 @@ export default function Chat () {
             // 当messages为空时显示的AI初始对话
             <div className="bg-white w-2/3 self-center m-5">
               <div className="chat chat-start">
+                <div className="chat-image avatar">
+                  <div className="w-10 rounded-full">
+                    <img alt="Tailwind CSS chat bubble component" src="/avatar.svg" />
+                  </div>
+                </div>
                 <div className="chat-header">AI: </div>
                 <p className='chat-bubble bg-gray-100 text-black'>
                   您好！我是AI助手。有什么可以帮助您的吗？
@@ -83,7 +88,7 @@ export default function Chat () {
                 <div className={m.role === 'user' ? "chat chat-end" : "chat chat-start"}>
                   <div className="chat-image avatar">
                     <div className="w-10 rounded-full">
-                      <img alt="Tailwind CSS chat bubble component" src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+                      <img alt="Tailwind CSS chat bubble component" src="/avatar.svg" />
                     </div>
                   </div>
                   <div className="chat-header">
