@@ -25,7 +25,7 @@ const Pay = () => {
         }).toString()
 
         const backend = process.env.NEXT_PUBLIC_BACK_END
-        const requestUrl = `${backend}/alipay?${queryParams}`
+        const requestUrl = `${backend}/payment/alipay?${queryParams}`
         const authHeader = `${tokenType} ${accessToken}`
         // console.log(authHeader)
 
