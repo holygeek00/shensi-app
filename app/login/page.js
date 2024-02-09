@@ -91,11 +91,14 @@ export default function Login () {
         <p className="text-gray-600 mb-8">使用邮箱或者手机登录</p>
 
         <div className="mb-4">
-          <label className="block text-gray-700"
-
-          >账号</label>
-          <input type="email" placeholder="user@acme.com" className="input input-bordered w-full" value={account}
-            onChange={(e) => setAccount(e.target.value)} />
+          <label className="block text-gray-700">账号</label>
+          <input
+            type="email"
+            placeholder="user@acme.com"
+            className="input input-bordered w-full"
+            value={account}
+            onChange={(e) => setAccount(e.target.value)}
+          />
         </div>
         {loginMethod === 'password' ? (
           <form onSubmit={handleLogin}>
@@ -109,34 +112,32 @@ export default function Login () {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <button type="submit" className="btn btn-primary w-full mb-2">登录</button>
+            <button type="submit" className="btn btn-primary btn-block w-full mb-2">登录</button>
             <a href="#" className="text-sm text-primary block text-center">忘记密码?</a>
           </form>
         ) : (
           <form onSubmit={handleLogin}>
             <div className="mb-6">
               <label className="block text-gray-700">短信验证码</label>
-
-              <input
-                type="text"
-                placeholder="123456"
-                className="input input-bordered w-full"
-                value={verificationCode}
-                onChange={(e) => setVerificationCode(e.target.value)}
-
-              />
-
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="123456"
+                  className="input input-bordered w-full pr-20"
+                  value={verificationCode}
+                  onChange={(e) => setVerificationCode(e.target.value)}
+                />
+                <button
+                  type="button"
+                  className={`absolute right-0 top-0 rounded-l-none btn btn-primary ${sendingCode ? 'loading' : ''}`}
+                  onClick={sendVerificationCode}
+                  disabled={sendingCode}
+                >
+                  {sendingCode ? '' : '获取验证码'}
+                </button>
+              </div>
             </div>
-            <button
-              type="button"
-              className="btn btn-primary w-full mb-2"
-              onClick={sendVerificationCode}
-              disabled={sendingCode}
-            >
-              {sendingCode ? '发送中...' : '获取验证码'}
-            </button>
-            <button type="submit" className="btn btn-primary w-full mb-2">登录</button>
-
+            <button type="submit" className="btn btn-primary btn-block w-full mb-2">登录</button>
           </form>
         )}
 
@@ -148,11 +149,12 @@ export default function Login () {
             {loginMethod === 'password' ? '验证码登录' : '密码登录'}
           </button>
           <Link href="./register">
-            免费注册
+            <a className="text-sm text-primary hover:underline">免费注册</a>
           </Link>
         </div>
       </div>
     </div>
+
     // ... 省略其它代码 ...
   )
 }
