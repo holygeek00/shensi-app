@@ -1,16 +1,19 @@
 "use client"
-
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter} from 'next/navigation'
 export default function Login() {
   const router = useRouter();
+  const [countdown, setCountdown] = useState(0)
   const [loginMethod, setLoginMethod] = useState('password');
   const [account, setAccount] = useState('');
   const [password, setPassword] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
   const [sendingCode, setSendingCode] = useState(false);
   const [error, setError] = useState('');
+  const [captchaImage, setCaptchaImage] = useState('');
+  const [captchaInput, setCaptchaInput] = useState('');
+  const [showCaptchaLoading, setShowCaptchaLoading] = useState(false) // 弹窗状态
   const backend = process.env.NEXT_PUBLIC_BACK_END;
 
   const sendVerificationCode = async () => {
@@ -22,8 +25,11 @@ export default function Login() {
     setSendingCode(true);
     setError('');
 
-    const queryParams = new URLSearchParams({ mobile: account });
-    const url = `${backend}/users/send_verify_code?${queryParams}`;
+    const queryParams = new URLSearchParams({
+      mobile: account,
+      captcha_input: captchaInput
+    })   
+     const url = `${backend}/users/send_verify_code?${queryParams}`;
 
     try {
       const response = await fetch(url, {
@@ -48,7 +54,48 @@ export default function Login() {
 
     setSendingCode(false);
   };
+  // 修改 sendVerificationCode 函数
+  const getCaptcha = async () => {
+    setShowCaptchaLoading(true) // 显示加载弹窗
+    const url = `${backend}/captcha/${account}`
+    try {
+      const response = await fetch(url)
+      if (response.ok) {
+        response.blob().then(blob => {
+          const url = URL.createObjectURL(blob)
+          setCaptchaImage(url) // 设置验证码图片
+          setShowCaptchaLoading(false) // 关闭加载弹窗
+        })
+      } else {
+        console.error('Failed to fetch captcha:', data)
+        setShowCaptchaLoading(false) // 关闭加载弹窗
+      }
+    } catch (error) {
+      console.error('Error fetching captcha:', error)
+      setShowCaptchaLoading(false) // 关闭加载弹窗
+    }
+  }
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    switch (name) {
+      case 'phone_number':
+        setAccount(value);
+        break;
+      case 'password':
+        setPassword(value);
+        break;
+      case 'captchaInput':
+        setCaptchaInput(value);
+        break;
+      case 'verification_code':
+        setVerificationCode(value);
+        break;
+      default:
+        break;
+    }
+  };
+  
   const handleLogin = async (event) => {
     event.preventDefault();
     setError('');
@@ -95,6 +142,21 @@ export default function Login() {
       console.error('Error:', error);
     }
   };
+  useEffect(() => {
+    let timer
+    if (countdown > 0) {
+      timer = setTimeout(() => setCountdown(countdown - 1), 1000)
+    }
+    return () => clearTimeout(timer)
+  }, [countdown])
+  // 弹窗组件
+  const CaptchaLoadingModal = () => (
+    <div className={`modal ${showCaptchaLoading ? 'modal-open' : ''}`}>
+      <div className="modal-box">
+        <p>正在加载验证码...</p>
+      </div>
+    </div>
+  )
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -131,25 +193,77 @@ export default function Login() {
           </form>
         ) : (
           <form onSubmit={handleLogin}>
-            <div className="mb-6">
-              <label className="block text-gray-700">短信验证码</label>
+            
+              <div className="form-control">
+              <label className="label">
+                <span className="label-text">手机号码</span>
+              </label>
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="123456"
+                  name="phone_number"
+                  placeholder="11位手机号"
                   className="input input-bordered w-full pr-20"
-                  value={verificationCode}
-                  onChange={(e) => setVerificationCode(e.target.value)}
+                  value={account}
+                  onChange={handleChange}
                 />
                 <button
                   type="button"
-                  className={`absolute right-0 top-0 rounded-l-none btn btn-primary ${sendingCode ? 'loading' : ''}`}
-                  onClick={sendVerificationCode}
-                  disabled={sendingCode}
+                  className="absolute top-0 right-0 rounded-l-none btn btn-primary"
+                  onClick={getCaptcha}
+                  disabled={countdown > 0}
                 >
-                  {sendingCode ? '发送中...' : '获取验证码'}
+                  获取图片验证码
+                </button>
+
+              </div>
+            </div>
+            <CaptchaLoadingModal />
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">图片验证码</span>
+              </label>
+              <div className="relative">
+                <input
+                  type="text"
+                  name="captchaInput"
+                  placeholder="请输入图片中的验证码"
+                  className="input input-bordered"
+                  value={captchaInput}
+                  onChange={handleChange}
+                />
+
+                <button
+                  type="button"
+                  className="absolute top-0 right-0 rounded-l-none btn btn-primary"
+                  onClick={sendVerificationCode}
+                  disabled={countdown > 0}
+                >
+                  {countdown > 0 ? `重新获取 (${countdown}s)` : '获取短信验证码'}
                 </button>
               </div>
+            </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">验证码图片</span>
+              </label>
+              {captchaImage && <img src={captchaImage} alt="Captcha" className="w-32 h-8" />
+              }
+
+
+            </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">验证码</span>
+              </label>
+              <input
+                type="text" // 使用 type="text" 来接受验证码输入
+                name="verification_code"
+                placeholder="短信验证码"
+                className="input input-bordered"
+                value={verificationCode}
+                onChange={handleChange}
+              />
             </div>
             <button type="submit" className="btn btn-primary btn-block w-full mb-2">登录</button>
           </form>
