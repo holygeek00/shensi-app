@@ -15,8 +15,6 @@ export default function Register () {
     email: '',
     phone_number: '',
     password: '',
-    verification_code: '',
-    captchaInput: '', // 添加图片验证码字段
   })
   const [errors, setErrors] = useState({})
   const router = useRouter()
@@ -35,9 +33,13 @@ export default function Register () {
   }
   const backend = process.env.NEXT_PUBLIC_BACK_END
   const handleRegister = async () => {
+    const { verification_code } = formData; // Destructure verification_code from formData
 
     const { confirmPassword, ...dataToSubmit } = formData
-    const endpoint = backend + '/users/register' // 替换为您的API端点
+    const queryParams = new URLSearchParams({ verification_code }).toString(); // Create query params string
+
+    const endpoint = `${backend}/users/register?${queryParams}`; // Append query params to the endpoint
+
     try {
       const response = await fetch(endpoint, {
         method: 'POST',
