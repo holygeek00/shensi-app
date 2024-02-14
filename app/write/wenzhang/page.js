@@ -73,7 +73,9 @@ export default function StyleEnhancer () {
       <Navbar title='Shensi-AI写作-AI文章风格润色工具'></Navbar>
       <div className="flex justify-center">
         <div role="tablist" className="tabs tabs-boxed my-5">
-          <a role="tab" className="tab tab-active hover:bg-blue-300">AI写作</a>
+          <Link href='../write' legacyBehavior>
+            <a role="tab" className="tab hover:bg-blue-300">返回</a>
+          </Link>
           <Link href='../talk' legacyBehavior>
             <a role="tab" className="tab hover:bg-blue-300">AI对话</a>
           </Link>
