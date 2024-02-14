@@ -3,56 +3,73 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-export default function Login () {
-  const router = useRouter()
-  const [loginMethod, setLoginMethod] = useState('password')
-  const [account, setAccount] = useState('')
-  const [password, setPassword] = useState('')
-  const [verificationCode, setVerificationCode] = useState('')
-  const [sendingCode, setSendingCode] = useState(false)
-  const backend = process.env.NEXT_PUBLIC_BACK_END
+export default function Login() {
+  const router = useRouter();
+  const [loginMethod, setLoginMethod] = useState('password');
+  const [account, setAccount] = useState('');
+  const [password, setPassword] = useState('');
+  const [verificationCode, setVerificationCode] = useState('');
+  const [sendingCode, setSendingCode] = useState(false);
+  const [error, setError] = useState('');
+  const backend = process.env.NEXT_PUBLIC_BACK_END;
+
   const sendVerificationCode = async () => {
-    setSendingCode(true)
-    const queryParams = new URLSearchParams({ mobile: account })
-    const url = `${backend}/users/send_verify_code?${queryParams}`
+    if (!account) {
+      setError('请输入账号！');
+      return;
+    }
+
+    setSendingCode(true);
+    setError('');
+
+    const queryParams = new URLSearchParams({ mobile: account });
+    const url = `${backend}/users/send_verify_code?${queryParams}`;
 
     try {
       const response = await fetch(url, {
-        method: 'POST', // 使用POST方法
+        method: 'POST',
         headers: {
-
           'Content-Type': 'application/json'
         }
-        // 由于 '-d' 是空的，这里不需要设置body属性
-      })
+      });
 
-      const data = await response.json()
+      const data = await response.json();
 
-      if (response.ok) {
-        // 验证码发送成功，处理返回的数据
-        alert('验证码发送成功')
-        //console.log('Verification code sent:', data)
-        // 可能需要在这里处理验证码发送状态的显示，例如启动倒计时等
+      if (!response.ok) {
+        setError('验证码发送失败，请稍后重试。');
+        console.error('Failed to send verification code:', data);
       } else {
-        // 验证码发送失败，处理错误
-        console.error('Failed to send verification code:', data)
+        alert('验证码发送成功，请查看您的手机。');
       }
     } catch (error) {
-      // 网络或其他错误，处理异常
-      console.error('Error:', error)
+      setError('发送验证码时发生错误。');
+      console.error('Error:', error);
     }
 
-    setSendingCode(false)
-  }
+    setSendingCode(false);
+  };
+
   const handleLogin = async (event) => {
-    event.preventDefault() // 防止页面刷新
-    const backend = process.env.NEXT_PUBLIC_BACK_END
-    const endpoint = backend + '/users/login' // API端点
-    const payload = {
-      login: account,
-      password: password,
-      verification_code: verificationCode, // 确保你的后端能接受这个字段
+    event.preventDefault();
+    setError('');
+
+    if (!account) {
+      setError('请输入账号！');
+      return;
     }
+
+    if (loginMethod === 'password' && !password) {
+      setError('请输入密码！');
+      return;
+    }
+
+    if (loginMethod === 'sms' && !verificationCode) {
+      setError('请输入验证码！');
+      return;
+    }
+
+    const endpoint = `${backend}/users/login`;
+    const payload = loginMethod === 'password' ? { login: account, password } : { login: account, verification_code: verificationCode };
 
     try {
       const response = await fetch(endpoint, {
@@ -61,34 +78,31 @@ export default function Login () {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(payload)
-      })
+      });
 
-      const data = await response.json()
-      if (data.access_token) {
-        localStorage.setItem('access_token', data.access_token)
-        localStorage.setItem('token_type', data.token_type)
-        router.push('./write')
-      }
-      if (response.ok) {
-        // 登录成功，处理返回的数据，例如保存token
-        //console.log('Login successful:', data)
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError('登录失败，请检查您的输入或稍后重试。');
+        console.error('Login failed:', data);
       } else {
-        alert('登陆失败')
-        // 登录失败，处理错误
-        console.error('Login failed:', data)
+        localStorage.setItem('access_token', data.access_token);
+        localStorage.setItem('token_type', data.token_type);
+        router.push('./write');
       }
     } catch (error) {
-      // 网络或其他错误，处理异常
-      console.error('Error:', error)
+      setError('登录时发生错误。');
+      console.error('Error:', error);
     }
-  }
+  };
 
   return (
-    // ... 省略其它代码 ...
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="p-10 bg-white rounded-lg shadow-xl w-full max-w-sm">
         <h2 className="text-2xl font-bold mb-2 text-gray-800">登录</h2>
         <p className="text-gray-600 mb-8">使用邮箱或者手机登录</p>
+
+        {error && <p className="text-red-500 text-xs italic">{error}</p>}
 
         <div className="mb-4">
           <label className="block text-gray-700">账号</label>
@@ -100,6 +114,7 @@ export default function Login () {
             onChange={(e) => setAccount(e.target.value)}
           />
         </div>
+
         {loginMethod === 'password' ? (
           <form onSubmit={handleLogin}>
             <div className="mb-6">
@@ -113,7 +128,6 @@ export default function Login () {
               />
             </div>
             <button type="submit" className="btn btn-primary btn-block w-full mb-2">登录</button>
-            <a href="#" className="text-sm text-primary block text-center">忘记密码?</a>
           </form>
         ) : (
           <form onSubmit={handleLogin}>
@@ -133,7 +147,7 @@ export default function Login () {
                   onClick={sendVerificationCode}
                   disabled={sendingCode}
                 >
-                  {sendingCode ? '' : '获取验证码'}
+                  {sendingCode ? '发送中...' : '获取验证码'}
                 </button>
               </div>
             </div>
@@ -154,7 +168,5 @@ export default function Login () {
         </div>
       </div>
     </div>
-
-    // ... 省略其它代码 ...
-  )
+  );
 }

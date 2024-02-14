@@ -15,6 +15,7 @@ export default function Register () {
     email: '',
     phone_number: '',
     password: '',
+
   })
   const [errors, setErrors] = useState({})
   const router = useRouter()
