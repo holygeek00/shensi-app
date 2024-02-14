@@ -1,7 +1,7 @@
 "use client"
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { useRouter} from 'next/navigation'
+import { useRouter } from 'next/navigation'
 export default function Login() {
   const router = useRouter();
   const [countdown, setCountdown] = useState(0)
@@ -28,8 +28,8 @@ export default function Login() {
     const queryParams = new URLSearchParams({
       mobile: account,
       captcha_input: captchaInput
-    })   
-     const url = `${backend}/users/send_verify_code?${queryParams}`;
+    })
+    const url = `${backend}/users/send_verify_code?${queryParams}`;
 
     try {
       const response = await fetch(url, {
@@ -95,7 +95,7 @@ export default function Login() {
         break;
     }
   };
-  
+
   const handleLogin = async (event) => {
     event.preventDefault();
     setError('');
@@ -159,15 +159,17 @@ export default function Login() {
   )
 
   return (
+    // ... [previous imports and initial component setup]
+
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="p-10 bg-white rounded-lg shadow-xl w-full max-w-sm">
-        <h2 className="text-2xl font-bold mb-2 text-gray-800">登录</h2>
-        <p className="text-gray-600 mb-8">使用邮箱或者手机登录</p>
+      <div className="p-10 bg-white rounded-lg shadow-xl w-full max-w-md">
+        <h2 className="text-2xl font-bold mb-4 text-gray-800">登录</h2>
+        <p className="text-gray-600 mb-6">使用邮箱或者手机登录</p>
 
-        {error && <p className="text-red-500 text-xs italic">{error}</p>}
+        {error && <p className="text-red-500 text-sm mb-4 italic">{error}</p>}
 
-        <div className="mb-4">
-          <label className="block text-gray-700">账号</label>
+        <div className="mb-6">
+          <label className="block text-gray-700 text-sm mb-2">账号</label>
           <input
             type="email"
             placeholder="user@acme.com"
@@ -180,7 +182,7 @@ export default function Login() {
         {loginMethod === 'password' ? (
           <form onSubmit={handleLogin}>
             <div className="mb-6">
-              <label className="block text-gray-700">密码</label>
+              <label className="block text-gray-700 text-sm mb-2">密码</label>
               <input
                 type="password"
                 placeholder="********"
@@ -189,12 +191,11 @@ export default function Login() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <button type="submit" className="btn btn-primary btn-block w-full mb-2">登录</button>
+            <button type="submit" className="btn btn-primary btn-block w-full">登录</button>
           </form>
         ) : (
-          <form onSubmit={handleLogin}>
-            
-              <div className="form-control">
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div className="form-control">
               <label className="label">
                 <span className="label-text">手机号码</span>
               </label>
@@ -215,7 +216,6 @@ export default function Login() {
                 >
                   获取图片验证码
                 </button>
-
               </div>
             </div>
             <CaptchaLoadingModal />
@@ -232,7 +232,6 @@ export default function Login() {
                   value={captchaInput}
                   onChange={handleChange}
                 />
-
                 <button
                   type="button"
                   className="absolute top-0 right-0 rounded-l-none btn btn-primary"
@@ -247,17 +246,14 @@ export default function Login() {
               <label className="label">
                 <span className="label-text">验证码图片</span>
               </label>
-              {captchaImage && <img src={captchaImage} alt="Captcha" className="w-32 h-8" />
-              }
-
-
+              {captchaImage && <img src={captchaImage} alt="Captcha" className="w-full h-auto" />}
             </div>
             <div className="form-control">
               <label className="label">
                 <span className="label-text">验证码</span>
               </label>
               <input
-                type="text" // 使用 type="text" 来接受验证码输入
+                type="text"
                 name="verification_code"
                 placeholder="短信验证码"
                 className="input input-bordered"
@@ -265,7 +261,7 @@ export default function Login() {
                 onChange={handleChange}
               />
             </div>
-            <button type="submit" className="btn btn-primary btn-block w-full mb-2">登录</button>
+            <button type="submit" className="btn btn-primary btn-block w-full">登录</button>
           </form>
         )}
 
@@ -282,5 +278,8 @@ export default function Login() {
         </div>
       </div>
     </div>
+
+    // ... [rest of the component]
+
   );
 }
