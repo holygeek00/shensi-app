@@ -68,33 +68,33 @@ export default function Chat () {
         <div className="flex flex-col flex-grow overflow-auto pb-20">
           {messages.length === 0 ? (
             // 当messages为空时显示的AI初始对话
-            <div className="bg-white md:w-2/3 w-full self-center m-5">
+            <div className="bg-white md:w-2/3 w-full self-center m-2">
               <div className="chat chat-start">
                 {/* <div className="chat-image avatar">
                   <div className="w-10 rounded-full">
                     <img alt="Tailwind CSS chat bubble component" src="/avatar.svg" />
                   </div>
                 </div> */}
-                <div className="chat-header">AI: </div>
-                <p className='chat-bubble bg-gray-100 text-black'>
-                  您好！我是AI助手。有什么可以帮助您的吗？
+                <div className="chat-header text-lg font-bold">深斯AI: </div>
+                <p className='chat-bubble bg-white text-black'>
+                  您好！我是深斯AI助手。有什么可以帮助您的吗？
                 </p>
               </div>
             </div>
           ) : (
             // 显示messages数组中的消息
             messages.map(m => (
-              <div key={m.id} className="bg-white md:w-2/3 w-full  self-center m-5">
+              <div key={m.id} className="bg-white md:w-2/3 w-full  self-center m-2">
                 <div className={m.role === 'user' ? "chat chat-start" : "chat chat-start"}>
                   {/* <div className="chat-image avatar">
                     <div className="w-10 rounded-full">
                       <img alt="Tailwind CSS chat bubble component" src="/avatar.svg" />
                     </div>
                   </div> */}
-                  <div className="chat-header">
-                    {m.role === 'user' ? '用户: ' : 'AI: '}
+                  <div className="chat-header text-lg font-bold">
+                    {m.role === 'user' ? '用户: ' : '深斯AI: '}
                   </div>
-                  <p className='chat-bubble bg-gray-100 text-black'>
+                  <p className='chat-bubble bg-white text-black markdown' style={{ color: 'black' }}>
                     <Markdown>
                       {m.content}
                     </Markdown>
