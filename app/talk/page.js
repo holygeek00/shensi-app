@@ -76,7 +76,7 @@ export default function Chat () {
                   </div>
                 </div> */}
                 <div className="chat-header text-lg font-bold">深斯AI: </div>
-                <p className='chat-bubble bg-white text-black'>
+                <p className='chat-bubble bg-blue-100 text-black'>
                   您好！我是深斯AI助手。有什么可以帮助您的吗？
                 </p>
               </div>
@@ -94,7 +94,7 @@ export default function Chat () {
                   <div className="chat-header text-lg font-bold">
                     {m.role === 'user' ? '用户: ' : '深斯AI: '}
                   </div>
-                  <p className='chat-bubble bg-white text-black markdown' style={{ color: 'black' }}>
+                  <p className='chat-bubble bg-blue-100 text-black markdown' style={{ color: 'black' }}>
                     <Markdown>
                       {m.content}
                     </Markdown>
