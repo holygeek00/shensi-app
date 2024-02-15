@@ -4,7 +4,7 @@ import Navbar from '../../components/navbar'
 import { useCompletion } from 'ai/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-export default function CreativeStoryGenerator () {
+export default function CreativeStoryGenerator() {
   const [formData, setFormData] = useState({
     plotDescription: '张三和李四是生活在热带雨林的两位疯狂的科学家。一天，张三发现了一个神秘的发光物体，他们被吓坏了。', // 示例默认值
   })
@@ -70,7 +70,9 @@ export default function CreativeStoryGenerator () {
       <Navbar title='Shensi-AI写作-AI创意故事生成器'></Navbar>
       <div className="flex justify-center">
         <div role="tablist" className="tabs tabs-boxed my-5">
-          <a role="tab" className="tab tab-active hover:bg-blue-300">AI写作</a>
+          <Link href='../write' legacyBehavior>
+            <a role="tab" className="tab hover:bg-blue-300">返回</a>
+          </Link>
           <Link href='../talk' legacyBehavior>
             <a role="tab" className="tab hover:bg-blue-300">AI对话</a>
           </Link>

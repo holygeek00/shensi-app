@@ -71,7 +71,7 @@ export default function LiveSalesCopyGenerator () {
       <Navbar title='Shensi-AI写作-AI带货脚本文案生成器'></Navbar>
       <div className="flex justify-center">
         <div role="tablist" className="tabs tabs-boxed my-5">
-        <Link href='../write' legacyBehavior>
+          <Link href='../write' legacyBehavior>
             <a role="tab" className="tab hover:bg-blue-300">返回</a>
           </Link>
           <Link href='../talk' legacyBehavior>

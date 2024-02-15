@@ -4,7 +4,7 @@ import Navbar from '../../components/navbar'
 import { useCompletion } from 'ai/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-export default function AcrosticPoemGenerator () {
+export default function AcrosticPoemGenerator() {
   const [formData, setFormData] = useState({
     inputText: '高考加油', // 示例默认值
     poemLength: '五言', // 示例默认值
@@ -70,7 +70,7 @@ export default function AcrosticPoemGenerator () {
       <Navbar title='Shensi-AI写作-AI藏头诗生成器'></Navbar>
       <div className="flex justify-center">
         <div role="tablist" className="tabs tabs-boxed my-5">
-        <Link href='../write' legacyBehavior>
+          <Link href='../write' legacyBehavior>
             <a role="tab" className="tab hover:bg-blue-300">返回</a>
           </Link>
           <Link href='../talk' legacyBehavior>
