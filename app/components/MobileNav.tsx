@@ -7,8 +7,13 @@ import {
   SheetClose,
 } from "../components/ui/sheet";
 import { SideNav } from "../components/SideNav";
+import {useEffect} from "react";
 
 export const MobileNav = () => {
+    useEffect(_m => {
+
+    },)
+
   return (
     <Sheet>
       <SheetTrigger className="sm:hidden pr-4">

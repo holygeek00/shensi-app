@@ -53,7 +53,7 @@ const Navbar = () => {
                       variant: "ghost",
                       size: "sm",
                     })}
-                    href="/login"
+                    href="/write"
                   >
                     登录
                   </Link>

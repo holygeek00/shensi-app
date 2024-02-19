@@ -45,9 +45,9 @@ export default function PoetryGenerator () {
   const router = useRouter()
   useEffect(() => {
     const accessToken = localStorage.getItem('access_token')
-    if (!accessToken) {
-      router.push('../login')
-    }
+    // if (!accessToken) {
+    //   router.push('../login')
+    // }
   }, [router])
 
   const checkAndPublish = useCallback(async (c) => {

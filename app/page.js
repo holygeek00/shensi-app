@@ -41,7 +41,7 @@ export default function Home() {
             }),
             "text-lg",
           )}
-          href={"/login"}
+          href={"/write"}
         >
           开始使用
         </Link>
