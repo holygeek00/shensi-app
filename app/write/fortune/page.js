@@ -41,7 +41,7 @@ export default function Chat () {
 
     const stream = await complete(messageContent) // Assuming this returns a stream
     let newContent = ''
-    const response = await fetch('/api/completion', {
+    const response = await fetch(process.env.NEXT_PUBLIC_BACK_END + '/api/completion', {
       method: 'POST',
       body: JSON.stringify({ prompt: messageContent }),
       headers: { 'Content-Type': 'application/json' },

@@ -1,4 +1,3 @@
-// pages/user.js
 'use client'
 
 import Navbar from '../components/navbar'
@@ -14,12 +13,11 @@ const UserDetailPage = () => {
     function fetchUserData () {
       // 从localStorage获取access_token和token_type
       const accessToken = localStorage.getItem('access_token')
-      const tokenType = localStorage.getItem('token_type')
 
       // 检查确保我们有token
-      if (accessToken && tokenType) {
+      if (accessToken !== undefined && accessToken !== null &&  accessToken !== "accessToken"){
         // 设置请求的headers
-        const authHeader = `${tokenType} ${accessToken}`
+        const authHeader = `Bearer ${accessToken}`
         const backend = process.env.NEXT_PUBLIC_BACK_END
         // 发起请求
         fetch(backend + '/users/me', {
@@ -36,6 +34,7 @@ const UserDetailPage = () => {
             throw new Error('Network response was not ok.')
           })
           .then(userData => {
+            console.log(userData);
             setUser(userData) // 将获取的用户数据存储在状态变量中
           })
           .catch(error => {
@@ -55,10 +54,12 @@ const UserDetailPage = () => {
     const accessToken = localStorage.getItem('access_token')
     const tokenType = localStorage.getItem('token_type')
 
+    console.log(accessToken, tokenType);
+
     // 检查确保我们有token
-    if (accessToken && tokenType) {
+    if (accessToken !== undefined && accessToken !== null &&  accessToken !== "accessToken"){
       // 设置请求的headers
-      const authHeader = `${tokenType} ${accessToken}`
+      const authHeader = `Bearer ${accessToken}`
       const backend = process.env.NEXT_PUBLIC_BACK_END
       // 发起请求
       fetch(backend + '/user-tokens', {

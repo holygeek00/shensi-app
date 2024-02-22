@@ -262,6 +262,7 @@ export default function ArticleMenu() {
             imageUrl: "/mstdwa.png",
             link: './write/tandian'
         },
+
         // ... 其他娱乐类卡片
     ]
 
@@ -285,20 +286,19 @@ export default function ArticleMenu() {
     const router = useRouter()
     useEffect(() => {
         const accessToken = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
-        document.getElementById('my_modal_1').showModal();
 
-        // if (!accessToken) {
-        //   router.push('../login')
-        // } else {
-        //   fetchUserData(accessToken) // Call fetchUserData with accessToken
-        // }
+        if (accessToken === undefined ||  accessToken === null || accessToken ===  "undefined") {
+            document.getElementById('my_modal_1').showModal();
+        }
+
+        if(window.localStorage.getItem("key") === null ||window.localStorage.getItem("key") === undefined || window.localStorage.getItem("key") === "undefined"){
+            fetchUserData();
+        }
     }, [router]);
 
     const sendSmsCaptcha = () => {
         if (phone && agreement) {
-            console.log(phone);
-            console.log(smsCaptcha);
-            console.log(agreement);
+
             setSmsCaptchaDisabled(true);
             let count = 60;
             // 显示消息验证码倒计时
@@ -347,7 +347,9 @@ export default function ArticleMenu() {
             )
                 .then(response => response.json())
                 .then(data => {
-                    console.log('Success:', data);
+                    window.localStorage.setItem('access_token', data.token.access_token);
+                    document.getElementById('my_modal_1').close();
+                    fetchUserData();
                 })
                 .catch((error) => {
                     console.error('Error:', error);
@@ -357,16 +359,15 @@ export default function ArticleMenu() {
         }
     }
 
-    function fetchUserData() {
+    async function fetchUserData() {
 
         // 从localStorage获取access_token和token_type
         const accessToken = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null
 
-        const tokenType = typeof window !== 'undefined' ? localStorage.getItem('token_type') : null
         // 检查确保我们有token
-        if (accessToken && tokenType) {
+        if (accessToken !== undefined ||  accessToken !== null || accessToken !==  "undefined") {
             // 设置请求的headers
-            const authHeader = `${tokenType} ${accessToken}`
+            const authHeader = `Bearer ${accessToken}`
             const backend = process.env.NEXT_PUBLIC_BACK_END
             // 发起请求
             fetch(backend + '/users/me', {
@@ -378,13 +379,11 @@ export default function ArticleMenu() {
             })
                 .then(response => {
                     if (response.ok) {
-
                         return response.json() // 如果响应是JSON，这里将其解析
                     }
                     throw new Error('Network response was not ok.')
                 })
                 .then(userData => {
-
                     localStorage.setItem('key', userData.bound_keys)
                     // console.log(userData.bound_keys)
                 })
@@ -400,56 +399,16 @@ export default function ArticleMenu() {
     return (
         <div>
             <div className="z-20 w-1/3 h-1/3 absolute">
-                <div role="alert" className="w-screen alert z-20">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                         className="stroke-info shrink-0 w-6 h-6">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    <span>12 unread messages. Tap to see.</span>
-                </div>
+                {/*<div role="alert" className="w-screen alert z-20">*/}
+                {/*    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"*/}
+                {/*         className="stroke-info shrink-0 w-6 h-6">*/}
+                {/*        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"*/}
+                {/*              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>*/}
+                {/*    </svg>*/}
+                {/*    <span>12 unread messages. Tap to see.</span>*/}
+                {/*</div>*/}
                 <dialog id="my_modal_1" className="modal">
                     <div className="modal-box">
-                        {/*    <div className="flex flex-row ">*/}
-                        {/*        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"*/}
-                        {/*             className="w-6 h-6 opacity-70">*/}
-                        {/*            <path*/}
-                        {/*                d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z"/>*/}
-                        {/*        </svg>*/}
-                        {/*        <h3 className="font-bold text-lg ml-2">*/}
-                        {/*            用户登录*/}
-                        {/*        </h3>*/}
-                        {/*    </div>*/}
-                        {/*    <div className="mt-12 mb-3">*/}
-                        {/*        <div className="w-full flex flex-row justify-between">*/}
-                        {/*            <label*/}
-                        {/*                className="w-3/4 input input-bordered focus:ring-2 focus:ring-blue-500 flex justify-between items-center gap-2 mb-5">*/}
-                        {/*                /!*<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"*!/*/}
-                        {/*                /!*     className="w-4 h-4 opacity-70">*!/*/}
-                        {/*                /!*    <path*!/*/}
-                        {/*                /!*        d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z"/>*!/*/}
-                        {/*                /!*    <path*!/*/}
-                        {/*                /!*        d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z"/>*!/*/}
-                        {/*                /!*</svg>*!/*/}
-                        {/*                <input type="text" className="grow" placeholder="请输入手机号"/>*/}
-                        {/*            </label>*/}
-                        {/*            <button className="btn w-1/4 ml-2">发送验证码</button>*/}
-                        {/*        </div>*/}
-                        {/*        <label className="input input-bordered flex justify-between gap-2 mb-5 focus">*/}
-                        {/*            /!*<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"*!/*/}
-                        {/*            /!*     className="w-4 h-4 opacity-70">*!/*/}
-                        {/*            /!*    <path*!/*/}
-                        {/*            /!*        d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z"/>*!/*/}
-                        {/*            /!*</svg>*!/*/}
-                        {/*            <input type="text" className="grow" placeholder="请输入验证码"/>*/}
-                        {/*        </label>*/}
-                        {/*    </div>*/}
-                        {/*    <div className="modal-action">*/}
-                        {/*        <form method="dialog">*/}
-                        {/*            /!* if there is a button in form, it will close the modal *!/*/}
-                        {/*            <button className="btn">登录</button>*/}
-                        {/*        </form>*/}
-                        {/*    </div>*/}
 
                         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -545,7 +504,7 @@ export default function ArticleMenu() {
             </div>
             <div className="bg-white w-screen h-screen">
                 <Navbar title='深斯AI'></Navbar>
-                <h1 className="text-5xl font-bold m-8 text-center mb-6">深斯 AI 写作</h1>
+                {/*<h1 className="text-5xl font-bold m-8 text-center mb-6">深斯 AI 写作</h1>*/}
                 <div className="flex justify-center">
                     <div role="tablist" className="tabs tabs-boxed my-5">
                         <a role="tab" className="tab tab-active hover:bg-blue-300">AI写作</a>
