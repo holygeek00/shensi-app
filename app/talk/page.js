@@ -95,8 +95,6 @@ export default function Chat() {
 
     return (
         <div className="bg-white w-screen h-screen overflow-hidden">
-            {/*<Navbar title='深斯AI'></Navbar>*/}
-            {/* <h1 className="text-5xl font-bold m-8 text-center mb-6">深斯 AI 对话</h1> */}
             <div className="fixed left-1/2 transform -translate-x-1/2 z-20 my-5">
                 <div role="tablist" className="tabs tabs-boxed w-96">
                     <Link href='./write' legacyBehavior>
