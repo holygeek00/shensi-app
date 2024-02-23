@@ -108,10 +108,10 @@ export default function Chat() {
             </div>
 
             <div className="w-full h-screen flex flex-row mx-auto bg-white">
-                <div className="lg:w-[300px] h-screen bg-black rounded bg-transparent/20">
+                <div className="lg:w-[300px] h-screen bg-black rounded bg-transparent/200">
                     <div className="flex flex-col h-full">
                         <div className="w-full">
-                            <button className="btn btn-primary w-full rounded-b">新建对话</button>
+                            <div className="btn rounded-sm w-full">新建对话</div>
                         </div>
                         <div className="flex flex-col overflow-hidden p-2 pb-20 h-full">
                             <h3 className="bg-gray-200 p-2 rounded font-bold" onClick={handleHistoryChat}>
