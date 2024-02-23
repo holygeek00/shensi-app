@@ -5,6 +5,10 @@ import {log} from "node:util";
 
 export const runtime = 'edge'
 
+export  async function GET(req: Request) {
+     return new Response('页面测试成功');
+ }
+
 export async function POST(req: Request) {
   try {
     // Extract the `prompt` from the body of the request
