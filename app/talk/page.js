@@ -6,17 +6,49 @@ import Link from 'next/link'
 import {useEffect, useRef, useState} from 'react'
 import Markdown from 'react-markdown'
 import {useRouter} from 'next/navigation'
+import remarkGfm from 'remark-gfm'
+import rehypeHighlight from 'rehype-highlight'
 
 export default function Chat() {
     const [isSending, setIsSending] = useState(false) // 新增状态来追踪消息是否正在发送
-    const [chatList, setChatList] = useState([])
+    const [chatList, setChatList] = useState(undefined)
     const [key, setKey] = useState('')
+    let statusId = "12345";
+    let shensi_ai_chat = {
+        state: {
+            chats: [{
+                id: "12345",
+                title: "New Chat 1",
+                messages: [{
+                    role: "assistant",
+                    content: "You are ChatGPT, a large language model trained by OpenAI.\\nCarefully heed the user's instructions. \\nRespond using Markdown."
+                }],
+                config: {
+                    model: "gpt-3.5-turbo",
+                    max_tokens: 4000,
+                    temperature: 1,
+                    presence_penalty: 0,
+                    top_p: 1,
+                    frequency_penalty: 0
+                },
+                titleSet: false
+            }]
+        },
+        version: 1
+    }
+
     useEffect(() => {
         // 在组件挂载后从 localStorage 中获取数据
         const storedKey = localStorage.getItem('key')
         if (storedKey) {
             setKey(storedKey)
         }
+
+        let chatList = JSON.parse(window.localStorage.getItem("chatList"))
+
+        if (chatList !== null ) shensi_ai_chat = chatList;
+        setChatList(shensi_ai_chat)
+
     }, [])
 
     const {messages, input, handleInputChange, handleSubmit, setMessages} = useChat({
@@ -28,24 +60,42 @@ export default function Chat() {
         },
         onFinish: (response) => {
             // 在每次有新的消息时，将它们存储到 localStorage 中
-            let message = window.localStorage.getItem("messages");
-            console.log(message)
-            if (message === null) {
-                window.localStorage.setItem('messages', JSON.stringify([{
+            let list = JSON.parse(window.localStorage.getItem("chatList"));
+            console.log(list)
+            if (list === null) {
+
+                // let item = shensi_ai_chat.state.chats.find(item => item.id === statusId)
+
+                console.log(shensi_ai_chat)
+                //拿到数组最后一个元素
+
+                let item = shensi_ai_chat.state.chats.at(-1)
+
+                item.messages.push({
                     role: 'user',
                     content: input
-                }, {
+                })
+
+                item.messages.push({
                     role: 'assistant',
                     content: response.content
-                }]))
+                })
+
+                console.log(shensi_ai_chat)
+
+                window.localStorage.setItem('chatList', JSON.stringify(shensi_ai_chat))
             } else {
-                window.localStorage.setItem('messages', JSON.stringify([...JSON.parse(message), {
+                let item = list.state.chats.find(item => item.id === statusId)
+                item.messages.push({
                     role: 'user',
                     content: input
-                }, {
+                })
+
+                item.messages.push({
                     role: 'assistant',
                     content: response.content
-                }]))
+                })
+                window.localStorage.setItem('chatList', JSON.stringify(list))
             }
         },
         onResponse:
@@ -72,25 +122,36 @@ export default function Chat() {
     }, [router])
 
 
-    useEffect(() => {
-
-        setChatList(JSON.parse(window.localStorage.getItem('messages')))
-
-        const userInput = document.getElementById("userInput");
-
-        userInput.addEventListener('keypress', function (event) {
-            if (event.key === 'Enter') {
-                // 当按下回车键时执行的操作
-                console.log('Enter key pressed', userInput.value)
-                console.log(messages, input)
-                // handleSubmit(event);
-            }
-        });
-    }, []);
-
-
     const handleHistoryChat = (index) => {
-        setMessages(chatList)
+        console.log(index)
+        let list = JSON.parse(window.localStorage.getItem('chatList'));
+        console.log((list.state.chats[0].messages));
+        setMessages(list.state.chats[0].messages)
+    }
+
+    const createChat = () => {
+        let list = JSON.parse(window.localStorage.getItem('chatList'))
+        if(list !== null ){
+            list.state.chats.push(
+                {
+                    id: 'id_' + Math.random().toString(36).substr(2, 9),
+                    title: "New Chat 1",
+                    messages: [{
+                        role: "assistant",
+                        content: "You are ChatGPT, a large language model trained by OpenAI.\\nCarefully heed the user's instructions. \\nRespond using Markdown."
+                    }]
+                }
+            )
+            window.localStorage.setItem('chatList', JSON.stringify(list))
+            setChatList(list)
+            console.log(list)
+        }else{
+            window.alert("别他妈的打开了")
+        }
+    }
+
+    const handleCurrentChat = () => {
+
     }
 
     return (
@@ -111,14 +172,19 @@ export default function Chat() {
                 <div className="lg:w-[300px] h-screen bg-black rounded bg-transparent/200">
                     <div className="flex flex-col h-full">
                         <div className="w-full">
-                            <div className="btn rounded-sm w-full">新建对话</div>
+                            <div className="btn rounded-sm w-full" onClick={createChat}>新建对话</div>
                         </div>
-                        <div className="flex flex-col overflow-hidden p-2 pb-20 h-full">
-                            <h3 className="bg-gray-200 p-2 rounded font-bold" onClick={handleHistoryChat}>
-                                {
-                                    chatList[0] === undefined ? '' : chatList[0].content
-                                }
-                            </h3>
+                        <div className="flex flex-col overflow-x-hidden p-2 pb-20 h-full">
+                            {
+
+                                // 渲染对话列表
+                                chatList !== undefined ? chatList.state.chats.map(item => (
+                                // eslint-disable-next-line react/jsx-key
+                                <h3 className="bg-gray-200 p-5 m-2 rounded font-bold" onClick={handleHistoryChat}>
+                            {item.title}
+                        </h3>)) : <p>1</p>
+                            }
+
                         </div>
                     </div>
                 </div>
@@ -131,9 +197,9 @@ export default function Chat() {
                                             <div className="chat-header text-lg font-bold">
                                                 {m.role === 'user' ? '用户: ' : '深斯AI: '}
                                             </div>
-                                            <div className='chat-bubble bg-blue-100 text-black markdown'
-                                                 style={{color: 'black'}}>
-                                                <Markdown className="markdown">
+                                            <div className='chat-bubble bg-white-100 text-white'>
+                                                <Markdown rehypePlugins={[rehypeHighlight]}>
+                                                    {/*{m.content}*/}
                                                     {m.content}
                                                 </Markdown>
                                             </div>
@@ -148,7 +214,7 @@ export default function Chat() {
                                             </div>
                                             <div className='chat-bubble bg-blue-100 text-black markdown'
                                                  style={{color: 'black'}}>
-                                                <Markdown>
+                                                <Markdown rehypePlugins={[rehypeHighlight]}>
                                                     {m.content}
                                                 </Markdown>
                                             </div>
