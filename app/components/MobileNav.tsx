@@ -10,9 +10,6 @@ import { SideNav } from "../components/SideNav";
 import {useEffect} from "react";
 
 export const MobileNav = () => {
-    useEffect(_m => {
-
-    },)
 
   return (
     <Sheet>

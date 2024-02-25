@@ -44,14 +44,17 @@ export default function Chat() {
 
         let chatList = JSON.parse(window.localStorage.getItem("chatList"))
 
-        console.log(chatList)
+        // console.log(chatList)
 
         if (chatList !== null || chatList != undefined) {
-            console.log(2)
+            // console.log(2)
+            // console.log(chatList)
             shensi_ai_chat = chatList;
+            // 设置消息
+            setMessages(chatList.state.chats.at(-1).messages)
             setChatList(chatList)
         } else {
-            console.log(1)
+            // console.log(1)
             setChatList(shensi_ai_chat)
             window.localStorage.setItem("chatList", JSON.stringify(shensi_ai_chat))
         }
@@ -68,22 +71,22 @@ export default function Chat() {
         onFinish: (response) => {
             // 在每次有新的消息时，将它们存储到 localStorage 中
             let list = JSON.parse(window.localStorage.getItem("chatList"));
-            console.log(list)
+            // console.log(list)
             let item = null;
             if (list === null) {
 
                 // let item = shensi_ai_chat.state.chats.find(item => item.id === statusId)
 
-                console.log(shensi_ai_chat)
+                // console.log(shensi_ai_chat)
                 //拿到数组最后一个元素
                 if (stateId === '') {
                     item = shensi_ai_chat.state.chats.at(-1)
-                    console.log(stateId)
+                    // console.log(stateId)
                 } else {
                     item = shensi_ai_chat.state.chats.find(item => item.id === stateId)
-                    console.log(stateId)
+                    // console.log(stateId)
                 }
-                console.log(item)
+                // console.log(item)
 
                 item.messages.push({
                     role: 'user',
@@ -95,20 +98,20 @@ export default function Chat() {
                     content: response.content
                 })
 
-                console.log(shensi_ai_chat)
+                // console.log(shensi_ai_chat)
 
                 window.localStorage.setItem('chatList', JSON.stringify(shensi_ai_chat))
             } else {
                 if (stateId === '') {
                     item = list.state.chats.at(-1)
-                    console.log(stateId)
+                    // console.log(stateId)
                 } else {
                     console.log(shensi_ai_chat)
                     item = list.state.chats.find(item => item.id === stateId)
-                    console.log(item)
-                    console.log(stateId)
+                    // console.log(item)
+                    // console.log(stateId)
                 }
-                console.log(item)
+                // console.log(item)
                 item.messages.push({
                     role: 'user',
                     content: input
@@ -118,8 +121,8 @@ export default function Chat() {
                     role: 'assistant',
                     content: response.content
                 })
-                console.log(item)
-                console.log(list)
+                // console.log(item)
+                // console.log(list)
                 window.localStorage.setItem('chatList', JSON.stringify(list))
             }
         },
@@ -148,9 +151,9 @@ export default function Chat() {
 
 
     const handleHistoryChat = (e) => {
-        console.log(e.target.id)
+        // console.log(e.target.id)
         let list = JSON.parse(window.localStorage.getItem('chatList'));
-        console.log((list.state.chats[0].messages));
+        // console.log((list.state.chats[0].messages));
         let findList = list.state.chats.find((item) => item.id === e.target.id)
         setMessages(findList.messages)
         setStateId(e.target.id)
@@ -208,10 +211,10 @@ export default function Chat() {
                                 // 渲染对话列表
                                 chatList !== undefined ? chatList.state.chats.map(item => (
                                     // eslint-disable-next-line react/jsx-key
-                                    <h3 id={item.id} className="bg-gray-200 p-5 m-2 rounded font-bold"
+                                    <h3 key={item.id} id={item.id} className="bg-gray-200 p-5 m-2 rounded font-bold"
                                         onClick={handleHistoryChat}>
                                         {item.title}
-                                    </h3>)) : <h3 className="bg-gray-200 p-5 m-2 rounded font-bold">没有对话</h3>
+                                    </h3>)) : <h3 key={Math.random()} className="bg-gray-200 p-5 m-2 rounded font-bold">没有对话</h3>
                             }
 
                         </div>
@@ -221,7 +224,7 @@ export default function Chat() {
                     <div className="h-100 mt-24 overflow-y-scroll p-2 pb-20 overflow-hidden">
                         {
                             messages ? messages.map(m => (
-                                    <div key={m.id} className="bg-white md:w-2/3 w-full  self-center m-2">
+                                    <div key={Math.random().toString()} className="bg-white md:w-2/3 w-full  self-center m-2">
                                         <div className={m.role === 'user' ? "chat chat-start" : "chat chat-start"}>
                                             <div className="chat-header text-lg font-bold">
                                                 {m.role === 'user' ? '用户: ' : '深斯AI: '}
