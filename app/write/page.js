@@ -305,7 +305,7 @@ export default function ArticleMenu() {
             let interval = setInterval(function() {
                 if (count < 0) {
                     clearInterval(interval);
-                    setSmsCaptchaCountDown("获取验证码");
+                    setSmsCaptchaCountDown("发送验证码");
                     setSmsCaptchaDisabled(false);
                 } else {
                     setSmsCaptchaCountDown(count);

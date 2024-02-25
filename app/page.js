@@ -15,7 +15,7 @@ export default function Home() {
   return (
     <>
 
-      <NavbarNew />
+      {/*<NavbarNew />*/}
 
       {/* Hero */}
       <MaxWidthWrapper className="mt-10 flex flex-col items-center justify-center text-center sm:mt-12">

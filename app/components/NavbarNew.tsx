@@ -57,14 +57,14 @@ const Navbar = () => {
                   >
                     登录
                   </Link>
-                  <Link
-                    className={buttonVariants({
-                      size: "sm",
-                    })}
-                    href="/register"
-                  >
-                    注册
-                  </Link>
+                  {/*<Link*/}
+                  {/*  className={buttonVariants({*/}
+                  {/*    size: "sm",*/}
+                  {/*  })}*/}
+                  {/*  href="/register"*/}
+                  {/*>*/}
+                  {/*  注册*/}
+                  {/*</Link>*/}
                 </>
               ) : (
                 <>

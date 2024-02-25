@@ -168,7 +168,7 @@ export default function Chat() {
                     title: "新对话-" + new Date().toLocaleString(),
                     messages: [{
                         role: "assistant",
-                        content: "You are ChatGPT, a large language model trained by OpenAI.\\nCarefully heed the user's instructions. \\nRespond using Markdown."
+                        content: "You are ChatGPT, a large language model trained by OpenAI. Carefully heed the user's instructions. Respond using Markdown."
                     }]
                 }
             )
