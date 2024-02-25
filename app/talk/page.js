@@ -1,30 +1,28 @@
 'use client'
 
 import {useChat} from 'ai/react'
-import Navbar from '../components/navbar'
 import Link from 'next/link'
 import {useEffect, useRef, useState} from 'react'
 import Markdown from 'react-markdown'
 import {useRouter} from 'next/navigation'
-import remarkGfm from 'remark-gfm'
 import rehypeHighlight from 'rehype-highlight'
 
 export default function Chat() {
     const [isSending, setIsSending] = useState(false) // 新增状态来追踪消息是否正在发送
     const [chatList, setChatList] = useState(undefined)
     const [key, setKey] = useState('')
-    let statusId = "12345";
+    let [stateId, setStateId] = useState('')
     let shensi_ai_chat = {
         state: {
             chats: [{
                 id: "12345",
-                title: "New Chat 1",
+                title: "新对话-" + new Date().toLocaleString(),
                 messages: [{
                     role: "assistant",
-                    content: "You are ChatGPT, a large language model trained by OpenAI.\\nCarefully heed the user's instructions. \\nRespond using Markdown."
+                    content: "You are ChatGPT, a large language model trained by OpenAI. Carefully heed the user's instructions. Respond using Markdown."
                 }],
                 config: {
-                    model: "gpt-3.5-turbo",
+                    model: "gpt-4-turbo",
                     max_tokens: 4000,
                     temperature: 1,
                     presence_penalty: 0,
@@ -46,8 +44,17 @@ export default function Chat() {
 
         let chatList = JSON.parse(window.localStorage.getItem("chatList"))
 
-        if (chatList !== null ) shensi_ai_chat = chatList;
-        setChatList(shensi_ai_chat)
+        console.log(chatList)
+
+        if (chatList !== null || chatList != undefined) {
+            console.log(2)
+            shensi_ai_chat = chatList;
+            setChatList(chatList)
+        } else {
+            console.log(1)
+            setChatList(shensi_ai_chat)
+            window.localStorage.setItem("chatList", JSON.stringify(shensi_ai_chat))
+        }
 
     }, [])
 
@@ -62,14 +69,21 @@ export default function Chat() {
             // 在每次有新的消息时，将它们存储到 localStorage 中
             let list = JSON.parse(window.localStorage.getItem("chatList"));
             console.log(list)
+            let item = null;
             if (list === null) {
 
                 // let item = shensi_ai_chat.state.chats.find(item => item.id === statusId)
 
                 console.log(shensi_ai_chat)
                 //拿到数组最后一个元素
-
-                let item = shensi_ai_chat.state.chats.at(-1)
+                if (stateId === '') {
+                    item = shensi_ai_chat.state.chats.at(-1)
+                    console.log(stateId)
+                } else {
+                    item = shensi_ai_chat.state.chats.find(item => item.id === stateId)
+                    console.log(stateId)
+                }
+                console.log(item)
 
                 item.messages.push({
                     role: 'user',
@@ -85,7 +99,16 @@ export default function Chat() {
 
                 window.localStorage.setItem('chatList', JSON.stringify(shensi_ai_chat))
             } else {
-                let item = list.state.chats.find(item => item.id === statusId)
+                if (stateId === '') {
+                    item = list.state.chats.at(-1)
+                    console.log(stateId)
+                } else {
+                    console.log(shensi_ai_chat)
+                    item = list.state.chats.find(item => item.id === stateId)
+                    console.log(item)
+                    console.log(stateId)
+                }
+                console.log(item)
                 item.messages.push({
                     role: 'user',
                     content: input
@@ -95,6 +118,8 @@ export default function Chat() {
                     role: 'assistant',
                     content: response.content
                 })
+                console.log(item)
+                console.log(list)
                 window.localStorage.setItem('chatList', JSON.stringify(list))
             }
         },
@@ -122,20 +147,22 @@ export default function Chat() {
     }, [router])
 
 
-    const handleHistoryChat = (index) => {
-        console.log(index)
+    const handleHistoryChat = (e) => {
+        console.log(e.target.id)
         let list = JSON.parse(window.localStorage.getItem('chatList'));
         console.log((list.state.chats[0].messages));
-        setMessages(list.state.chats[0].messages)
+        let findList = list.state.chats.find((item) => item.id === e.target.id)
+        setMessages(findList.messages)
+        setStateId(e.target.id)
     }
 
     const createChat = () => {
         let list = JSON.parse(window.localStorage.getItem('chatList'))
-        if(list !== null ){
+        if (list !== null) {
             list.state.chats.push(
                 {
                     id: 'id_' + Math.random().toString(36).substr(2, 9),
-                    title: "New Chat 1",
+                    title: "新对话-" + new Date().toLocaleString(),
                     messages: [{
                         role: "assistant",
                         content: "You are ChatGPT, a large language model trained by OpenAI.\\nCarefully heed the user's instructions. \\nRespond using Markdown."
@@ -144,9 +171,10 @@ export default function Chat() {
             )
             window.localStorage.setItem('chatList', JSON.stringify(list))
             setChatList(list)
-            console.log(list)
-        }else{
-            window.alert("别他妈的打开了")
+            setMessages(list.state.chats[list.state.chats.length - 1].messages)
+        } else {
+            window.localStorage.setItem('chatList', JSON.stringify(shensi_ai_chat))
+            setChatList(shensi_ai_chat)
         }
     }
 
@@ -169,20 +197,21 @@ export default function Chat() {
             </div>
 
             <div className="w-full h-screen flex flex-row mx-auto bg-white">
-                <div className="lg:w-[300px] h-screen bg-black rounded bg-transparent/200">
+                <div
+                    className="2xl:w-[300px] xl:w-[300px] lg:w-[300px] md:w-[300px] sm:hidden md:block bg-black rounded bg-transparent/200 ">
                     <div className="flex flex-col h-full">
                         <div className="w-full">
                             <div className="btn rounded-sm w-full" onClick={createChat}>新建对话</div>
                         </div>
                         <div className="flex flex-col overflow-x-hidden p-2 pb-20 h-full">
                             {
-
                                 // 渲染对话列表
                                 chatList !== undefined ? chatList.state.chats.map(item => (
-                                // eslint-disable-next-line react/jsx-key
-                                <h3 className="bg-gray-200 p-5 m-2 rounded font-bold" onClick={handleHistoryChat}>
-                            {item.title}
-                        </h3>)) : <p>1</p>
+                                    // eslint-disable-next-line react/jsx-key
+                                    <h3 id={item.id} className="bg-gray-200 p-5 m-2 rounded font-bold"
+                                        onClick={handleHistoryChat}>
+                                        {item.title}
+                                    </h3>)) : <h3 className="bg-gray-200 p-5 m-2 rounded font-bold">没有对话</h3>
                             }
 
                         </div>
@@ -226,7 +255,7 @@ export default function Chat() {
                     </div>
                     <div
                         className="w-screen lg:w-full fixed lg:left-1/2 lg:transform lg:-translate-x-1/2 sm:ml-3 sm:w-screen fixed self-center bottom-0 sm:p-0 pl-2 md:max-w-md sm:mb-3 flex flex-row items-center">
-                        <div className="lg:w-11/12 sm:w-10/12 sm:">
+                        <div className="lg:w-11/12 sm:w-10/12">
                             <input
                                 type="text"
                                 name=""
