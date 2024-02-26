@@ -327,7 +327,7 @@ export default function ArticleMenu() {
                 })
             // window.alert("我要登陆了")
         } else {
-            window.alert("请输入正确的手机号和验证码");
+            window.alert("请输入正确的手机号并同意协议");
         }
     }
 
@@ -414,7 +414,7 @@ export default function ArticleMenu() {
                             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                                 <img
                                     className="mx-auto h-20 w-auto"
-                                    src="http://localhost:3000/_next/image?url=%2Fshensi.png&w=640&q=100"
+                                    src="/shensi.png"
                                     alt="Your Company"
                                 />
                                 <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
