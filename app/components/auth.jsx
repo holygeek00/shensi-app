@@ -9,7 +9,7 @@ const useAuth = () => {
     localStorage.removeItem('access_token')
     localStorage.removeItem('token_type')
     // 重定向到登录页面
-    router.push('/login')
+    router.push('/')
   }
 
   // 返回 logout 函数，以便其他组件可以使用

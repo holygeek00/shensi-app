@@ -56,15 +56,11 @@ const Pay = () => {
             console.error('There has been a problem with your fetch operation:', error);
         });
     };
-    
-
-
-
 
     return (
         <div>
             <Navbar></Navbar>
-            <div className="container mx-auto p-4">
+            <div className="lg:w-1/5 sm:w-screen mx-auto p-4">
 
                 <form onSubmit={handleSubmit} className="form-control">
                     <label className="label">

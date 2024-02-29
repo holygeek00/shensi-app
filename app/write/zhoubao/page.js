@@ -43,7 +43,7 @@ export default function ReportGenerator () {
   useEffect(() => {
     const accessToken = localStorage.getItem('access_token')
     if (!accessToken) {
-      router.push('../login')
+      router.push('/')
     }
   }, [router])
 

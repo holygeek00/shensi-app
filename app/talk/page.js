@@ -133,7 +133,7 @@ export default function Chat() {
     useEffect(() => {
         const accessToken = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null
         if (!accessToken) {
-            router.push('../login')
+            router.push('/')
         }
     }, [router])
 

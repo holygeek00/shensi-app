@@ -95,11 +95,11 @@ const UserDetailPage = () => {
   useEffect(() => {
     const accessToken = localStorage.getItem('access_token')
     if (!accessToken) {
-      router.push('./login')
+      router.push('/')
     }
   }, [router])
   return (
-    <div className='container mx-auto p-4 min-h-screen'>
+    <div className='lg:w-3/5 mx-auto p-4 min-h-screen sm:w-screen'>
       <Navbar title={'设置'} />
       {user ? (
         <div className='card bg-base-100 shadow-xl'>

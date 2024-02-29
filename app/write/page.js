@@ -356,7 +356,7 @@ export default function ArticleMenu() {
     return (<div>
             <dialog id="my_modal_1" className="modal z-20">
                 <div className="modal-box">
-                    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+                    <div className="flex min-h-full flex-1 flex-col justify-center lg:px-6 py-12 lg:px-8">
                         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                             <img
                                 className="mx-auto h-20 w-auto"
@@ -370,12 +370,11 @@ export default function ArticleMenu() {
 
                         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                             <div className="space-y-6">
-                                <div>
+                                <div className="mt-5">
                                     <label htmlFor="phone"
                                            className="block text-sm font-medium leading-6 text-gray-900">
                                         手机号码
                                     </label>
-                                    <div className="mt-2">
                                         <input
                                             id="phone"
                                             name="phone"
@@ -384,21 +383,18 @@ export default function ArticleMenu() {
                                             autoComplete="tel"
                                             onChange={(e) => setPhone(e.target.value)}
                                             required
-                                            className="block w-full pl-2 pr-2 rounded-md py-1.5 text-gray-900 shadow
+                                            className="w-full h-12 pl-2 pr-2 rounded-md text-gray-900 shadow
                                             border-1 focus:border-indigo-300 focus:ring-1 focus:ring-indigo-300
                                             focus:outline-gray-300 placeholder:text-gray-400
                                             sm:text-sm"
                                         />
-                                    </div>
                                 </div>
 
-                                <div>
-                                    <div className="flex items-center justify-between">
+                                <div className="mt-5">
                                         <label htmlFor="smsCaptcha"
                                                className="block text-sm font-medium leading-6 text-gray-900">
                                             验证码
                                         </label>
-                                    </div>
                                     <div className="mt-2 flex flex-row">
                                         <input
                                             id="smsCaptcha"
