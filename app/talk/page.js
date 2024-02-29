@@ -16,24 +16,19 @@ export default function Chat() {
     let shensi_ai_chat = {
         state: {
             chats: [{
-                id: "12345",
-                title: "新对话-" + new Date().toLocaleString(),
-                messages: [{
+                id: "12345", title: "新对话-" + new Date().toLocaleString(), messages: [{
                     role: "assistant",
                     content: "You are ChatGPT, a large language model trained by OpenAI. Carefully heed the user's instructions. Respond using Markdown."
-                }],
-                config: {
+                }], config: {
                     model: "gpt-4-turbo",
                     max_tokens: 4000,
                     temperature: 1,
                     presence_penalty: 0,
                     top_p: 1,
                     frequency_penalty: 0
-                },
-                titleSet: false
+                }, titleSet: false
             }]
-        },
-        version: 1
+        }, version: 1
     }
 
     useEffect(() => {
@@ -65,11 +60,9 @@ export default function Chat() {
     const {messages, input, handleInputChange, handleSubmit, setMessages} = useChat({
         headers: {
             'Authorization': key,
-        },
-        onError: (error) => {
+        }, onError: (error) => {
             console.error(error)
-        },
-        onFinish: (response) => {
+        }, onFinish: (response) => {
             // 在每次有新的消息时，将它们存储到 localStorage 中
             let list = JSON.parse(window.localStorage.getItem("chatList"));
             // console.log(list)
@@ -90,13 +83,11 @@ export default function Chat() {
                 // console.log(item)
 
                 item.messages.push({
-                    role: 'user',
-                    content: input
+                    role: 'user', content: input
                 })
 
                 item.messages.push({
-                    role: 'assistant',
-                    content: response.content
+                    role: 'assistant', content: response.content
                 })
 
                 // console.log(shensi_ai_chat)
@@ -114,23 +105,19 @@ export default function Chat() {
                 }
                 // console.log(item)
                 item.messages.push({
-                    role: 'user',
-                    content: input
+                    role: 'user', content: input
                 })
 
                 item.messages.push({
-                    role: 'assistant',
-                    content: response.content
+                    role: 'assistant', content: response.content
                 })
                 // console.log(item)
                 // console.log(list)
                 window.localStorage.setItem('chatList', JSON.stringify(list))
             }
-        },
-        onResponse:
-            (response) => {
-                console.log(response)
-            }
+        }, onResponse: (response) => {
+            console.log(response)
+        }
     });
 
 
@@ -163,16 +150,14 @@ export default function Chat() {
     const createChat = () => {
         let list = JSON.parse(window.localStorage.getItem('chatList'))
         if (list !== null) {
-            list.state.chats.push(
-                {
-                    id: 'id_' + Math.random().toString(36).substr(2, 9),
-                    title: "新对话-" + new Date().toLocaleString(),
-                    messages: [{
-                        role: "assistant",
-                        content: "You are ChatGPT, a large language model trained by OpenAI. Carefully heed the user's instructions. Respond using Markdown."
-                    }]
-                }
-            )
+            list.state.chats.push({
+                id: 'id_' + Math.random().toString(36).substr(2, 9),
+                title: "新对话-" + new Date().toLocaleString(),
+                messages: [{
+                    role: "assistant",
+                    content: "You are ChatGPT, a large language model trained by OpenAI. Carefully heed the user's instructions. Respond using Markdown."
+                }]
+            })
             window.localStorage.setItem('chatList', JSON.stringify(list))
             setChatList(list)
             setMessages(list.state.chats[list.state.chats.length - 1].messages)
@@ -184,12 +169,10 @@ export default function Chat() {
 
     const components = {
         // Use h2s instead of h1s
-        h1: 'h2',
-        // Use a component instead of hrs
+        h1: 'h2', // Use a component instead of hrs
     };
 
-    return (
-        <div className="bg-white w-screen h-screen overflow-hidden">
+    return (<div className="bg-white w-screen h-screen overflow-hidden">
             {/*tab lists*/}
             <div className="fixed left-1/2 transform -translate-x-1/2 z-20 my-5">
                 <div role="tablist" className="tabs tabs-boxed w-96">
@@ -210,57 +193,48 @@ export default function Chat() {
                             <div className="btn rounded-sm w-full" onClick={createChat}>新建对话</div>
                         </div>
                         <div className="flex flex-col overflow-x-hidden p-2 pb-20 h-full">
-                            {
-                                // 渲染对话列表
-                                chatList !== undefined ? chatList.state.chats.map(item => (
-                                    // eslint-disable-next-line react/jsx-key
+                            {// 渲染对话列表
+                                chatList !== undefined ? chatList.state.chats.map(item => (// eslint-disable-next-line react/jsx-key
                                     <h3 key={item.id} id={item.id}
                                         className="active:bg-blue-200 bg-gray-200 p-5 m-2 rounded hover:bg-blue-200 cursor-pointer"
                                         onClick={handleHistoryChat}>
                                         {item.title}
                                     </h3>)) : <h3 key={Math.random()}
-                                                  className="bg-gray-200 p-5 m-2 rounded font-bold">没有对话</h3>
-                            }
+                                                  className="bg-gray-200 p-5 m-2 rounded font-bold">没有对话</h3>}
                         </div>
                     </div>
                 </div>
                 <div className="sm:w-screen lg:w-1/2 lg:translate-x-1/2 overflow-y-scroll translate-y-10">
                     <div className="h-100 mt-5 pl-100 pb-20">
-                        {
-                            messages ? messages.map(m => (
-                                    <div key={Math.random().toString()}
-                                         className="bg-white md:w-2/3 lg:w-full  self-center m-2">
-                                        <div className={m.role === 'user' ? "" : ""}>
-                                            <div className="text-lg font-bold w-20 h-10">
-                                                {m.role === 'user' ? '用户: ' : '深斯AI: '}
-                                            </div>
-                                            <div
-                                                className={m.role === 'user' ? 'p-0 rounded-sm' : 'p-0.5 bg-gray-100 rounded'}>
-                                                {/* eslint-disable-next-line react/no-children-prop */}
-                                                <Markdown className={m.role === 'user' ? 'chat-bubble' : 'markdown-body'}
-                                                          markPlugins={[remarkGfm]}
-                                                          children={m.content}/>
-                                            </div>
-                                        </div>
+                        {messages ? messages.map(m => (<div key={Math.random().toString()}
+                                                            className="bg-white md:w-2/3 lg:w-full  self-center m-2">
+                                <div className={m.role === 'user' ? "" : ""}>
+                                    <div className="text-lg font-bold w-20 h-10">
+                                        {m.role === 'user' ? '用户: ' : '深斯AI: '}
                                     </div>
-                                )) : // 显示messages数组中的消息
-                                messages.map(m => (
-                                    <div key={m.id} className="bg-white md:w-2/3 w-full  self-center m-2">
-                                        <div className={m.role === 'user' ? "" : ""}>
-                                            <div className="text-lg font-bold">
-                                                {m.role === 'user' ? '用户: ' : '深斯AI: '}
-                                            </div>
-                                            <div className="mockup-code"
-                                                 style={{color: 'black'}}>
-                                                <Markdown className="markdown-body bg-gray-100 rounded p-3"
-                                                          remarkPlugins={[remarkGfm]}>
-                                                    {m.content}
-                                                </Markdown>
-                                            </div>
-                                        </div>
+                                    <div
+                                        className={m.role === 'user' ? 'p-0 rounded-sm' : 'p-0.5 bg-gray-100 rounded'}>
+                                        {/* eslint-disable-next-line react/no-children-prop */}
+                                        <Markdown className={m.role === 'user' ? 'chat-bubble' : 'markdown-body'}
+                                                  markPlugins={[remarkGfm]}>{m.content}
+                                        </Markdown>
                                     </div>
-                                ))
-                        }
+                                </div>
+                            </div>)) : // 显示messages数组中的消息
+                            messages.map(m => (<div key={m.id} className="bg-white md:w-2/3 w-full  self-center m-2">
+                                <div className={m.role === 'user' ? "" : ""}>
+                                    <div className="text-lg font-bold">
+                                        {m.role === 'user' ? '用户: ' : '深斯AI: '}
+                                    </div>
+                                    <div className="mockup-code"
+                                         style={{color: 'black'}}>
+                                        <Markdown className="markdown-body bg-gray-100 rounded p-3"
+                                                  remarkPlugins={[remarkGfm]}>
+                                            {m.content}
+                                        </Markdown>
+                                    </div>
+                                </div>
+                            </div>))}
                         <div ref={endOfMessagesRef}/>
                     </div>
                 </div>

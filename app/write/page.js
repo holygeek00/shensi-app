@@ -421,7 +421,7 @@ export default function ArticleMenu() {
                                     <input id="captcha" type="checkbox" value={agreement}
                                            onChange={(e) => setAgreement(e.target.checked)}
                                            className="w-3 h-3 mt-1.5 mr-1 checked:bg-blue-500"/>
-                                    <label for="captcha" className="hover:cursor-pointer">
+                                    <label htmlFor="captcha" className="hover:cursor-pointer">
                                         未注册手机号将自动注册。勾选即代表您阅读并同意
                                         <a href="#"
                                            className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
