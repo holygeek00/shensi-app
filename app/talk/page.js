@@ -204,8 +204,8 @@ export default function Chat() {
                         </div>
                     </div>
                 </div>
-                <div className="sm:w-screen lg:w-1/2 lg:translate-x-1/2 overflow-y-scroll translate-y-10">
-                    <div className="h-100 mt-5 pl-100 pb-20">
+                <div className="sm:w-screen lg:w-1/2 lg:translate-x-1/2 overflow-y-scroll translate-y-10 lg:p-10 rounded">
+                    <div className="h-100 pl-100 pb-20" style={{"margin-top": "60px"}}>
                         {messages ? messages.map(m => (<div key={Math.random().toString()}
                                                             className="bg-white md:w-2/3 lg:w-full  self-center m-2">
                                 <div className={m.role === 'user' ? "" : ""}>
@@ -239,7 +239,7 @@ export default function Chat() {
                     </div>
                 </div>
                 <div
-                    className="w-screen lg:w-full absolute lg:left-1/2 sm:ml-3 sm:w-screen bottom-10 sm:p-0 pl-2 md:max-w-md sm:mb-3 flex flex-row items-center">
+                    className="w-screen lg:w-full absolute lg:left-1/2 sm:ml-3 sm:w-screen bottom-2 sm:p-0 pl-2 md:max-w-md sm:mb-3 flex flex-row items-center">
                     <div className="lg:w-11/12 sm:w-10/12">
                         <input
                             type="text"
