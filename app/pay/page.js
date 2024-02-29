@@ -34,7 +34,7 @@ const Pay = () => {
     
         const backend = process.env.NEXT_PUBLIC_BACK_END;
         const requestUrl = `${backend}/payment/alipay`;
-        const authHeader = `${tokenType} ${accessToken}`;
+        const authHeader = `bearer ${accessToken}`;
     
         fetch(requestUrl, {
             method: 'POST',

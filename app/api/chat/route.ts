@@ -1,6 +1,5 @@
 import OpenAI from 'openai'
 import { OpenAIStream, StreamingTextResponse } from 'ai'
-import {log} from "node:util";
 
 
 export const runtime = 'edge'
