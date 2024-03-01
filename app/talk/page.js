@@ -7,6 +7,8 @@ import Markdown from 'react-markdown'
 import {useRouter} from 'next/navigation'
 import remarkGfm from 'remark-gfm'
 import './page.css'
+import hljs from 'highlight.js';
+import 'highlight.js/styles/github.css';
 
 export default function Chat() {
     const [isSending, setIsSending] = useState(false) // 新增状态来追踪消息是否正在发送
@@ -18,7 +20,7 @@ export default function Chat() {
             chats: [{
                 id: "12345", title: "新对话-" + new Date().toLocaleString(), messages: [{
                     role: "assistant",
-                    content: "You are ChatGPT, a large language model trained by OpenAI. Carefully heed the user's instructions. Respond using Markdown."
+                    content: "I am ChatGPT, a large language model trained by OpenAI. Carefully heed the user's instructions. Respond using Markdown."
                 }], config: {
                     model: "gpt-4-turbo",
                     max_tokens: 4000,
@@ -114,6 +116,14 @@ export default function Chat() {
                 // console.log(item)
                 // console.log(list)
                 window.localStorage.setItem('chatList', JSON.stringify(list))
+                const theme = "github"; // 这里使用 'atom-one-dark' 主题，你可以选择其他主题
+                hljs.configure({
+                    tabReplace: "    ", // 使用 4 个空格替换制表符
+                    useBR: false, // 使用 <br> 标签替换换行符
+                    languages: [], // 指定要支持的语言，留空表示支持所有语言
+                    theme: theme, // 设置主题色
+                });
+                hljs.highlightAll();
             }
         }, onResponse: (response) => {
             console.log(response)
@@ -122,12 +132,6 @@ export default function Chat() {
 
 
     const endOfMessagesRef = useRef(null)
-
-    // const handleSubmit = (e) => {
-    //     setIsSending(true) // 开始发送消息，设置 isSending 为 true
-    //     handleChatSubmit();
-    // }
-
 
     const router = useRouter()
     useEffect(() => {
@@ -139,9 +143,10 @@ export default function Chat() {
 
 
     const handleHistoryChat = (e) => {
-        // console.log(e.target.id)
+        console.log(e.target)
+        e.target.style.color = "blue"
+        e.target.style.border = "1px solid blue"
         let list = JSON.parse(window.localStorage.getItem('chatList'));
-        // console.log((list.state.chats[0].messages));
         let findList = list.state.chats.find((item) => item.id === e.target.id)
         setMessages(findList.messages)
         setStateId(e.target.id)
@@ -155,7 +160,7 @@ export default function Chat() {
                 title: "新对话-" + new Date().toLocaleString(),
                 messages: [{
                     role: "assistant",
-                    content: "You are ChatGPT, a large language model trained by OpenAI. Carefully heed the user's instructions. Respond using Markdown."
+                    content: "I am ChatGPT, a large language model trained by OpenAI. Carefully heed the user's instructions. Respond using Markdown."
                 }]
             })
             window.localStorage.setItem('chatList', JSON.stringify(list))
@@ -167,14 +172,20 @@ export default function Chat() {
         }
     }
 
-    const components = {
-        // Use h2s instead of h1s
-        h1: 'h2', // Use a component instead of hrs
-    };
+    useEffect(() =>{
+        const theme = "atom-one-dark"; // 这里使用 'atom-one-dark' 主题，你可以选择其他主题
+        hljs.configure({
+            tabReplace: "    ",
+            useBR: false,
+            languages: []
+        });
+        hljs.highlightAll();
+    }, [shensi_ai_chat])
 
-    return (<div className="bg-white w-screen h-screen overflow-hidden">
+    return (
+        <div className="bg-white w-screen h-screen overflow-hidden">
             {/*tab lists*/}
-            <div className="fixed left-1/2 transform -translate-x-1/2 z-20 my-5">
+            <div className="fixed left-1/2 transform -translate-x-1/2 z-20 lg:my-2">
                 <div role="tablist" className="tabs tabs-boxed w-96">
                     <Link href='./write' legacyBehavior>
                         <a role="tab" className="tab hover:bg-blue-200">AI写作</a>
@@ -185,7 +196,8 @@ export default function Chat() {
                     </Link>
                 </div>
             </div>
-            <div className="w-full h-screen flex flex-row mx-auto bg-white">
+
+            <div className="w-full h-full mx-auto bg-white overflow-y-scroll">
                 <div
                     className="2xl:w-[300px] xl:w-[300px] lg:w-[300px] md:w-[300px] sm:hidden md:block bg-black rounded bg-transparent/200 fixed h-screen">
                     <div className="flex flex-col">
@@ -195,27 +207,28 @@ export default function Chat() {
                         <div className="flex flex-col overflow-x-hidden p-2 pb-20 h-full">
                             {// 渲染对话列表
                                 chatList !== undefined ? chatList.state.chats.map(item => (// eslint-disable-next-line react/jsx-key
-                                    <h3 key={item.id} id={item.id}
-                                        className="active:bg-blue-200 bg-gray-200 p-5 m-2 rounded hover:bg-blue-200 cursor-pointer"
-                                        onClick={handleHistoryChat}>
+                                    <div key={item.id} id={item.id}
+                                         className="active:bg-blue-200 border-lime-200 border-b-gray-50 bg-gray-200 p-5 m-2 rounded hover:bg-blue-200 cursor-pointer"
+                                         onClick={handleHistoryChat}>
                                         {item.title}
-                                    </h3>)) : <h3 key={Math.random()}
-                                                  className="bg-gray-200 p-5 m-2 rounded font-bold">没有对话</h3>}
+                                    </div>)) : <h3 key={Math.random()}
+                                                   className="bg-gray-200 p-5 m-2 rounded font-bold">没有对话</h3>}
                         </div>
                     </div>
                 </div>
-                <div className="sm:w-screen lg:w-1/2 lg:translate-x-1/2 overflow-y-scroll translate-y-10 lg:p-10 rounded">
-                    <div className="h-100 pl-100 pb-20" style={{"margin-top": "60px"}}>
+                <div
+                    className="sm:w-screen lg:w-1/2 lg:translate-x-1/2 translate-y-10 lg:p-10 sm:py-2 sm:my-10 rounded overflow-y-scroll">
+                    <div className="h-100 pl-100 pb-20">
                         {messages ? messages.map(m => (<div key={Math.random().toString()}
                                                             className="bg-white md:w-2/3 lg:w-full  self-center m-2">
-                                <div className={m.role === 'user' ? "" : ""}>
+                                <div className={m.role === 'user' ? "leading-normal" : ""}>
                                     <div className="text-lg font-bold w-20 h-10">
                                         {m.role === 'user' ? '用户: ' : '深斯AI: '}
                                     </div>
                                     <div
                                         className={m.role === 'user' ? 'p-0 rounded-sm' : 'p-0.5 bg-gray-100 rounded'}>
                                         {/* eslint-disable-next-line react/no-children-prop */}
-                                        <Markdown className={m.role === 'user' ? 'chat-bubble' : 'markdown-body'}
+                                        <Markdown className={m.role === 'user' ? 'rounded' : 'markdown-body'}
                                                   markPlugins={[remarkGfm]}>{m.content}
                                         </Markdown>
                                     </div>
@@ -228,41 +241,41 @@ export default function Chat() {
                                     </div>
                                     <div className="mockup-code"
                                          style={{color: 'black'}}>
-                                        <Markdown className="markdown-body bg-gray-100 rounded p-3"
+                                        <Markdown className=""
                                                   remarkPlugins={[remarkGfm]}>
                                             {m.content}
                                         </Markdown>
                                     </div>
                                 </div>
                             </div>))}
-                        <div ref={endOfMessagesRef}/>
+                        {/*<div ref={endOfMessagesRef}/>*/}
                     </div>
                 </div>
-                <div
-                    className="w-screen lg:w-full absolute lg:left-1/2 sm:ml-3 sm:w-screen bottom-2 sm:p-0 pl-2 md:max-w-md sm:mb-3 flex flex-row items-center">
-                    <div className="lg:w-11/12 sm:w-10/12">
-                        <input
-                            type="text"
-                            name=""
-                            id="userInput"
-                            value={input}
-                            onChange={handleInputChange}
-                            placeholder="输入您的问题"
-                            className="lg:w-full lg:p-3.5 bg-white text-gray-700 border border-gray-300 rounded-md
-                                                  focus:border-indigo-500 focus:ring-indigo-500 block w-full p-2.5
-                                                  transition duration-150 ease-in-out focus:outline-none p-2"
-                        />
-                    </div>
-                    <div className="relative sm:w-1/4">
-                        <button
-                            id="sendButton"
-                            type="button"
-                            onClick={handleSubmit}
-                            className="btn btn-sm btn-info md:w-auto h-12 ml-2 rounded-md bg-blue-500 hover:bg-blue-600 text-white"
-                        >
-                            {isSending ? 'AI生成中...' : '发 送'} {/* 按钮文本根据发送状态变化 */}
-                        </button>
-                    </div>
+            </div>
+            <div
+                className="lg:w-1/3 sm:w-full fixed left-1/2 right-1/2 bottom-2 -translate-x-1/2 flex flex-row items-center justify-center">
+                <div className="lg:w-11/12 sm:w-3/5">
+                    <input
+                        type="text"
+                        name=""
+                        id="userInput"
+                        value={input}
+                        onChange={handleInputChange}
+                        placeholder="输入您的问题"
+                        className="lg:w-full lg:p-3.5 bg-white text-gray-700 border border-gray-300 rounded-md
+                                                  focus:border-indigo-500 focus:ring-indigo-500 p-3
+                                                  transition duration-150 ease-in-out focus:outline-none"
+                    />
+                </div>
+                <div className="w-20">
+                    <button
+                        id="sendButton"
+                        type="button"
+                        onClick={handleSubmit}
+                        className="btn btn-info md:w-auto h-12 ml-2 rounded-md bg-blue-500 hover:bg-blue-600 text-white"
+                    >
+                        {isSending ? 'AI生成中...' : '发 送'} {/* 按钮文本根据发送状态变化 */}
+                    </button>
                 </div>
             </div>
         </div>
