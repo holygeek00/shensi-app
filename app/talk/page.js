@@ -15,20 +15,28 @@ export default function Chat() {
     const [chatList, setChatList] = useState(undefined)
     const [key, setKey] = useState('')
     let [stateId, setStateId] = useState('')
+
+    const chatBoxRef = useRef(null);
+
     let shensi_ai_chat = {
         state: {
             chats: [{
-                id: "12345", title: "新对话-" + new Date().toLocaleString(), messages: [{
+                id: "12345",
+                title: "新对话-" + new Date().toLocaleString(),
+                messages: [{
                     role: "assistant",
                     content: "I am ChatGPT, a large language model trained by OpenAI. Carefully heed the user's instructions. Respond using Markdown."
-                }], config: {
+                }],
+                config: {
                     model: "gpt-4-turbo",
                     max_tokens: 4000,
                     temperature: 1,
                     presence_penalty: 0,
                     top_p: 1,
                     frequency_penalty: 0
-                }, titleSet: false
+                },
+                titleSet: false,
+                currentState: true
             }]
         }, version: 1
     }
@@ -45,18 +53,15 @@ export default function Chat() {
         // console.log(chatList)
 
         if (chatList !== null || chatList != undefined) {
-            // console.log(2)
-            // console.log(chatList)
+
             shensi_ai_chat = chatList;
             // 设置消息
             setMessages(chatList.state.chats.at(-1).messages)
             setChatList(chatList)
         } else {
-            // console.log(1)
             setChatList(shensi_ai_chat)
             window.localStorage.setItem("chatList", JSON.stringify(shensi_ai_chat))
         }
-
     }, [])
 
     const {messages, input, handleInputChange, handleSubmit, setMessages} = useChat({
@@ -143,11 +148,17 @@ export default function Chat() {
 
 
     const handleHistoryChat = (e) => {
-        console.log(e.target)
-        e.target.style.color = "blue"
-        e.target.style.border = "1px solid blue"
         let list = JSON.parse(window.localStorage.getItem('chatList'));
         let findList = list.state.chats.find((item) => item.id === e.target.id)
+
+        if (findList.id === e.target.id) {
+            let chatbox = document.getElementsByClassName('chatbox')
+
+            for (let i = 0; i < chatbox.length; i++) {
+                chatbox[i].classList.remove('text-blue-500')
+            }
+            e.target.classList.add('text-blue-500')
+        }
         setMessages(findList.messages)
         setStateId(e.target.id)
     }
@@ -166,13 +177,19 @@ export default function Chat() {
             window.localStorage.setItem('chatList', JSON.stringify(list))
             setChatList(list)
             setMessages(list.state.chats[list.state.chats.length - 1].messages)
+
+            const chatbox = document.querySelectorAll('.chatbox');
+            chatbox[chatbox.length - 1].classList.add('text-blue-500')
         } else {
             window.localStorage.setItem('chatList', JSON.stringify(shensi_ai_chat))
             setChatList(shensi_ai_chat)
+            // 设置最后一个元素的文本颜色为text-blue-500
+            const chatbox = document.querySelectorAll('.chatbox');
+            chatbox[chatbox.length - 1].classList.add('text-blue-500')
         }
     }
 
-    useEffect(() =>{
+    useEffect(() => {
         const theme = "atom-one-dark"; // 这里使用 'atom-one-dark' 主题，你可以选择其他主题
         hljs.configure({
             tabReplace: "    ",
@@ -180,7 +197,21 @@ export default function Chat() {
             languages: []
         });
         hljs.highlightAll();
+        // 每次添加新的对话内容时，自动将滚动条移动到页面的底部。
+        if (endOfMessagesRef.current !== null) {
+            endOfMessagesRef.current.scrollTop = endOfMessagesRef.current.scrollHeight;
+            endOfMessagesRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+
     }, [shensi_ai_chat])
+
+    useEffect(() => {
+        console.log(chatBoxRef.current)
+        if (chatBoxRef.current !== null){
+            console.log(chatBoxRef.current)
+            chatBoxRef.current.classList.add('text-blue-500')
+        }
+    }, [chatList])
 
     return (
         <div className="bg-white w-screen h-screen overflow-hidden">
@@ -197,9 +228,9 @@ export default function Chat() {
                 </div>
             </div>
 
-            <div className="w-full h-full mx-auto bg-white overflow-y-scroll">
+            <div className="w-full h-full mx-auto bg-white overflow-y-scroll flex flex-row">
                 <div
-                    className="2xl:w-[300px] xl:w-[300px] lg:w-[300px] md:w-[300px] sm:hidden md:block bg-black rounded bg-transparent/200 fixed h-screen">
+                    className="2xl:w-[300px] xl:w-[300px] lg:w-[300px] md:w-[300px] sm:hidden md:block bg-black rounded bg-transparent/200 h-screen">
                     <div className="flex flex-col">
                         <div className="w-full">
                             <div className="btn rounded-sm w-full" onClick={createChat}>新建对话</div>
@@ -207,8 +238,8 @@ export default function Chat() {
                         <div className="flex flex-col overflow-x-hidden p-2 pb-20 h-full">
                             {// 渲染对话列表
                                 chatList !== undefined ? chatList.state.chats.map(item => (// eslint-disable-next-line react/jsx-key
-                                    <div key={item.id} id={item.id}
-                                         className="active:bg-blue-200 border-lime-200 border-b-gray-50 bg-gray-200 p-5 m-2 rounded hover:bg-blue-200 cursor-pointer"
+                                    <div ref={chatBoxRef} key={item.id} id={item.id}
+                                         className="chatbox active:bg-blue-200 border-lime-200 border-b-gray-50 bg-gray-200 p-5 m-2 rounded hover:bg-blue-200 cursor-pointer"
                                          onClick={handleHistoryChat}>
                                         {item.title}
                                     </div>)) : <h3 key={Math.random()}
@@ -217,8 +248,9 @@ export default function Chat() {
                     </div>
                 </div>
                 <div
-                    className="sm:w-screen lg:w-1/2 lg:translate-x-1/2 translate-y-10 lg:p-10 sm:py-2 sm:my-10 rounded overflow-y-scroll">
-                    <div className="h-100 pl-100 pb-20">
+                    id="chat"
+                    className="sm:w-screen lg:w-1/2 lg:ml-[200px] md:w-full md:ml-[100px] translate-y-10 lg:p-10 sm:py-2 sm:my-10 rounded overflow-y-scroll">
+                    <div className="md:w-full h-100 pl-100 pb-20">
                         {messages ? messages.map(m => (<div key={Math.random().toString()}
                                                             className="bg-white md:w-2/3 lg:w-full  self-center m-2">
                                 <div className={m.role === 'user' ? "leading-normal" : ""}>
@@ -248,9 +280,9 @@ export default function Chat() {
                                     </div>
                                 </div>
                             </div>))}
-                        {/*<div ref={endOfMessagesRef}/>*/}
                     </div>
                 </div>
+                <div ref={endOfMessagesRef}/>
             </div>
             <div
                 className="lg:w-1/3 sm:w-full fixed left-1/2 right-1/2 bottom-2 -translate-x-1/2 flex flex-row items-center justify-center">
