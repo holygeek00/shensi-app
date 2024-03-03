@@ -175,6 +175,10 @@ export default function Chat() {
 
             const chatbox = document.querySelectorAll('.chatbox');
             chatbox[chatbox.length - 1].classList.add('text-blue-500')
+            for (let i = 0; i < chatbox.length; i++) {
+                console.log("what is i", i)
+                chatbox[i].classList.remove('text-blue-500')
+            }
         } else {
             window.localStorage.setItem('chatList', JSON.stringify(shensi_ai_chat))
             setChatList(shensi_ai_chat)
@@ -223,20 +227,23 @@ export default function Chat() {
 
             <div className="w-full h-full mx-auto bg-white overflow-y-scroll flex flex-row">
                 <div
-                    className="2xl:w-[300px] xl:w-[300px] lg:w-[300px] md:w-[300px] sm:hidden md:block rounded h-screen" style={{"background": "#f0f4f9"}}>
+                    className="2xl:w-[300px] xl:w-[300px] lg:w-[300px] md:w-[300px] sm:hidden md:block rounded h-screen overflow-y-scroll"
+                    style={{"background": "#f0f4f9"}}>
                     <div className="flex flex-col">
-                        <div className="w-full">
-                            <div className="btn rounded-sm w-full shadow-white-100" onClick={createChat}>新建对话</div>
+                        <div className="w-full p-2">
+                            <div className="btn rounded-lg w-full shadow-white-100"
+                                 onClick={createChat}>新建对话
+                            </div>
                         </div>
                         <div className="flex flex-col overflow-x-hidden p-2 pb-20 h-full">
                             {// 渲染对话列表
                                 chatList !== undefined ? chatList.state.chats.map(item => (// eslint-disable-next-line react/jsx-key
                                     <div ref={chatBoxRef} key={item.id} id={item.id}
-                                         className="chatbox active:bg-blue-200 border-lime-200 border-b-gray-50 bg-white p-5 m-2 rounded hover:bg-blue-200 cursor-pointer"
+                                         className="chatbox active:bg-blue-200 border-lime-200 border-b-gray-50 bg-white p-5 m-2 rounded hover:bg-blue-200 cursor-pointer shadow-accent-content"
                                          onClick={handleHistoryChat}>
                                         {item.title}
                                     </div>)) : <div key={Math.random()}
-                                                   className="bg-gray-200 p-5 m-2 rounded font-bold">没有对话</div>}
+                                                    className="bg-gray-200 p-5 m-2 rounded font-bold">没有对话</div>}
                         </div>
                     </div>
                 </div>
