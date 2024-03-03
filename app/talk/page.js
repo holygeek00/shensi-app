@@ -21,22 +21,17 @@ export default function Chat() {
     let shensi_ai_chat = {
         state: {
             chats: [{
-                id: "12345",
-                title: "新对话-" + new Date().toLocaleString(),
-                messages: [{
+                id: "12345", title: "新对话-" + new Date().toLocaleString(), messages: [{
                     role: "assistant",
                     content: "I am ChatGPT, a large language model trained by OpenAI. Carefully heed the user's instructions. Respond using Markdown."
-                }],
-                config: {
+                }], config: {
                     model: "gpt-4-turbo",
                     max_tokens: 4000,
                     temperature: 1,
                     presence_penalty: 0,
                     top_p: 1,
                     frequency_penalty: 0
-                },
-                titleSet: false,
-                currentState: true
+                }, titleSet: false, currentState: true
             }]
         }, version: 1
     }
@@ -192,29 +187,27 @@ export default function Chat() {
     useEffect(() => {
         const theme = "atom-one-dark"; // 这里使用 'atom-one-dark' 主题，你可以选择其他主题
         hljs.configure({
-            tabReplace: "    ",
-            useBR: false,
-            languages: []
+            tabReplace: "    ", useBR: false, languages: []
         });
         hljs.highlightAll();
         // 每次添加新的对话内容时，自动将滚动条移动到页面的底部。
         if (endOfMessagesRef.current !== null) {
+            console.log(endOfMessagesRef.current)
             endOfMessagesRef.current.scrollTop = endOfMessagesRef.current.scrollHeight;
-            endOfMessagesRef.current.scrollIntoView({ behavior: "smooth" });
+            endOfMessagesRef.current.scrollIntoView({behavior: "smooth"});
         }
 
     }, [shensi_ai_chat])
 
     useEffect(() => {
         console.log(chatBoxRef.current)
-        if (chatBoxRef.current !== null){
+        if (chatBoxRef.current !== null) {
             console.log(chatBoxRef.current)
             chatBoxRef.current.classList.add('text-blue-500')
         }
     }, [chatList])
 
-    return (
-        <div className="bg-white w-screen h-screen overflow-hidden">
+    return (<div className="bg-white w-screen h-screen overflow-hidden">
             {/*tab lists*/}
             <div className="fixed left-1/2 transform -translate-x-1/2 z-20 lg:my-2">
                 <div role="tablist" className="tabs tabs-boxed w-96">
@@ -230,20 +223,20 @@ export default function Chat() {
 
             <div className="w-full h-full mx-auto bg-white overflow-y-scroll flex flex-row">
                 <div
-                    className="2xl:w-[300px] xl:w-[300px] lg:w-[300px] md:w-[300px] sm:hidden md:block bg-black rounded bg-transparent/200 h-screen">
+                    className="2xl:w-[300px] xl:w-[300px] lg:w-[300px] md:w-[300px] sm:hidden md:block rounded h-screen" style={{"background": "#f0f4f9"}}>
                     <div className="flex flex-col">
                         <div className="w-full">
-                            <div className="btn rounded-sm w-full" onClick={createChat}>新建对话</div>
+                            <div className="btn rounded-sm w-full shadow-white-100" onClick={createChat}>新建对话</div>
                         </div>
                         <div className="flex flex-col overflow-x-hidden p-2 pb-20 h-full">
                             {// 渲染对话列表
                                 chatList !== undefined ? chatList.state.chats.map(item => (// eslint-disable-next-line react/jsx-key
                                     <div ref={chatBoxRef} key={item.id} id={item.id}
-                                         className="chatbox active:bg-blue-200 border-lime-200 border-b-gray-50 bg-gray-200 p-5 m-2 rounded hover:bg-blue-200 cursor-pointer"
+                                         className="chatbox active:bg-blue-200 border-lime-200 border-b-gray-50 bg-white p-5 m-2 rounded hover:bg-blue-200 cursor-pointer"
                                          onClick={handleHistoryChat}>
                                         {item.title}
-                                    </div>)) : <h3 key={Math.random()}
-                                                   className="bg-gray-200 p-5 m-2 rounded font-bold">没有对话</h3>}
+                                    </div>)) : <div key={Math.random()}
+                                                   className="bg-gray-200 p-5 m-2 rounded font-bold">没有对话</div>}
                         </div>
                     </div>
                 </div>
@@ -253,36 +246,22 @@ export default function Chat() {
                     <div className="md:w-full h-100 pl-100 pb-20">
                         {messages ? messages.map(m => (<div key={Math.random().toString()}
                                                             className="bg-white md:w-2/3 lg:w-full  self-center m-2">
-                                <div className={m.role === 'user' ? "leading-normal" : ""}>
-                                    <div className="text-lg font-bold w-20 h-10">
-                                        {m.role === 'user' ? '用户: ' : '深斯AI: '}
-                                    </div>
-                                    <div
-                                        className={m.role === 'user' ? 'p-0 rounded-sm' : 'p-0.5 bg-gray-100 rounded'}>
-                                        {/* eslint-disable-next-line react/no-children-prop */}
-                                        <Markdown className={m.role === 'user' ? 'rounded' : 'markdown-body'}
-                                                  markPlugins={[remarkGfm]}>{m.content}
-                                        </Markdown>
-                                    </div>
+                            <div className={m.role === 'user' ? "leading-normal" : ""}>
+                                <div className="text-lg font-bold w-20 h-10">
+                                    {m.role === 'user' ? '用户: ' : '深斯AI: '}
                                 </div>
-                            </div>)) : // 显示messages数组中的消息
-                            messages.map(m => (<div key={m.id} className="bg-white md:w-2/3 w-full  self-center m-2">
-                                <div className={m.role === 'user' ? "" : ""}>
-                                    <div className="text-lg font-bold">
-                                        {m.role === 'user' ? '用户: ' : '深斯AI: '}
-                                    </div>
-                                    <div className="mockup-code"
-                                         style={{color: 'black'}}>
-                                        <Markdown className=""
-                                                  remarkPlugins={[remarkGfm]}>
-                                            {m.content}
-                                        </Markdown>
-                                    </div>
+                                <div
+                                    className={m.role === 'user' ? 'p-0 rounded-sm' : 'p-0.5 bg-gray-100 rounded'}>
+                                    {/* eslint-disable-next-line react/no-children-prop */}
+                                    <Markdown className={m.role === 'user' ? 'rounded' : 'markdown-body ='}
+                                              markPlugins={[remarkGfm]}>{m.content}
+                                    </Markdown>
                                 </div>
-                            </div>))}
+                            </div>
+                        </div>)) : (<div>加载中...</div>)}
                     </div>
+                    <div ref={endOfMessagesRef}/>
                 </div>
-                <div ref={endOfMessagesRef}/>
             </div>
             <div
                 className="lg:w-1/3 sm:w-full fixed left-1/2 right-1/2 bottom-2 -translate-x-1/2 flex flex-row items-center justify-center">
