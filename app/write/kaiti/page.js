@@ -2,9 +2,10 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import Navbar from '../../components/navbar'
 import { useCompletion } from 'ai/react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import {useAuthUser} from "../../lib/hooks/use-auth-user";
+import {useRouter} from "next/navigation";
+
 export default function ThesisProposalGenerator () {
   const [formData, setFormData] = useState({
     title: '',
@@ -15,13 +16,21 @@ export default function ThesisProposalGenerator () {
   const [proposalContent, setProposalContent] = useState('')
 
   const [key, setKey] = useState('')
+
+  const router = useRouter()
+
+  const {checkToken} = useAuthUser()
+
   useEffect(() => {
     // 在组件挂载后从 localStorage 中获取数据
     const storedKey = localStorage.getItem('key')
     if (storedKey) {
       setKey(storedKey)
     }
+
+    checkToken(router)
   }, [])
+
   const { complete, completion } = useCompletion({
     api: '/api/completion',
     headers: {
@@ -38,8 +47,6 @@ export default function ThesisProposalGenerator () {
       [name]: value,
     })
   }
-
-  useAuthUser()
 
   const checkAndPublish = useCallback(async () => {
     setIsGenerating(true) // 开始生成时设置为 true

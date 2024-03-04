@@ -4,14 +4,13 @@ import Navbar from '../components/navbar'
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import {ZMessage} from "../components/ui/Toast";
-import {useAntdToken} from "antd-style";
 import {useAuthUser} from "../lib/hooks/use-auth-user";
-import {router} from "next/client";
 const UserDetailPage = () => {
 
   const [user, setUser] = useState(null)
   const [userQuotas, setUserQuotas] = useState([])
   const router = useRouter()
+  const {checkToken} = useAuthUser()
 
   // 定义一个函数来发起请求并更新状态
   const fetchUserData = () => {
@@ -91,10 +90,8 @@ const UserDetailPage = () => {
   useEffect(() => {
 
     fetchUserData()
+    checkToken(router)
   }, [])
-
-
-  useAuthUser()
 
   return (
     <div className='lg:w-3/5 mx-auto p-4 min-h-screen sm:w-screen'>
