@@ -13,9 +13,9 @@ const nextConfig = {
     },
 
     webpack: (config, {dev, isServer}) => {
-        console.log("仅在生产模式和客户端构建中应用")
         // 仅在生产模式和客户端构建中应用
         if (!dev && !isServer) {
+            console.log("仅在生产模式和客户端构建中应用")
             // 确保TerserPlugin已经在minimizer数组中
             if (config.optimization && config.optimization.minimizer) {
                 config.optimization.minimizer = config.optimization.minimizer.map((plugin) => {

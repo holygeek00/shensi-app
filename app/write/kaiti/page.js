@@ -4,6 +4,7 @@ import Navbar from '../../components/navbar'
 import { useCompletion } from 'ai/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import {useAuthUser} from "@/app/lib/hooks/use-auth-user";
 export default function ThesisProposalGenerator () {
   const [formData, setFormData] = useState({
     title: '',
@@ -38,13 +39,7 @@ export default function ThesisProposalGenerator () {
     })
   }
 
-  const router = useRouter()
-  useEffect(() => {
-    const accessToken = localStorage.getItem('access_token')
-    if (!accessToken) {
-      router.push('../login')
-    }
-  }, [router])
+  useAuthUser()
 
   const checkAndPublish = useCallback(async () => {
     setIsGenerating(true) // 开始生成时设置为 true

@@ -9,6 +9,7 @@ import remarkGfm from 'remark-gfm'
 import './page.css'
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github.css';
+import {ZMessage} from "../components/ui/Toast";
 
 export default function Chat() {
     const [isSending, setIsSending] = useState(false) // 新增状态来追踪消息是否正在发送
@@ -63,7 +64,10 @@ export default function Chat() {
         headers: {
             'Authorization': key,
         }, onError: (error) => {
-            console.error(error)
+            console.log(error.message)
+            if (JSON.parse(error.message).code === 401){
+                ZMessage(JSON.parse(error.message).error, {type: 'error'})
+            }
         }, onFinish: (response) => {
             // 在每次有新的消息时，将它们存储到 localStorage 中
             let list = JSON.parse(window.localStorage.getItem("chatList"));
@@ -92,20 +96,14 @@ export default function Chat() {
                     role: 'assistant', content: response.content
                 })
 
-                // console.log(shensi_ai_chat)
 
                 window.localStorage.setItem('chatList', JSON.stringify(shensi_ai_chat))
             } else {
                 if (stateId === '') {
                     item = list.state.chats.at(-1)
-                    // console.log(stateId)
                 } else {
-                    console.log(shensi_ai_chat)
                     item = list.state.chats.find(item => item.id === stateId)
-                    // console.log(item)
-                    // console.log(stateId)
                 }
-                // console.log(item)
                 item.messages.push({
                     role: 'user', content: input
                 })
@@ -126,7 +124,7 @@ export default function Chat() {
                 hljs.highlightAll();
             }
         }, onResponse: (response) => {
-            console.log(response)
+
         }
     });
 
@@ -196,7 +194,6 @@ export default function Chat() {
         hljs.highlightAll();
         // 每次添加新的对话内容时，自动将滚动条移动到页面的底部。
         if (endOfMessagesRef.current !== null) {
-            console.log(endOfMessagesRef.current)
             endOfMessagesRef.current.scrollTop = endOfMessagesRef.current.scrollHeight;
             endOfMessagesRef.current.scrollIntoView({behavior: "smooth"});
         }
@@ -204,9 +201,7 @@ export default function Chat() {
     }, [shensi_ai_chat])
 
     useEffect(() => {
-        console.log(chatBoxRef.current)
         if (chatBoxRef.current !== null) {
-            console.log(chatBoxRef.current)
             chatBoxRef.current.classList.add('text-blue-500')
         }
     }, [chatList])

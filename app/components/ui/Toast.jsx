@@ -1,8 +1,9 @@
 // 自定义一个toast组件
 import {createRoot} from 'react-dom/client';
 import {useCallback, useState} from 'react'
+import {cn} from "classnames";
 
-export function ZMessage(message) {
+export function ZMessage(message, {type = 'success', duration = '5000'}) {
 
     let containerRoot = null;
     let timerList = [];
@@ -25,9 +26,8 @@ export function ZMessage(message) {
     }
 
     const renderMsgList = (message) => {
-        console.log(message)
         containerRoot = createContainer();
-        containerRoot.render(<MessageTemplate message={message} list={list}/>);
+        containerRoot.render(<MessageTemplate message={message} list={list} type={type}/>);
     }
 
     const createContainer = () => {
@@ -35,13 +35,6 @@ export function ZMessage(message) {
             return containerRoot
         }
         const div = document.createElement("div");
-        // div.style.zIndex = "10000";
-        // div.style.position = "absolute";
-        // div.style.top = "0";
-        // div.style.left = "0";
-        div.style.width = "fit-content";
-        // div.style.height = "200px";
-        // div.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
         document.body.appendChild(div);
         const container = createRoot(div);
 
@@ -53,7 +46,7 @@ export function ZMessage(message) {
         setTimeout(() => {
             // 删去该条消息并重新渲染
             removeMsg();
-        }, 3000);
+        }, 5000);
     }
 
     // 第一，将该条消息存入全局并渲染
@@ -65,7 +58,7 @@ export function ZMessage(message) {
     timerList.push(timer);
 }
 
-const MessageTemplate = ({message, list}) => {
+const MessageTemplate = ({message, list, type}) => {
     // 如果没有传入参数，设置默认值
     const getPosition = useCallback(() => {
         // 传入正确的位置 或 没有传
@@ -81,17 +74,11 @@ const MessageTemplate = ({message, list}) => {
         removeMsg(args, index);
     }
 
-    console.log(list)
-
-    return (
-        <div className="toast toast-top toast-center">
-            {list === undefined ? '' : list.map((item) => (
-                // eslint-disable-next-line react/jsx-key
-                <div className="alert bg-gray-200" style={{"width": "fit-content"}}>
-                    <span>{item}</span>
-                </div>
-            ))}
-        </div>
-    )
+    return (<div className="toast toast-top toast-center fixed z-50">
+        {list === undefined ? '' : list.map((item, index) => (// eslint-disable-next-line react/jsx-key
+            <div key={index} role="alert" className={`alert shadow-lg alert-${type}`}>
+                <span>{item}</span>
+            </div>))}
+    </div>)
 }
 

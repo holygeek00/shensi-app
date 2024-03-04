@@ -282,14 +282,14 @@ export default function ArticleMenu() {
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log('Success:', data);
+                    ZMessage("验证码发送成功，请注意查收!", {type: "info"})
                 })
                 .catch((error) => {
                     console.error('Error:', error);
-                    ZMessage("验证码发送失败，请稍后再试!")
+                    ZMessage("验证码发送失败，请稍后再试!", {type: "error"})
                 })
         } else {
-           ZMessage("请输入正确的手机号并同意协议");
+           ZMessage("请输入正确的手机号并同意协议", {type: "error"});
         }
     }
 
@@ -307,14 +307,15 @@ export default function ArticleMenu() {
                 .then(data => {
                     window.localStorage.setItem('access_token', data.token.access_token);
                     document.getElementById('my_modal_1').close();
+                    ZMessage('登录成功', {type: "success"})
                     fetchUserData();
                 })
                 .catch((error) => {
                     console.error('Error:', error);
-                    ZMessage(error.message)
+                    ZMessage(error.message, {type: "error"})
                 })
         } else {
-            ZMessage('请输入正确的手机号并同意协议')
+            ZMessage('请输入正确的手机号并同意协议', {type: 'error'})
         }
     }
 
@@ -346,9 +347,11 @@ export default function ArticleMenu() {
                 })
                 .catch(error => {
                     console.error('There has been a problem with your fetch operation:', error)
+                    ZMessage('用户验证过期', {type: 'error'})
                 })
         } else {
             console.error('No access token or token type available in localStorage')
+            ZMessage('No access token or token type available in localStorage', {type: 'error'})
         }
     }
 

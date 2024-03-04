@@ -3,30 +3,33 @@
 import Navbar from '../components/navbar'
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import {ZMessage} from "../components/ui/Toast";
+import {useAntdToken} from "antd-style";
+import {useAuthUser} from "../lib/hooks/use-auth-user";
+import {router} from "next/client";
 const UserDetailPage = () => {
-  // 从localStorage获取access_token和token_type
 
   const [user, setUser] = useState(null)
+  const [userQuotas, setUserQuotas] = useState([])
+  const router = useRouter()
 
-  useEffect(() => {
-    // 定义一个函数来发起请求并更新状态
-    function fetchUserData () {
-      // 从localStorage获取access_token和token_type
-      const accessToken = localStorage.getItem('access_token')
+  // 定义一个函数来发起请求并更新状态
+  const fetchUserData = () => {
+    const accessToken = localStorage.getItem('access_token')
 
-      // 检查确保我们有token
-      if (accessToken !== undefined && accessToken !== null &&  accessToken !== "accessToken"){
-        // 设置请求的headers
-        const authHeader = `Bearer ${accessToken}`
-        const backend = process.env.NEXT_PUBLIC_BACK_END
-        // 发起请求
-        fetch(backend + '/users/me', {
-          method: 'GET',
-          headers: {
-            'Authorization': authHeader,
-            'Content-Type': 'application/json'
-          }
-        })
+    // 检查确保我们有token
+    if (accessToken !== undefined && accessToken !== null &&  accessToken !== "accessToken"){
+      // 设置请求的headers
+      const authHeader = `Bearer ${accessToken}`
+      const backend = process.env.NEXT_PUBLIC_BACK_END
+      // 发起请求
+      fetch(backend + '/users/me', {
+        method: 'GET',
+        headers: {
+          'Authorization': authHeader,
+          'Content-Type': 'application/json'
+        }
+      })
           .then(response => {
             if (response.ok) {
               return response.json() // 如果响应是JSON，这里将其解析
@@ -35,33 +38,29 @@ const UserDetailPage = () => {
           })
           .then(userData => {
             console.log(userData);
-            setUser(userData) // 将获取的用户数据存储在状态变量中
+            setUser(userData)
+            fetchUserQuta()
           })
           .catch(error => {
             console.error('There has been a problem with your fetch operation:', error)
+            ZMessage('用户信息过期，请重新登录', {type: 'error'})
+            window.localStorage.removeItem('access_token')
+            router.push('/')
           })
-      } else {
-        console.error('No access token or token type available in localStorage')
-      }
+    } else {
+      console.error('No access token or token type available in localStorage')
+      router.push('/')
     }
+  }
 
-    // 调用函数来发起请求
-    fetchUserData()
-  }, []) // 空数组作为第二个参数表示这个effect只在组件挂载时运行一次
-  const [userQuotas, setUserQuotas] = useState([])
   function fetchUserQuta () {
     // 从localStorage获取access_token和token_type
     const accessToken = localStorage.getItem('access_token')
     const tokenType = localStorage.getItem('token_type')
 
-    console.log(accessToken, tokenType);
-
-    // 检查确保我们有token
     if (accessToken !== undefined && accessToken !== null &&  accessToken !== "accessToken"){
-      // 设置请求的headers
       const authHeader = `Bearer ${accessToken}`
       const backend = process.env.NEXT_PUBLIC_BACK_END
-      // 发起请求
       fetch(backend + '/user-tokens', {
         method: 'GET',
         headers: {
@@ -69,35 +68,34 @@ const UserDetailPage = () => {
           'Content-Type': 'application/json'
         }
       })
-        .then(response => {
-          if (response.ok) {
-            return response.json() // 如果响应是JSON，这里将其解析
-          }
-          throw new Error('Network response was not ok.')
-        })
-        .then(userQuotas => {
-          setUserQuotas(userQuotas) // 将获取的用户数据存储在状态变量中
-        })
-        .catch(error => {
-          console.error('There has been a problem with your fetch operation:', error)
-        })
+          .then(response => {
+            if (response.ok) {
+              return response.json()
+            }
+            throw new Error('Network response was not ok.')
+          })
+          .then(userQuotas => {
+            setUserQuotas(userQuotas)
+          })
+          .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error)
+            ZMessage("获取用户额度失败，请重新登录", {type: "error"})
+            router.push('/')
+          })
     } else {
       console.error('No access token or token type available in localStorage')
+      ZMessage("请重新登录", {type: "error"})
     }
   }
 
-  // 空数组作为第二个参数表示这个effect只在组件挂载时运行一次
+  useEffect(() => {
 
-  useEffect(() => {
-    fetchUserQuta()
+    fetchUserData()
   }, [])
-  const router = useRouter()
-  useEffect(() => {
-    const accessToken = localStorage.getItem('access_token')
-    if (!accessToken) {
-      router.push('/')
-    }
-  }, [router])
+
+
+  useAuthUser()
+
   return (
     <div className='lg:w-3/5 mx-auto p-4 min-h-screen sm:w-screen'>
       <Navbar title={'设置'} />
