@@ -4,7 +4,7 @@ import Navbar from '../../components/navbar'
 import { useCompletion } from 'ai/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import {useAuthUser} from "@/app/lib/hooks/use-auth-user";
+import {useAuthUser} from "../lib/hooks/use-auth-user";
 export default function ThesisProposalGenerator () {
   const [formData, setFormData] = useState({
     title: '',

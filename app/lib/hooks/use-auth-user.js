@@ -11,7 +11,6 @@ export function useAuthUser() {
         if (!accessToken) {
             router.push('/')
         }
-        console.log(accessToken)
     }, [])
 
     const checkToken = () => {
