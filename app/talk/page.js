@@ -66,7 +66,7 @@ export default function Chat() {
         }, onError: (error) => {
             console.log(error.message)
             if (JSON.parse(error.message).code === 401 || JSON.parse(error.message).code === 403){
-                ZMessage(JSON.parse(error.message).error+", 请及时充值！", {type: 'error'})
+                ZMessage(JSON.parse(error.message).error+", 请前往充值页面，及时充值！", {type: 'error'})
             }else {
                 ZMessage(JSON.parse(error.message).error, {type: 'error'})
             }
