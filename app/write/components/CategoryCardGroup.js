@@ -6,7 +6,7 @@ const CategoryCardGroup = ({ categoryTitle, cards }) => {
   return (
     <div >
       <h2 className="text-3xl font-bold my-6 text-center">{categoryTitle}</h2>
-      <div className="flex flex-wrap lg:justify-start sm:justify-center gap-20 p-4 lg:mx-64">
+      <div className="flex flex-wrap lg:justify-start sm:justify-center gap-20 p-4 lg:mx-64 xl:m-52 xl:justify-start xl:gap-15">
         {cards.map((card, index) => (
           <div key={index} className="max-w-xs md:max-w-xs lg:w-1/5 shadow-xl border-white rounded-xl hover:scale-105 transition cursor-pointer" style={{"border": "2px solid white", "background": "linear-gradient(143deg, #f8f9ff, #fbfbff, 0.5)"}}>
             <figure className="px-10 pt-10">

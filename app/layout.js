@@ -28,7 +28,7 @@ export default function RootLayout({children}) {
                 }}
             />
         </head>
-        <body className={inter.className} style={{"background-image": "url('https://www.aixiezuobao.com/img/bg-page.jpeg')", "background-size": "100% 100%", "background-position": "center", "background-repeat": "no-repeat"}}>
+        <body className={inter.className} style={{"backgroundImage": "url('./bg-page.jpeg')", "backgroundSize": "100% 100%", "backgroundPosition": "center", "backgroundRepeat": "no-repeat"}}>
         {children}
         </body>
 

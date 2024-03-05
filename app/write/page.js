@@ -98,7 +98,7 @@ export default function ArticleMenu() {
         link: './write/duilian'
     },{
         title: "AI论文去重",
-        text: "AI论文去重器",
+        text: "AI论文查重是利用人工智能技术来检测和比较文本相似性,识别文本中的重复内容、抄袭行为或者是与已有文献的相似度。",
         imageUrl: "/zhuanyelunwen.png",
         link: './write/gaixie'
     }
@@ -473,7 +473,8 @@ export default function ArticleMenu() {
                 </div>
 
 
-                <div role="tablist" className="tabs tabs-lifted text-center bg-indigo-50 sm:mx-2 rounded lg:mt-28 lg:fixed z-20 lg:-left-10 lg:top-1/2 lg:-translate-y-1/2 lg:rotate-90 transform">
+                <div role="tablist"
+                     className="tabs tabs-lifted text-center bg-indigo-50 sm:mx-2 rounded lg:mt-28 lg:fixed z-20 lg:-left-10 lg:top-1/2 lg:-translate-y-1/2 lg:rotate-90 transform">
                     <a role="tab" className={`tab tabs  ${activeTab === 'tab1' ? 'tab-active' : ''}`}
                        onClick={() => handleTabChange('tab1')}>写作</a>
                     <a role="tab" className={`tab tabs  ${activeTab === 'tab2' ? 'tab-active' : ''}`}
