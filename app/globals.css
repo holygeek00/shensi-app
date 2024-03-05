@@ -54,3 +54,8 @@ table {
     border-spacing: 0;
 }
 
+::-webkit-scrollbar {
+    width: 2px;
+    background-color: #F5F5F5;
+}
+

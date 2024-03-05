@@ -76,7 +76,7 @@ const MessageTemplate = ({message, list, type}) => {
 
     return (<div className="toast toast-top toast-center fixed z-50">
         {list === undefined ? '' : list.map((item, index) => (// eslint-disable-next-line react/jsx-key
-            <div key={index} role="alert" className={`alert shadow-lg alert-${type}`}>
+            <div key={index} role="alert" className={`p-10 alert shadow-lg alert-${type}`}>
                 <span>{item}</span>
             </div>))}
     </div>)

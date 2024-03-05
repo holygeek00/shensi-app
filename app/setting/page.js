@@ -3,7 +3,7 @@
 import Navbar from '../components/navbar'
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import {ZMessage} from "../components/ui/Toast";
+import {ZMessage} from "../components/ui/toast";
 import {useAuthUser} from "../lib/hooks/use-auth-user";
 const UserDetailPage = () => {
 
@@ -36,7 +36,6 @@ const UserDetailPage = () => {
             throw new Error('Network response was not ok.')
           })
           .then(userData => {
-            console.log(userData);
             setUser(userData)
             fetchUserQuta()
           })
@@ -55,7 +54,6 @@ const UserDetailPage = () => {
   function fetchUserQuta () {
     // 从localStorage获取access_token和token_type
     const accessToken = localStorage.getItem('access_token')
-    const tokenType = localStorage.getItem('token_type')
 
     if (accessToken !== undefined && accessToken !== null &&  accessToken !== "accessToken"){
       const authHeader = `Bearer ${accessToken}`

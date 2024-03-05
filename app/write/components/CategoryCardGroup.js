@@ -4,15 +4,15 @@ import Image from 'next/image'
 
 const CategoryCardGroup = ({ categoryTitle, cards }) => {
   return (
-    <div>
+    <div >
       <h2 className="text-3xl font-bold my-6 text-center">{categoryTitle}</h2>
-      <div className="flex flex-wrap justify-center gap-10 m-8 p-4">
+      <div className="flex flex-wrap lg:justify-start sm:justify-center gap-20 p-4 lg:mx-64">
         {cards.map((card, index) => (
-          <div key={index} className="card max-w-xs md:max-w-xs lg:w-1/5 bg-gradient-to-b from-base-200 to-base-400 shadow-xl">
+          <div key={index} className="max-w-xs md:max-w-xs lg:w-1/5 shadow-xl border-white rounded-xl hover:scale-105 transition cursor-pointer" style={{"border": "2px solid white", "background": "linear-gradient(143deg, #f8f9ff, #fbfbff, 0.5)"}}>
             <figure className="px-10 pt-10">
               <Image src={card.imageUrl} alt="logo" className="rounded" width={60} height={60} />
             </figure>
-            <div className="card-body items-center text-center">
+            <div className="card-body items-start text-start leading-normal">
               <h2 className="card-title">{card.title}</h2>
               <p>{card.text}</p>
               <div className="card-actions">

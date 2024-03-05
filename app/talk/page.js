@@ -2,14 +2,14 @@
 
 import {useChat} from 'ai/react'
 import Link from 'next/link'
-import {useEffect, useRef, useState} from 'react'
+import {useCallback, useEffect, useRef, useState} from 'react'
 import Markdown from 'react-markdown'
 import {useRouter} from 'next/navigation'
 import remarkGfm from 'remark-gfm'
 import './page.css'
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github.css';
-import {ZMessage} from "../components/ui/Toast";
+import {ZMessage} from "../components/ui/toast";
 
 export default function Chat() {
     const [isSending, setIsSending] = useState(false) // 新增状态来追踪消息是否正在发送
@@ -64,10 +64,10 @@ export default function Chat() {
         headers: {
             'Authorization': key,
         }, onError: (error) => {
-            console.log(error.message)
-            if (JSON.parse(error.message).code === 401 || JSON.parse(error.message).code === 403){
-                ZMessage(JSON.parse(error.message).error+", 请前往充值页面，及时充值！", {type: 'error'})
-            }else {
+            console.error(error)
+            if (JSON.parse(error.message).code === 401 || JSON.parse(error.message).code === 403) {
+                ZMessage(JSON.parse(error.message).error + ", 请前往充值页面，及时充值！", {type: 'error'})
+            } else {
                 ZMessage(JSON.parse(error.message).error, {type: 'error'})
             }
         }, onFinish: (response) => {
@@ -113,8 +113,6 @@ export default function Chat() {
                 item.messages.push({
                     role: 'assistant', content: response.content
                 })
-                // console.log(item)
-                // console.log(list)
                 window.localStorage.setItem('chatList', JSON.stringify(list))
                 const theme = "github"; // 这里使用 'atom-one-dark' 主题，你可以选择其他主题
                 hljs.configure({

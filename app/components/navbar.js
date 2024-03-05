@@ -4,9 +4,9 @@ import useAuth from './auth' // 导入 useAuth 钩子
 export default function Navbar ({ title }) {
   const { logout } = useAuth()
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar bg-transparent static top-0 left-0 right-0 z-20">
       <div className="flex-1">
-        <a className="btn btn-ghost text-xl">{title}</a>
+        <a className="btn btn-ghost text-xl text-black">{title}</a>
       </div>
       <div className="flex-none gap-2">
 

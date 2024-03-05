@@ -6,7 +6,7 @@ import Image from 'next/image'
 import NavbarIndex from "../components/navbarIndex"
 import {useRouter} from 'next/navigation'
 import CategoryCardGroup from './components/CategoryCardGroup'
-import {ZMessage} from "../components/ui/Toast";
+import {ZMessage} from "../components/ui/toast";
 
 export default function ArticleMenu() {
 
@@ -96,7 +96,12 @@ export default function ArticleMenu() {
         text: "AI对联生成器，根据上联内容自动生成内容呼应、对仗工整的下联",
         imageUrl: "/ddl.png",
         link: './write/duilian'
-    },
+    },{
+        title: "AI论文去重",
+        text: "AI论文去重器",
+        imageUrl: "/zhuanyelunwen.png",
+        link: './write/gaixie'
+    }
 
         // ... 其他教育/文学类卡片
     ]
@@ -289,7 +294,7 @@ export default function ArticleMenu() {
                     ZMessage("验证码发送失败，请稍后再试!", {type: "error"})
                 })
         } else {
-           ZMessage("请输入正确的手机号并同意协议", {type: "error"});
+            ZMessage("请输入正确的手机号并同意协议", {type: "error"});
         }
     }
 
@@ -312,7 +317,8 @@ export default function ArticleMenu() {
                 })
                 .catch((error) => {
                     console.error('Error:', error);
-                    ZMessage(error.message, {type: "error"})
+                    ZMessage("登陆失败，请检查验证码", {type: "error"})
+                    setDisabled(false)
                 })
         } else {
             ZMessage('请输入正确的手机号并同意协议', {type: 'error'})
@@ -378,26 +384,26 @@ export default function ArticleMenu() {
                                            className="block text-sm font-medium leading-6 text-gray-900">
                                         手机号码
                                     </label>
-                                        <input
-                                            id="phone"
-                                            name="phone"
-                                            type="tel"
-                                            value={phone}
-                                            autoComplete="tel"
-                                            onChange={(e) => setPhone(e.target.value)}
-                                            required
-                                            className="w-full h-12 pl-2 pr-2 rounded-md text-gray-900 shadow
+                                    <input
+                                        id="phone"
+                                        name="phone"
+                                        type="tel"
+                                        value={phone}
+                                        autoComplete="tel"
+                                        onChange={(e) => setPhone(e.target.value)}
+                                        required
+                                        className="w-full h-12 pl-2 pr-2 rounded-md text-gray-900 shadow
                                             border-1 focus:border-indigo-300 focus:ring-1 focus:ring-indigo-300
                                             focus:outline-gray-300 placeholder:text-gray-400
                                             sm:text-sm"
-                                        />
+                                    />
                                 </div>
 
                                 <div className="mt-5">
-                                        <label htmlFor="smsCaptcha"
-                                               className="block text-sm font-medium leading-6 text-gray-900">
-                                            验证码
-                                        </label>
+                                    <label htmlFor="smsCaptcha"
+                                           className="block text-sm font-medium leading-6 text-gray-900">
+                                        验证码
+                                    </label>
                                     <div className="mt-2 flex flex-row">
                                         <input
                                             id="smsCaptcha"
@@ -450,9 +456,9 @@ export default function ArticleMenu() {
 
                 </div>
             </dialog>
-            <div className="bg-white w-screen h-screen">
+            <div className="bg-transparent w-screen h-screen overflow-y-scroll">
                 <Navbar title='深斯AI'></Navbar>
-                <div className="flex justify-center">
+                <div className="flex justify-center static left-1/2 z-50">
                     <div role="tablist" className="tabs tabs-boxed my-5">
                         <a role="tab" className="tab tab-active hover:bg-blue-300">AI写作</a>
                         <Link href='./talk' legacyBehavior>
@@ -467,19 +473,19 @@ export default function ArticleMenu() {
                 </div>
 
 
-                <div role="tablist" className="tabs tabs-boxed text-center">
-                    <a role="tab" className={`tab tabs-sm  ${activeTab === 'tab1' ? 'tab-active' : ''}`}
+                <div role="tablist" className="tabs tabs-lifted text-center bg-indigo-50 sm:mx-2 rounded lg:mt-28 lg:fixed z-20 lg:-left-10 lg:top-1/2 lg:-translate-y-1/2 lg:rotate-90 transform">
+                    <a role="tab" className={`tab tabs  ${activeTab === 'tab1' ? 'tab-active' : ''}`}
                        onClick={() => handleTabChange('tab1')}>写作</a>
-                    <a role="tab" className={`tab tabs-sm  ${activeTab === 'tab2' ? 'tab-active' : ''}`}
+                    <a role="tab" className={`tab tabs  ${activeTab === 'tab2' ? 'tab-active' : ''}`}
                        onClick={() => handleTabChange('tab2')}>社媒</a>
 
-                    <a role="tab" className={`tab tabs-sm  ${activeTab === 'tab3' ? 'tab-active' : ''}`}
+                    <a role="tab" className={`tab tabs  ${activeTab === 'tab3' ? 'tab-active' : ''}`}
                        onClick={() => handleTabChange('tab3')}>工作</a>
-                    <a role="tab" className={`tab tabs-sm  ${activeTab === 'tab4' ? 'tab-active' : ''}`}
+                    <a role="tab" className={`tab tabs  ${activeTab === 'tab4' ? 'tab-active' : ''}`}
                        onClick={() => handleTabChange('tab4')}>视频</a>
-                    <a role="tab" className={`tab tabs-sm  ${activeTab === 'tab5' ? 'tab-active' : ''}`}
+                    <a role="tab" className={`tab tabs  ${activeTab === 'tab5' ? 'tab-active' : ''}`}
                        onClick={() => handleTabChange('tab5')}>电商</a>
-                    <a role="tab" className={`tab tabs-sm  ${activeTab === 'tab6' ? 'tab-active' : ''}`}
+                    <a role="tab" className={`tab tabs  ${activeTab === 'tab6' ? 'tab-active' : ''}`}
                        onClick={() => handleTabChange('tab6')}>娱乐</a>
                 </div>
                 {activeTab === 'tab2' && <CategoryCardGroup categoryTitle="社交媒体类" cards={socialMediaCards}/>}
