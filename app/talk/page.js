@@ -65,7 +65,7 @@ export default function Chat() {
             'Authorization': key,
         }, onError: (error) => {
             console.log(error.message)
-            if (JSON.parse(error.message).code === 401){
+            if (JSON.parse(error.message).code === 401 || JSON.parse(error.message).code === 403){
                 ZMessage(JSON.parse(error.message).error, {type: 'error'})
             }
         }, onFinish: (response) => {
