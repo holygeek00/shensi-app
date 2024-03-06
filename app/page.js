@@ -14,10 +14,6 @@ import {useEffect} from "react";
 import {ZMessage} from "./components/ui/toast";
 
 export default function Home() {
-
-    useEffect(() => {
-        ZMessage("Mac Book设置页面显示异常，正在维修...", {type: "error"})
-    }, [])
     return (
         <>
 
