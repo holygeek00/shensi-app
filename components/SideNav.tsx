@@ -32,7 +32,7 @@ export const SideNav = () => {
               onClick={() => onNavigate(route.href)}
               key={route.href}
               className={cn(
-                "border border-input text-foreground text-center text-base group flex p-2 w-full justify-start font-normal cursor-pointer hover:text-primary hover:bg-primary/10 rounded-lg transition",
+                "border border-input.js text-foreground text-center text-base group flex p-2 w-full justify-start font-normal cursor-pointer hover:text-primary hover:bg-primary/10 rounded-lg transition",
                 route.href == "/sign-up" &&
                 "bg-primary/80 text-slate-100 hover:bg-primary hover:text-slate-100"
               )}

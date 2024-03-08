@@ -1,10 +1,11 @@
 'use client'
 import { useChat } from 'ai/react'
-import Navbar from '../components/navbar'
+import Navbar from '../../components/Navbar'
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import Markdown from 'react-markdown'
 import { useRouter } from 'next/navigation'
+import {NavTabLists} from "@/components/nav-tab-lists";
 export default function Chat () {
 
 
@@ -20,7 +21,7 @@ export default function Chat () {
   }, [])
 
   const { messages, input, handleInputChange, handleSubmit } = useChat({
-    api: '/api/image',
+    api: '/api/dalle',
     headers: {
       'Authorization': key,
     },
@@ -39,7 +40,7 @@ export default function Chat () {
   }, [messages])
 
   const handleImageGeneration = async () => {
-    setIsLoading(true) // Start loading when image generation starts
+    setIsLoading(true) // Start loading when dalle generation starts
     try {
       const response = await fetch('/api/image', {
         method: 'POST',
@@ -50,11 +51,11 @@ export default function Chat () {
         body: JSON.stringify({ messages: input })
       })
       const data = await response.json()
-      setImageUrl(data.image_url) // Add new image URL to the array
+      setImageUrl(data.image_url) // Add new dalle URL to the array
     } catch (error) {
-      console.error('Error generating image:', error)
+      console.error('Error generating dalle:', error)
     } finally {
-      setIsLoading(false) // Stop loading after image generation finishes
+      setIsLoading(false) // Stop loading after dalle generation finishes
     }
   }
   // 确保 'messages' 不为空
@@ -66,24 +67,16 @@ export default function Chat () {
   }
 
   return (
-    <div className="bg-white-200">
+    <div className="bg-transparent h-screen">
       <Navbar title='深斯AI'></Navbar>
       <div className="flex justify-center">
         {/* Tabs and other components */}
 
-        <div role="tablist" className="tabs tabs-boxed my-5">
-          <Link href='./write' legacyBehavior>
-            <a role="tab" className="tab hover:bg-blue-300">AI写作</a>
-          </Link>
-          <Link href='./talk' legacyBehavior>
-            <a role="tab" className="tab hover:bg-blue-300">AI对话</a>
-          </Link>
-          <a role="tab" className="tab tab-active hover:bg-blue-300">AI绘画</a>
-        </div>
+        <NavTabLists />
 
       </div>
 
-      <div className="flex flex-col w-full min-h-screen mx-auto bg-white">
+      <div className="flex flex-col w-full mx-auto bg-transparent">
         <div className="flex flex-col flex-grow overflow-auto pb-20">
           <div className="flex flex-col flex-grow overflow-auto pb-20">
 
@@ -101,7 +94,7 @@ export default function Chat () {
                       <div className="mt-8 flow-root sm:mt-16">
                         {imageUrl ? (
                           <div className="-m-2 w-fit rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10  lg:-m-4 lg:rounded-2xl lg:p-4">
-                            <img src={imageUrl} alt={`Generated from AI `} className="mx-auto" />
+                            <img src={imageUrl} alt={`Generated from AI `} className="mx-auton border-none" />
                           </div>
                         ) : (
                           <div className="text-center text-gray-500">
@@ -120,11 +113,11 @@ export default function Chat () {
 
         </div>
 
-        <form onSubmit={handleFormSubmit} className="fixed self-center bottom-0 w-full px-4 pb-4 md:max-w-md   rounded-lg">
+        <form onSubmit={handleFormSubmit} className="fixed self-center bottom-0 w-full px-4 pb-4 md:max-w-md rounded-lg">
           <div className="form-control flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
             <input
               type="text"
-              className="input flex-grow input-bordered h-12 text-lg rounded-3xl px-4" // 使用flex-grow让输入框填满可用空间
+              className="border flex-grow input-bordered focus:outline-0 focus:ring-1 focus:ring-indigo-300 h-12 text-lg rounded px-4" // 使用flex-grow让输入框填满可用空间
               value={input}
               placeholder="输入您的问题"
               onChange={handleInputChange}
@@ -132,7 +125,7 @@ export default function Chat () {
             />
             <button
               type="submit"
-              className="btn w-full md:w-auto h-12 rounded-3xl bg-blue-500 hover:bg-blue-600 text-white" // 将按钮和输入框并排放置
+              className="btn w-full md:w-auto h-12 rounded bg-blue-500 hover:bg-blue-600 text-white" // 将按钮和输入框并排放置
             >
               发 送
             </button>

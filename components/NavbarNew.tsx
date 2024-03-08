@@ -20,7 +20,7 @@ const Navbar = () => {
       <MaxWidthWrapper>
         <div className="flex h-14 items-center justify-between border-b border-zinc-200">
           <Link
-            href="/"
+            href="/public"
             className="flex z-40 justify-center items-center gap-1"
           >
             <Image

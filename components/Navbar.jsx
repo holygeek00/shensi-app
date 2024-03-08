@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import useAuth from './auth' // 导入 useAuth 钩子
+import useAuth from '../lib/auth' // 导入 useAuth 钩子
 export default function Navbar ({ title }) {
   const { logout } = useAuth()
   return (
@@ -39,7 +39,7 @@ export default function Navbar ({ title }) {
               </Link>
             </li>
             <li>
-              <Link href="/" legacyBehavior>
+              <Link href="/public" legacyBehavior>
                 <a onClick={logout}>退出登录</a>
               </Link>
             </li>

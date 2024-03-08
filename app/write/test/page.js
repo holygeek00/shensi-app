@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useRef } from 'react'
 import { useState, useCallback } from 'react'
-import Navbar from '../../components/navbar'
+import Navbar from '../../../components/Navbar'
 import { useChat } from 'ai/react'
 import { useCompletion } from 'ai/react'
 import { useRouter } from 'next/navigation'

@@ -1,17 +1,13 @@
 'use client'
 // pages/landing.js
-import MaxWidthWrapper from "./components/MaxWidthWrapper";
-import {buttonVariants} from "./components/ui/button";
-import {Card, CardDescription, CardTitle} from "./components/ui/card";
-import ChatwootWidget from "./components/chatwoot"
+import MaxWidthWrapper from "../components/MaxWidthWrapper";
+import {buttonVariants} from "../components/ui/button";
+import {Card, CardDescription, CardTitle} from "../components/ui/card";
+import ChatwootWidget from "../components/chatwoot"
 import Link from "next/link";
 import Image from "next/image";
-import {cn} from "./lib/utils";
-import Footer from "./components/Footer";
-import NavbarNew from "./components/NavbarNew";
-import Head from 'next/head';
-import {useEffect} from "react";
-import {ZMessage} from "./components/ui/toast";
+import {cn} from "../lib/utils";
+import Footer from "../components/Footer";
 
 export default function Home() {
     return (
@@ -28,7 +24,7 @@ export default function Home() {
                     </p>
                 </div>
 
-                <h1 className="max-w-4xl text-5xl font-bold md:text-6xl lg:text-7xl">
+                <h1 className="max-w-4xl text-5xl font-bold md:text-6xl lg:text-7xl xl:text-7xl">
                     <span className="text-blue-600">深斯</span> AI
                 </h1>
 

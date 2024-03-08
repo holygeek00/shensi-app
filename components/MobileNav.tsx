@@ -5,8 +5,8 @@ import {
   SheetContent,
   SheetTrigger,
   SheetClose,
-} from "../components/ui/sheet";
-import { SideNav } from "../components/SideNav";
+} from "./ui/sheet";
+import { SideNav } from "./SideNav";
 import {useEffect} from "react";
 
 export const MobileNav = () => {

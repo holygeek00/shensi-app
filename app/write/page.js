@@ -1,12 +1,13 @@
 'use client'
 import React, {useEffect, useState} from "react"
 import Link from 'next/link'
-import Navbar from "../components/navbar"
+import Navbar from "@/components/Navbar"
 import Image from 'next/image'
-import NavbarIndex from "../components/navbarIndex"
+import NavbarIndex from "@/components/NavbarIndex"
 import {useRouter} from 'next/navigation'
-import CategoryCardGroup from './components/CategoryCardGroup'
-import {ZMessage} from "../components/ui/toast";
+import CategoryCardGroup from '@/components/CategoryCardGroup'
+import {ZMessage} from "@/components/ui/toast";
+import {NavTabLists} from '@/components/nav-tab-lists'
 
 export default function ArticleMenu() {
 
@@ -96,11 +97,11 @@ export default function ArticleMenu() {
         text: "AI对联生成器，根据上联内容自动生成内容呼应、对仗工整的下联",
         imageUrl: "/ddl.png",
         link: './write/duilian'
-    },{
+    }, {
         title: "AI论文去重",
         text: "AI论文查重是利用人工智能技术来检测和比较文本相似性,识别文本中的重复内容、抄袭行为或者是与已有文献的相似度。",
         imageUrl: "/zhuanyelunwen.png",
-        link: './write/gaixie'
+        link: './write/chachong'
     }
 
         // ... 其他教育/文学类卡片
@@ -238,14 +239,13 @@ export default function ArticleMenu() {
 
     let [smsCaptcha, setSmsCaptcha] = useState('');
 
-    let [smsCaptchaDisabled, setSmsCaptchaDisabled] = useState(false);
-
     // 禁用按钮属性
     const [disabled, setDisabled] = useState(false);
 
     let [agreement, setAgreement] = useState(false);
 
-    let [smsCaptchaCountDown, setSmsCaptchaCountDown] = useState(60);
+    const [isDisabled, setSmsCaptchaDisabled] = useState(false);
+    const [countDown, setSmsCaptchaCountDown] = useState(60);
 
     const handleTabChange = (tabId) => {
         setActiveTab(tabId)
@@ -264,37 +264,54 @@ export default function ArticleMenu() {
         }
     }, [router]);
 
+    useEffect(() => {
+        let interval;
+        if (isDisabled) {
+            interval = setInterval(() => {
+                setSmsCaptchaCountDown((prevCount) => {
+                    if (prevCount <= 1) {
+                        clearInterval(interval);
+                        setSmsCaptchaDisabled(false);
+                        return 60; // 重置倒计时
+                    } else {
+                        return prevCount - 1;
+                    }
+                });
+            }, 1000);
+        }
+
+        // 组件卸载时清除定时器
+        return () => {
+            if (interval) {
+                clearInterval(interval);
+            }
+        };
+    }, [isDisabled]); // 依赖项数组中包含isDisabled，这意味着useEffect会在isDisabled变化时重新执行
+
     const sendSmsCaptcha = () => {
         if (phone && agreement) {
-
-            setSmsCaptchaDisabled(true);
-            let count = 60;
-            // 显示消息验证码倒计时
-            let interval = setInterval(function () {
-                if (count < 0) {
-                    clearInterval(interval);
-                    setSmsCaptchaCountDown("发送验证码");
-                    setSmsCaptchaDisabled(false);
-                } else {
-                    setSmsCaptchaCountDown(count);
-                    count--;
-                }
-            }, 1000);
-            fetch(process.env.NEXT_PUBLIC_BACK_END + '/users/send_verify_code?mobile=' + phone, {
-                method: 'POST', headers: {
-                    'Content-Type': 'application/json',
-                }
-            })
-                .then(response => response.json())
-                .then(data => {
-                    ZMessage("验证码发送成功，请注意查收!", {type: "info"})
+            // 匹配手机号的正则
+            const phoneRegex = /^1[3-9]\d{9}$/;
+            if (phoneRegex.test(phone)) {
+                setSmsCaptchaDisabled(true)
+                fetch(process.env.NEXT_PUBLIC_BACK_END + '/users/send_verify_code?mobile=' + phone, {
+                    method: 'POST', headers: {
+                        'Content-Type': 'application/json',
+                    }
                 })
-                .catch((error) => {
-                    console.error('Error:', error);
-                    ZMessage("验证码发送失败，请稍后再试!", {type: "error"})
-                })
+                    .then(response => response.json())
+                    .then(data => {
+                       window.alert("验证码发送成功，请注意查收!")
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                        window.alert("验证码发送失败，请稍后再试!")
+                    })
+            } else {
+                alert('请输入有效的手机号码');
+            }
         } else {
-            ZMessage("请输入正确的手机号并同意协议", {type: "error"});
+            window.alert("请输入正确的手机号并同意协议");
         }
     }
 
@@ -312,16 +329,16 @@ export default function ArticleMenu() {
                 .then(data => {
                     window.localStorage.setItem('access_token', data.token.access_token);
                     document.getElementById('my_modal_1').close();
-                    ZMessage('登录成功', {type: "success"})
+                    window.alert('登录成功')
                     fetchUserData();
                 })
                 .catch((error) => {
                     console.error('Error:', error);
-                    ZMessage("登陆失败，请检查验证码", {type: "error"})
+                    window.alert("登陆失败，请检查验证码")
                     setDisabled(false)
                 })
         } else {
-            ZMessage('请输入正确的手机号并同意协议', {type: 'error'})
+            window.alert('请输入正确的手机号并同意协议')
         }
     }
 
@@ -415,8 +432,8 @@ export default function ArticleMenu() {
                                             className="w-full lg:w-4/6 sm:3/5 pl-2 rounded-md border-0 py-1.5 text-gray-900 shadow focus:outline-gray-300 placeholder:text-gray-400 focus:border-x-2 focus:border-y-2 focus:border-blue-300 sm:text-sm sm:leading-6"
                                         />
                                         <button className="btn lg:w-2/6 md:2/5 sm:w-2/5 ml-2"
-                                                onClick={sendSmsCaptcha} disabled={smsCaptchaDisabled}>
-                                            {smsCaptchaDisabled ? <span>{smsCaptchaCountDown}秒后重试</span> :
+                                                onClick={sendSmsCaptcha} disabled={isDisabled}>
+                                            {isDisabled ? <span>{countDown}秒后重试</span> :
                                                 <span>发送验证码</span>}
                                         </button>
                                     </div>
@@ -458,21 +475,8 @@ export default function ArticleMenu() {
             </dialog>
             <div className="bg-transparent w-screen h-screen overflow-y-scroll">
                 <Navbar title='深斯AI'></Navbar>
-                <div className="flex justify-center static left-1/2 z-50">
-                    <div role="tablist" className="tabs tabs-boxed my-5">
-                        <a role="tab" className="tab tab-active hover:bg-blue-300">AI写作</a>
-                        <Link href='./talk' legacyBehavior>
-                            <a role="tab" className="tab hover:bg-blue-300">AI对话</a>
-                        </Link>
 
-                        <Link href='./image' legacyBehavior>
-                            <a role="tab" className="tab hover:bg-blue-300">AI绘画</a>
-                        </Link>
-
-                    </div>
-                </div>
-
-
+                <NavTabLists/>
                 <div role="tablist"
                      className="tabs tabs-lifted text-center bg-indigo-50 sm:mx-2 rounded lg:mt-28 lg:fixed z-20 lg:-left-10 lg:top-1/2 lg:-translate-y-1/2 lg:rotate-90 transform">
                     <a role="tab" className={`tab tabs  ${activeTab === 'tab1' ? 'tab-active' : ''}`}

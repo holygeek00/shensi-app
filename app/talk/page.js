@@ -9,7 +9,8 @@ import remarkGfm from 'remark-gfm'
 import './page.css'
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github.css';
-import {ZMessage} from "../components/ui/toast";
+import {ZMessage} from "../../components/ui/toast";
+import {NavTabLists} from "@/components/nav-tab-lists";
 
 export default function Chat() {
     const [isSending, setIsSending] = useState(false) // 新增状态来追踪消息是否正在发送
@@ -22,17 +23,21 @@ export default function Chat() {
     let shensi_ai_chat = {
         state: {
             chats: [{
-                id: "12345", title: "新对话-" + new Date().toLocaleString(), messages: [{
+                id: "12345", title: "新对话-" + new Date().toLocaleString(),
+                messages: [{
                     role: "assistant",
                     content: "I am ChatGPT, a large language model trained by OpenAI. Carefully heed the user's instructions. Respond using Markdown."
-                }], config: {
+                }],
+                config: {
                     model: "gpt-4-turbo",
                     max_tokens: 4000,
                     temperature: 1,
                     presence_penalty: 0,
                     top_p: 1,
                     frequency_penalty: 0
-                }, titleSet: false, currentState: true
+                },
+                titleSet: false,
+                currentState: true
             }]
         }, version: 1
     }
@@ -46,14 +51,13 @@ export default function Chat() {
 
         let chatList = JSON.parse(window.localStorage.getItem("chatList"))
 
-        // console.log(chatList)
-
         if (chatList !== null || chatList != undefined) {
 
             shensi_ai_chat = chatList;
             // 设置消息
             setMessages(chatList.state.chats.at(-1).messages)
             setChatList(chatList)
+            setStateId(chatList.state.chats.at(-1).id)
         } else {
             setChatList(shensi_ai_chat)
             window.localStorage.setItem("chatList", JSON.stringify(shensi_ai_chat))
@@ -62,7 +66,7 @@ export default function Chat() {
 
     const {messages, input, handleInputChange, handleSubmit, setMessages} = useChat({
         headers: {
-            'Authorization': key,
+            'authorization': key,
         }, onError: (error) => {
             console.error(error)
             if (JSON.parse(error.message).code === 401 || JSON.parse(error.message).code === 403) {
@@ -73,14 +77,9 @@ export default function Chat() {
         }, onFinish: (response) => {
             // 在每次有新的消息时，将它们存储到 localStorage 中
             let list = JSON.parse(window.localStorage.getItem("chatList"));
-            // console.log(list)
+            console.log(list)
             let item = null;
             if (list === null) {
-
-                // let item = shensi_ai_chat.state.chats.find(item => item.id === statusId)
-
-                // console.log(shensi_ai_chat)
-                //拿到数组最后一个元素
                 if (stateId === '') {
                     item = shensi_ai_chat.state.chats.at(-1)
                     // console.log(stateId)
@@ -113,15 +112,8 @@ export default function Chat() {
                 item.messages.push({
                     role: 'assistant', content: response.content
                 })
+
                 window.localStorage.setItem('chatList', JSON.stringify(list))
-                const theme = "github"; // 这里使用 'atom-one-dark' 主题，你可以选择其他主题
-                hljs.configure({
-                    tabReplace: "    ", // 使用 4 个空格替换制表符
-                    useBR: false, // 使用 <br> 标签替换换行符
-                    languages: [], // 指定要支持的语言，留空表示支持所有语言
-                    theme: theme, // 设置主题色
-                });
-                hljs.highlightAll();
             }
         }, onResponse: (response) => {
 
@@ -180,63 +172,108 @@ export default function Chat() {
         } else {
             window.localStorage.setItem('chatList', JSON.stringify(shensi_ai_chat))
             setChatList(shensi_ai_chat)
-            // 设置最后一个元素的文本颜色为text-blue-500
-            const chatbox = document.querySelectorAll('.chatbox');
-            chatbox[chatbox.length - 1].classList.add('text-blue-500')
+            const elementNodeListOf = document.querySelectorAll('.chatbox');
+            elementNodeListOf[elementNodeListOf.length - 1].classList.add('text-blue-500')
         }
     }
 
+    const submit = (e) => {
+        if (e.key === "Enter") {
+            if (input === '') {
+                console.log("input is empty")
+                return
+            } else {
+                handleSubmit(e)
+            }
+        }
+    }
+
+    const clearHistory = () => {
+        const chatLists = JSON.parse(window.localStorage.getItem('chatList'));
+        // 根据传入的id删除当前对话
+        chatLists.state.chats.map((item, index) => {
+            if (item.id === stateId) {
+                item.messages = [{
+                    role: "assistant",
+                    content: "I am ChatGPT, a large language model trained by OpenAI. Carefully heed the user's instructions. Respond using Markdown."
+                }]
+            }
+        })
+
+        // 更新localStorage中的chatList
+        window.localStorage.setItem('chatList', JSON.stringify(chatLists));
+        // 更新chatList状态
+        setChatList(chatLists)
+    }
+
     useEffect(() => {
-        const theme = "atom-one-dark"; // 这里使用 'atom-one-dark' 主题，你可以选择其他主题
-        hljs.configure({
-            tabReplace: "    ", useBR: false, languages: []
-        });
-        hljs.highlightAll();
         // 每次添加新的对话内容时，自动将滚动条移动到页面的底部。
         if (endOfMessagesRef.current !== null) {
             endOfMessagesRef.current.scrollTop = endOfMessagesRef.current.scrollHeight;
             endOfMessagesRef.current.scrollIntoView({behavior: "smooth"});
         }
 
+        return () => {
+            hljs.highlightAll()
+        }
+
     }, [shensi_ai_chat])
 
     useEffect(() => {
-        if (chatBoxRef.current !== null) {
-            chatBoxRef.current.classList.add('text-blue-500')
+        const chatbox = document.getElementsByClassName('chatbox')
+        if (chatbox !== null) {
+            if (stateId !== null) {
+                [...chatbox].map((item, index) => {
+                    if (item.id === stateId) {
+                        item.classList.add('text-blue-500')
+                    } else {
+                        item.classList.remove('text-blue-500')
+                    }
+                })
+            } else {
+                //选择最后一个
+                [...chatbox].at(-1).classList.add('text-blue-500')
+            }
         }
     }, [chatList])
+
+    useEffect(() => {
+        document.getElementById("userInput").addEventListener("keydown", submit);
+
+        return () => {
+            let input = document.getElementById("userInput")
+            if (input !== null) input.removeEventListener("keydown", submit);
+        }
+    }, [input])
 
     return (<div className="bg-white w-screen h-screen overflow-hidden">
             {/*tab lists*/}
             <div className="fixed left-1/2 transform -translate-x-1/2 z-20 lg:my-2">
-                <div role="tablist" className="tabs tabs-boxed w-96">
-                    <Link href='./write' legacyBehavior>
-                        <a role="tab" className="tab hover:bg-blue-200">AI写作</a>
-                    </Link>
-                    <a role="tab" className="tab tab-active hover:bg-blue-200">AI对话</a>
-                    <Link href='./image' legacyBehavior>
-                        <a role="tab" className="tab hover:bg-blue-200">AI绘画</a>
-                    </Link>
-                </div>
+                <NavTabLists />
             </div>
 
-            <div className="w-full h-full mx-auto bg-white overflow-y-scroll flex flex-row">
+            <div onSubmit={submit} className="w-full h-full mx-auto bg-white overflow-y-scroll flex flex-row">
                 <div
                     className="2xl:w-[300px] xl:w-[300px] lg:w-[300px] md:w-[300px] sm:hidden md:block rounded h-screen overflow-y-scroll"
                     style={{"background": "#f0f4f9"}}>
                     <div className="flex flex-col">
                         <div className="w-full p-2">
-                            <div className="btn rounded-lg w-full shadow-white-100"
-                                 onClick={createChat}>新建对话
+                            <div
+                                className="btn rounded-lg w-full btn-outline bg-gray-300 border-s-4 hover:border-gray-500 hover:text-black-100"
+                                onClick={createChat}>新建对话
                             </div>
                         </div>
                         <div className="flex flex-col overflow-x-hidden p-2 pb-20 h-full">
                             {// 渲染对话列表
                                 chatList !== undefined ? chatList.state.chats.map(item => (// eslint-disable-next-line react/jsx-key
-                                    <div ref={chatBoxRef} key={item.id} id={item.id}
-                                         className="chatbox active:bg-blue-200 border-lime-200 border-b-gray-50 bg-white p-5 m-2 rounded hover:bg-blue-200 cursor-pointer shadow-accent-content"
+                                    <div key={item.id} id={item.id}
+                                         className="chatbox active:bg-blue-200 border-lime-200 border-b-gray-50 bg-white p-5 rounded-2xl m-2 rounded hover:bg-blue-200 cursor-pointer shadow-accent-content"
                                          onClick={handleHistoryChat}>
                                         {item.title}
+                                        {/*<div className="mt-2">*/}
+                                        {/*    <button className="btn btn-sm btn-info mr-1">Deny</button>*/}
+                                        {/*    <button className="btn btn-sm mr-1">Accept</button>*/}
+                                        {/*</div>*/}
                                     </div>)) : <div key={Math.random()}
                                                     className="bg-gray-200 p-5 m-2 rounded font-bold">没有对话</div>}
                         </div>
@@ -245,7 +282,7 @@ export default function Chat() {
                 <div
                     id="chat"
                     className="sm:w-screen lg:w-1/2 lg:ml-[200px] md:w-full md:ml-[100px] translate-y-10 lg:p-10 sm:py-2 sm:my-10 rounded overflow-y-scroll">
-                    <div className="md:w-full h-100 pl-100 pb-20">
+                    <div className="md:w-full h-100 pl-100 pb-36">
                         {messages ? messages.map(m => (<div key={Math.random().toString()}
                                                             className="bg-white md:w-2/3 lg:w-full  self-center m-2">
                             <div className={m.role === 'user' ? "leading-normal" : ""}>
@@ -260,35 +297,37 @@ export default function Chat() {
                                     </Markdown>
                                 </div>
                             </div>
-                        </div>)) : (<div>加载中...</div>)}
+                        </div>)) : (<div>加载中...</div>)
+                        }
                     </div>
                     <div ref={endOfMessagesRef}/>
                 </div>
             </div>
             <div
-                className="lg:w-1/3 sm:w-full fixed left-1/2 right-1/2 bottom-2 -translate-x-1/2 flex flex-row items-center justify-center">
-                <div className="lg:w-11/12 sm:w-3/5">
-                    <input
+                className="lg:w-1/3 sm:w-full fixed left-1/2 right-1/2 bottom-2 -translate-x-1/2 flex flex-col items-start justify-center">
+                <div className="lg:w-full sm:w-3/5">
+                    <textarea
                         type="text"
                         name=""
                         id="userInput"
                         value={input}
                         onChange={handleInputChange}
                         placeholder="输入您的问题"
-                        className="lg:w-full lg:p-3.5 bg-white text-gray-700 border border-gray-300 rounded-md
+                        className="lg:w-full lg:p-3.5 lg:h-20 bg-white text-gray-700 border border-gray-300 rounded-md
                                                   focus:border-indigo-500 focus:ring-indigo-500 p-3
                                                   transition duration-150 ease-in-out focus:outline-none"
                     />
                 </div>
-                <div className="w-20">
+                <div className="w-52 flex flex-row justify-evenly">
                     <button
                         id="sendButton"
                         type="button"
                         onClick={handleSubmit}
-                        className="btn btn-info md:w-auto h-12 ml-2 rounded-md bg-blue-500 hover:bg-blue-600 text-white"
+                        className="btn md:w-auto h-12 ml-2 rounded-md bg-blue-500 hover:bg-indigo-500 text-white"
                     >
                         {isSending ? 'AI生成中...' : '发 送'} {/* 按钮文本根据发送状态变化 */}
                     </button>
+                    <button onClick={clearHistory} className="btn text-white bg-black">清除当前对话</button>
                 </div>
             </div>
         </div>

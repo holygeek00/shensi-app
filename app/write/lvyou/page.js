@@ -1,6 +1,6 @@
 'use client'
 import React, { useState, useCallback, useEffect } from 'react'
-import Navbar from '../../components/navbar'
+import Navbar from '../../../components/Navbar'
 import { useCompletion } from 'ai/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'

@@ -1,5 +1,7 @@
 import TerserPlugin from 'terser-webpack-plugin'
+import path from "path";
 
+const __dirname = path.resolve();
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 
@@ -39,6 +41,9 @@ const nextConfig = {
             }
         }
 
+        config.resolve.alias['@/components']= path.resolve(__dirname, 'components');
+        config.resolve.alias['@styles']= path.resolve(__dirname, 'styles');
+        config.resolve.alias['@/lib']= path.resolve(__dirname, 'lib');
         return config;
     },
 }
