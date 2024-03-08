@@ -99,7 +99,7 @@ export default function AcademicPaperGenerator() {
                             <option className="disabled select">请选择对文本更改的方式</option>
                             <option value="删除或合并重复或冗余的部分">删除或合并重复或冗余的部分</option>
                             <option value="改变词语和句子的表达方式">改变词语和句子的表达方式</option>
-                            <option value="修改文章结构">修改论文结构</option>
+                            <option value="修改文章结构">修改文章结构</option>
                             <option value="削减内容">削减内容</option>
                             <option value="使用引用和注释">使用引用和注释</option>
                         </select>
