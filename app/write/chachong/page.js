@@ -12,6 +12,8 @@ export default function AcademicPaperGenerator() {
         title: '',
         keywords: '',
     })
+
+    const {checkToken} = useAuthUser()
     const [isGenerating, setIsGenerating] = useState(false)
 
     const [paperContent, setPaperContent] = useState('')
@@ -42,7 +44,7 @@ export default function AcademicPaperGenerator() {
 
     const router = useRouter()
     useEffect(() => {
-        useAuthUser().checkToken(router)
+        checkToken(router)
     }, [router])
 
     const checkAndPublish = useCallback(async () => {
