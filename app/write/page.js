@@ -301,7 +301,7 @@ export default function ArticleMenu() {
                 })
                     .then(response => response.json())
                     .then(data => {
-                       window.alert("验证码发送成功，请注意查收!")
+                        window.alert("验证码发送成功，请注意查收!")
                     })
                     .catch((error) => {
                         console.error('Error:', error);
@@ -475,8 +475,7 @@ export default function ArticleMenu() {
             </dialog>
             <div className="bg-transparent w-screen h-screen overflow-y-scroll">
                 <Navbar title='深斯AI'></Navbar>
-
-                <NavTabLists/>
+                <NavTabLists />
                 <div role="tablist"
                      className="tabs tabs-lifted text-center bg-indigo-50 sm:mx-2 rounded lg:mt-28 lg:fixed z-20 lg:-left-10 lg:top-1/2 lg:-translate-y-1/2 lg:rotate-90 transform">
                     <a role="tab" className={`tab tabs  ${activeTab === 'tab1' ? 'tab-active' : ''}`}

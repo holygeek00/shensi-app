@@ -22,8 +22,8 @@ export function NavTabLists() {
 
 
     return (
-        <div className="flex justify-center">
-            <div role="tablist" className="tabs tabs-boxed my-5">
+        <div className="flex justify-center static left-1/2 z-50 mb-20">
+            <div role="tablist" className="sm:fixed sm:w-fit tabs tabs-boxed my-5 fixed z-50">
                 {tabList.map(tab => (
                     <Link
                         id={tab.id}
@@ -34,7 +34,8 @@ export function NavTabLists() {
                         <a role="tab" onClick={event => {
                             event.preventDefault();
                             router.push(tab.link)
-                        }} className={clsx("tab hover:bg-blue-300", {['tab-active']: pathname === tab.link})}>{tab.name}</a>
+                        }}
+                           className={clsx("tab hover:bg-blue-300", {['tab-active']: pathname === tab.link})}>{tab.name}</a>
                     </Link>
                 ))}
                 {/*<Link href='/talk' legacyBehavior>*/}

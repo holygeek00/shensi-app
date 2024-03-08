@@ -248,9 +248,7 @@ export default function Chat() {
 
     return (<div className="bg-white w-screen h-screen overflow-hidden">
             {/*tab lists*/}
-            <div className="fixed left-1/2 transform -translate-x-1/2 z-20 lg:my-2">
                 <NavTabLists />
-            </div>
 
             <div onSubmit={submit} className="w-full h-full mx-auto bg-white overflow-y-scroll flex flex-row">
                 <div
@@ -304,8 +302,8 @@ export default function Chat() {
                 </div>
             </div>
             <div
-                className="lg:w-1/3 sm:w-full fixed left-1/2 right-1/2 bottom-2 -translate-x-1/2 flex flex-col items-start justify-center">
-                <div className="lg:w-full sm:w-3/5">
+                className="lg:w-1/3 sm:w-screen fixed lg:left-1/2 lg:right-1/2 bottom-2 lg:-translate-x-1/2 flex flex-col justify-start">
+                <div className="lg:w-full sm:w-11/12 sm:m-auto">
                     <textarea
                         type="text"
                         name=""
@@ -313,17 +311,17 @@ export default function Chat() {
                         value={input}
                         onChange={handleInputChange}
                         placeholder="输入您的问题"
-                        className="lg:w-full lg:p-3.5 lg:h-20 bg-white text-gray-700 border border-gray-300 rounded-md
+                        className="lg:w-full lg:p-3.5 lg:h-20 bg-white sm:w-full text-gray-700 border border-gray-300 rounded
                                                   focus:border-indigo-500 focus:ring-indigo-500 p-3
                                                   transition duration-150 ease-in-out focus:outline-none"
                     />
                 </div>
-                <div className="w-52 flex flex-row justify-evenly">
+                <div className="w-52 lg:m-0 sm:w-11/12 sm:m-auto flex flex-row justify-start mt-2">
                     <button
                         id="sendButton"
                         type="button"
                         onClick={handleSubmit}
-                        className="btn md:w-auto h-12 ml-2 rounded-md bg-blue-500 hover:bg-indigo-500 text-white"
+                        className="btn md:w-auto h-12 rounded-md bg-blue-500 hover:bg-indigo-500 text-white"
                     >
                         {isSending ? 'AI生成中...' : '发 送'} {/* 按钮文本根据发送状态变化 */}
                     </button>
