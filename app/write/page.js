@@ -475,10 +475,16 @@ export default function ArticleMenu() {
             </dialog>
             <div className="bg-transparent w-screen h-screen overflow-y-scroll">
                 <Navbar title='深斯AI'></Navbar>
-                <NavTabLists />
+                <div className="flex justify-center z-50">
+                    <NavTabLists tabList={[
+                        {id: 1, name: 'AI写作', link: '/write'},
+                        {id: 2, name: 'AI对话', link: '/talk'},
+                        {id: 3, name: 'AI绘画', link: '/dalle'},
+                    ]}/>
+                </div>
                 <div role="tablist"
                      className="tabs tabs-lifted text-center bg-indigo-50 sm:mx-2 rounded lg:mt-28 lg:fixed z-20 lg:-left-10 lg:top-1/2 lg:-translate-y-1/2 lg:rotate-90 transform">
-                    <a role="tab" className={`tab tabs  ${activeTab === 'tab1' ? 'tab-active' : ''}`}
+                    <a role="tab" className={`tab tabs w-20  ${activeTab === 'tab1' ? 'tab-active' : ''}`}
                        onClick={() => handleTabChange('tab1')}>写作</a>
                     <a role="tab" className={`tab tabs  ${activeTab === 'tab2' ? 'tab-active' : ''}`}
                        onClick={() => handleTabChange('tab2')}>社媒</a>

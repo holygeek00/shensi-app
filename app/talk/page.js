@@ -77,7 +77,6 @@ export default function Chat() {
         }, onFinish: (response) => {
             // 在每次有新的消息时，将它们存储到 localStorage 中
             let list = JSON.parse(window.localStorage.getItem("chatList"));
-            console.log(list)
             let item = null;
             if (list === null) {
                 if (stateId === '') {
@@ -197,13 +196,13 @@ export default function Chat() {
                     role: "assistant",
                     content: "I am ChatGPT, a large language model trained by OpenAI. Carefully heed the user's instructions. Respond using Markdown."
                 }]
+                setMessages(item.messages)
             }
         })
 
         // 更新localStorage中的chatList
         window.localStorage.setItem('chatList', JSON.stringify(chatLists));
-        // 更新chatList状态
-        setChatList(chatLists)
+        console.log(chatLists)
     }
 
     useEffect(() => {
@@ -247,8 +246,14 @@ export default function Chat() {
     }, [input])
 
     return (<div className="bg-white w-screen h-screen overflow-hidden">
-            {/*tab lists*/}
-                <NavTabLists />
+
+            <div className="flex justify-center sticky top-0 left-1/2 z-50 mb-20 pointer-events-none">
+                <NavTabLists tabList={[
+                    {id: 1, name: 'AI写作', link: '/write'},
+                    {id: 2, name: 'AI对话', link: '/talk'},
+                    {id: 3, name: 'AI绘画', link: '/dalle'},
+                ]}/>
+            </div>
 
             <div onSubmit={submit} className="w-full h-full mx-auto bg-white overflow-y-scroll flex flex-row">
                 <div

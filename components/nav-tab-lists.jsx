@@ -6,13 +6,7 @@ import {cn} from "classnames";
 import {clsx} from "clsx";
 import {useRouter, usePathname} from "next/navigation";
 
-export function NavTabLists() {
-
-    const tabList = [
-        {id: 1, name: 'AI写作', link: '/write'},
-        {id: 2, name: 'AI对话', link: '/talk'},
-        {id: 3, name: 'AI绘画', link: '/dalle'},
-    ];
+export function NavTabLists({tabList}){
 
     const router = useRouter()
     const pathname = usePathname()
@@ -22,8 +16,7 @@ export function NavTabLists() {
 
 
     return (
-        <div className="flex justify-center static left-1/2 z-50 mb-20">
-            <div role="tablist" className="sm:fixed sm:w-fit tabs tabs-boxed my-5 fixed z-50">
+            <div role="tablist" className="sm:w-fit tabs tabs-boxed my-5">
                 {tabList.map(tab => (
                     <Link
                         id={tab.id}
@@ -45,8 +38,6 @@ export function NavTabLists() {
                 {/*<Link href='/dalle' legacyBehavior>*/}
                 {/*    <a role="tab" className="tab hover:bg-blue-300">AI绘画</a>*/}
                 {/*</Link>*/}
-
             </div>
-        </div>
     )
 }
