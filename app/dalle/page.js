@@ -70,7 +70,7 @@ export default function Chat() {
         <div className="bg-transparent h-screen">
             <Navbar title='深斯AI'></Navbar>
             <div className="flex justify-center">
-                <div className="flex justify-center sticky top-0 left-1/2 z-50 mb-20">
+                <div className="flex justify-center absolute left-1/2 -translate-x-1/2 mb-20">
                     <NavTabLists tabList={[
                         {id: 1, name: 'AI写作', link: '/write'},
                         {id: 2, name: 'AI对话', link: '/talk'},

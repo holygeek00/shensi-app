@@ -475,7 +475,7 @@ export default function ArticleMenu() {
             </dialog>
             <div className="bg-transparent w-screen h-screen overflow-y-scroll">
                 <Navbar title='深斯AI'></Navbar>
-                <div className="flex justify-center z-50">
+                <div className="flex justify-center my-5">
                     <NavTabLists tabList={[
                         {id: 1, name: 'AI写作', link: '/write'},
                         {id: 2, name: 'AI对话', link: '/talk'},
