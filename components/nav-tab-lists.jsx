@@ -16,7 +16,7 @@ export function NavTabLists({tabList}){
 
 
     return (
-            <div role="tablist" className="sm:w-fit tabs tabs-boxed my-5">
+            <div role="tablist" className="lg:w-full sm:w-fit tabs tabs-boxed my-5">
                 {tabList.map(tab => (
                     <Link
                         id={tab.id}

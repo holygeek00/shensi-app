@@ -247,7 +247,7 @@ export default function Chat() {
 
     return (<div className="bg-white w-screen h-screen overflow-hidden">
 
-            <div className="flex justify-center sticky top-0 left-1/2 z-50 mb-20 pointer-events-none">
+            <div className="flex justify-center absolute left-1/2 mb-20">
                 <NavTabLists tabList={[
                     {id: 1, name: 'AI写作', link: '/write'},
                     {id: 2, name: 'AI对话', link: '/talk'},
