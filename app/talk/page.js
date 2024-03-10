@@ -26,7 +26,7 @@ export default function Chat() {
                 id: "12345", title: "新对话-" + new Date().toLocaleString(),
                 messages: [{
                     role: "assistant",
-                    content: "I am ChatGPT, a large language model trained by OpenAI. Carefully heed the user's instructions. Respond using Markdown."
+                    content: "我是深斯AI对话助手, 请问有什么可以帮助你的吗？ "
                 }],
                 config: {
                     model: "gpt-4-turbo",
@@ -155,7 +155,7 @@ export default function Chat() {
                 title: "新对话-" + new Date().toLocaleString(),
                 messages: [{
                     role: "assistant",
-                    content: "I am ChatGPT, a large language model trained by OpenAI. Carefully heed the user's instructions. Respond using Markdown."
+                    content: "我是深斯AI对话助手, 请问有什么可以帮助你的吗？ "
                 }]
             })
             window.localStorage.setItem('chatList', JSON.stringify(list))
@@ -194,7 +194,7 @@ export default function Chat() {
             if (item.id === stateId) {
                 item.messages = [{
                     role: "assistant",
-                    content: "I am ChatGPT, a large language model trained by OpenAI. Carefully heed the user's instructions. Respond using Markdown."
+                    content: "我是深斯AI对话助手, 请问有什么可以帮助你的吗？ "
                 }]
                 setMessages(item.messages)
             }
@@ -247,7 +247,7 @@ export default function Chat() {
 
     return (<div className="bg-white w-screen h-screen overflow-hidden">
 
-            <div className="flex justify-center absolute left-1/2 -translate-x-1/2 mb-20">
+            <div className="flex justify-center w-full my-5 absolute left-1/2 -translate-x-1/2 mb-20">
                 <NavTabLists tabList={[
                     {id: 1, name: 'AI写作', link: '/write'},
                     {id: 2, name: 'AI对话', link: '/talk'},
