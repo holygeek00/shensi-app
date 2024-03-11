@@ -66,7 +66,8 @@ export default function Chat() {
 
     const {messages, input, handleInputChange, handleSubmit, setMessages} = useChat({
         headers: {
-            'authorization': key,
+            'Authorization': key,
+            'Content-Type': 'application/json'
         }, onError: (error) => {
             console.error(error)
             if (JSON.parse(error.message).code === 401 || JSON.parse(error.message).code === 403) {

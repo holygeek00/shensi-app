@@ -9,8 +9,8 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
-    // return GPT4(req)
-    return gpt3(req)
+    return GPT4(req)
+    // return gpt3(req)
 }
 
 
@@ -24,7 +24,7 @@ const GPT4 = async (req) => {
             baseURL: `${process.env.PROXY_URL}/v1`
         });
         //console.log('header'+authHeader)
-        const {messages} = await req.json()
+        const {messages, model} = await req.json()
         const response = await openai.chat.completions.create({
             model: 'gpt-4-0125-preview',
             stream: true,
