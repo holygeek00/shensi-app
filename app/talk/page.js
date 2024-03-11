@@ -17,7 +17,7 @@ export default function Chat() {
     const [chatList, setChatList] = useState(undefined)
     const [key, setKey] = useState('')
     let [stateId, setStateId] = useState('')
-
+     const [model, setModel] = useState('gpt-4-0125-preview')
     const chatBoxRef = useRef(null);
 
     let shensi_ai_chat = {
@@ -68,7 +68,11 @@ export default function Chat() {
         headers: {
             'Authorization': key,
             'Content-Type': 'application/json'
-        }, onError: (error) => {
+        },
+        body: {
+            model
+        },
+        onError: (error) => {
             console.error(error)
             if (JSON.parse(error.message).code === 401 || JSON.parse(error.message).code === 403) {
                 ZMessage(JSON.parse(error.message).error + ", 请前往充值页面，及时充值！", {type: 'error'})
@@ -329,8 +333,13 @@ export default function Chat() {
                         onClick={handleSubmit}
                         className="btn md:w-auto h-12 rounded-md bg-blue-500 hover:bg-indigo-500 text-white"
                     >
+
                         {isSending ? 'AI生成中...' : '发 送'} {/* 按钮文本根据发送状态变化 */}
                     </button>
+                    <select className="select select-bordered outline-0 focus:outline-0 focus:ring-1 focus:ring-indigo-100 w-full max-w-36" onChange={(e) => setModel(e.target.value)}>
+                        <option selected>gpt-4-0125-preview</option>
+                        <option>gpt-3.5-turbo</option>
+                    </select>
                     <button onClick={clearHistory} className="btn text-white bg-black">清除当前对话</button>
                 </div>
             </div>

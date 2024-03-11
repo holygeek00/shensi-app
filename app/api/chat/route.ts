@@ -23,10 +23,9 @@ const GPT4 = async (req) => {
             apiKey: authHeader,
             baseURL: `${process.env.PROXY_URL}/v1`
         });
-        //console.log('header'+authHeader)
         const {messages, model} = await req.json()
         const response = await openai.chat.completions.create({
-            model: 'gpt-4-0125-preview',
+            model: model,
             stream: true,
             messages,
             temperature: 0.7,
