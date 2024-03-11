@@ -333,7 +333,6 @@ export default function Chat() {
                         onClick={handleSubmit}
                         className="btn md:w-auto h-12 rounded-md bg-blue-500 hover:bg-indigo-500 text-white"
                     >
-
                         {isSending ? 'AI生成中...' : '发 送'} {/* 按钮文本根据发送状态变化 */}
                     </button>
                     <select className="select select-bordered outline-0 focus:outline-0 focus:ring-1 focus:ring-indigo-100 w-full max-w-36" onChange={(e) => setModel(e.target.value)}>
