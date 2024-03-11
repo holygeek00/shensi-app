@@ -9,7 +9,7 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 
 # 安装项目依赖
-RUN yarn install --frozen-lockfile
+RUN yarn install
 
 # 复制应用程序代码
 COPY . .
