@@ -4,7 +4,7 @@ import Navbar from '../../../components/Navbar'
 import {useCompletion} from 'ai/react'
 import {useRouter} from 'next/navigation'
 import Link from 'next/link'
-import {useAuthUser} from "../../../lib/hooks/use-auth-user";
+import useAuthUser from "../../../lib/hooks/use-auth-user";
 import {MarkdownPreview} from "../../../components/markdown";
 
 export default function AcademicPaperGenerator() {

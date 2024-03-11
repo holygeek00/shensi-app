@@ -3,7 +3,7 @@ import React, { useState, useCallback, useEffect } from 'react'
 import Navbar from '../../../components/Navbar'
 import { useCompletion } from 'ai/react'
 import Link from 'next/link'
-import {useAuthUser} from "@/lib/hooks/use-auth-user";
+import useAuthUser from "@/lib/hooks/use-auth-user";
 import {useRouter} from "next/navigation";
 
 export default function ThesisProposalGenerator () {
