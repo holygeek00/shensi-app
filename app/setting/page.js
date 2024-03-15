@@ -4,7 +4,7 @@ import Navbar from '../../components/Navbar'
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import {ZMessage} from "@/components/ui/toast";
-import useAuthUser from "@/lib/hooks/use-auth-user";
+import {useAuthUser} from "@/lib/hooks/use-auth-user";
 const UserDetailPage = () => {
 
   const [user, setUser] = useState(null)
