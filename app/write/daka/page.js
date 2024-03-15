@@ -23,8 +23,7 @@ export default function CheckInCopyGenerator () {
   const { complete, completion } = useCompletion({
     api: '/api/completion',
     headers: {
-      'Authorization': key,
-      // 其他头部信息
+      'Authorization': key
     },
   })
 

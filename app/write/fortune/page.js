@@ -5,6 +5,8 @@ import Navbar from '../../../components/Navbar'
 import { useRouter } from 'next/navigation'
 import { useCompletion } from 'ai/react'
 import Link from 'next/link'
+import {useAuthUser} from "@/lib/hooks/use-auth-user";
+
 export default function Chat () {
   const [formData, setFormData] = useState({
     sender: '',
@@ -25,8 +27,7 @@ export default function Chat () {
   const { complete, completion } = useCompletion({
     api: '/api/completion',
     headers: {
-      'Authorization': key,
-      // 其他头部信息
+      'Authorization': key
     },
   })
 
@@ -59,11 +60,9 @@ export default function Chat () {
     })
   }
 
+  const {checkToken} = useAuthUser()
   useEffect(() => {
-    const accessToken = localStorage.getItem('access_token')
-    if (!accessToken) {
-      router.push('../login')
-    }
+    checkToken()
   }, [router])
 
   const handleFormSubmit = async (e) => {

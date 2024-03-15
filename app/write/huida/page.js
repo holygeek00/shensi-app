@@ -4,6 +4,8 @@ import Navbar from '../../../components/Navbar'
 import { useCompletion } from 'ai/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import {useAuthUser} from "@/lib/hooks/use-auth-user";
+
 export default function NewMediaAnswerGenerator () {
   const [formData, setFormData] = useState({
     question: '',
@@ -13,6 +15,8 @@ export default function NewMediaAnswerGenerator () {
   const [generatedAnswer, setGeneratedAnswer] = useState('')
 
   const [key, setKey] = useState('')
+  const {checkToken} = useAuthUser();
+
   useEffect(() => {
     // 在组件挂载后从 localStorage 中获取数据
     const storedKey = localStorage.getItem('key')
@@ -24,7 +28,6 @@ export default function NewMediaAnswerGenerator () {
     api: '/api/completion',
     headers: {
       'Authorization': key,
-      // 其他头部信息
     },
   })
 
@@ -39,10 +42,7 @@ export default function NewMediaAnswerGenerator () {
 
   const router = useRouter()
   useEffect(() => {
-    const accessToken = localStorage.getItem('access_token')
-    if (!accessToken) {
-      router.push('../login')
-    }
+    checkToken()
   }, [router])
 
   const checkAndPublish = useCallback(async () => {

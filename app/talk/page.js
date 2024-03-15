@@ -1,8 +1,7 @@
 'use client'
 
 import {useChat} from 'ai/react'
-import Link from 'next/link'
-import {useCallback, useEffect, useRef, useState} from 'react'
+import {useEffect, useRef, useState} from 'react'
 import Markdown from 'react-markdown'
 import {useRouter} from 'next/navigation'
 import remarkGfm from 'remark-gfm'
@@ -11,14 +10,15 @@ import hljs from 'highlight.js';
 import 'highlight.js/styles/github.css';
 import {ZMessage} from "../../components/ui/toast";
 import {NavTabLists} from "@/components/nav-tab-lists";
+import {useAuthUser} from "@/lib/hooks/use-auth-user";
 
 export default function Chat() {
     const [isSending, setIsSending] = useState(false) // 新增状态来追踪消息是否正在发送
     const [chatList, setChatList] = useState(undefined)
     const [key, setKey] = useState('')
     let [stateId, setStateId] = useState('')
-     const [model, setModel] = useState('gpt-4-0125-preview')
-    const chatBoxRef = useRef(null);
+    const [model, setModel] = useState('gpt-4-0125-preview')
+    let deleteChatArray = []
 
     let shensi_ai_chat = {
         state: {
@@ -39,11 +39,10 @@ export default function Chat() {
                 titleSet: false,
                 currentState: true
             }]
-        }, version: 1
+        }, version: '1.0-preview.0'
     }
 
     useEffect(() => {
-        // 在组件挂载后从 localStorage 中获取数据
         const storedKey = localStorage.getItem('key')
         if (storedKey) {
             setKey(storedKey)
@@ -54,10 +53,35 @@ export default function Chat() {
         if (chatList !== null || chatList != undefined) {
 
             shensi_ai_chat = chatList;
-            // 设置消息
-            setMessages(chatList.state.chats.at(-1).messages)
-            setChatList(chatList)
-            setStateId(chatList.state.chats.at(-1).id)
+            if (chatList.state.chats.length > 0) {
+                // 设置消息
+                setMessages(chatList.state.chats.at(-1).messages)
+                setChatList(chatList)
+                setStateId(chatList.state.chats.at(-1).id)
+            } else {
+                setMessages([{
+                    role: "assistant",
+                    content: "我是深斯AI对话助手, 请问有什么可以帮助你的吗？ "
+                }])
+                chatList.state.chats.push({
+                    id: "12345", title: "新对话-" + new Date().toLocaleString(),
+                    messages: [{
+                        role: "assistant",
+                        content: "我是深斯AI对话助手, 请问有什么可以帮助你的吗？ "
+                    }],
+                    config: {
+                        model: "gpt-4-turbo",
+                        max_tokens: 4000,
+                        temperature: 1,
+                        presence_penalty: 0,
+                        top_p: 1,
+                        frequency_penalty: 0
+                    },
+                    titleSet: false,
+                    currentState: true
+                })
+                window.localStorage.setItem("chatList", JSON.stringify(chatList))
+            }
         } else {
             setChatList(shensi_ai_chat)
             window.localStorage.setItem("chatList", JSON.stringify(shensi_ai_chat))
@@ -128,11 +152,9 @@ export default function Chat() {
     const endOfMessagesRef = useRef(null)
 
     const router = useRouter()
+    const {checkToken} = useAuthUser()
     useEffect(() => {
-        const accessToken = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null
-        if (!accessToken) {
-            router.push('/')
-        }
+        checkToken()
     }, [router])
 
 
@@ -141,18 +163,24 @@ export default function Chat() {
         let findList = list.state.chats.find((item) => item.id === e.target.id)
 
         if (findList.id === e.target.id) {
-            let chatbox = document.getElementsByClassName('chatbox')
+            let chatBox = document.getElementsByClassName('chatBox')
 
-            for (let i = 0; i < chatbox.length; i++) {
-                chatbox[i].classList.remove('text-blue-500')
+            for (let i = 0; i < chatBox.length; i++) {
+                chatBox[i].classList.remove('text-blue-500')
             }
             e.target.classList.add('text-blue-500')
+            // stateId = id;
         }
         setMessages(findList.messages)
         setStateId(e.target.id)
     }
 
     const createChat = () => {
+        document.querySelectorAll('.delete-checkbox').forEach((checkbox) => {
+            if (!checkbox.classList.contains('hidden')) {
+                checkbox.classList.add('hidden')
+            }
+        })
         let list = JSON.parse(window.localStorage.getItem('chatList'))
         if (list !== null) {
             list.state.chats.push({
@@ -167,16 +195,11 @@ export default function Chat() {
             setChatList(list)
             setMessages(list.state.chats[list.state.chats.length - 1].messages)
 
-            const chatbox = document.querySelectorAll('.chatbox');
-            chatbox[chatbox.length - 1].classList.add('text-blue-500')
-            for (let i = 0; i < chatbox.length; i++) {
-                console.log("what is i", i)
-                chatbox[i].classList.remove('text-blue-500')
-            }
+            setStateId(list.state.chats[list.state.chats.length - 1].id)
         } else {
             window.localStorage.setItem('chatList', JSON.stringify(shensi_ai_chat))
             setChatList(shensi_ai_chat)
-            const elementNodeListOf = document.querySelectorAll('.chatbox');
+            const elementNodeListOf = document.querySelectorAll('.chatBox');
             elementNodeListOf[elementNodeListOf.length - 1].classList.add('text-blue-500')
         }
     }
@@ -207,11 +230,40 @@ export default function Chat() {
 
         // 更新localStorage中的chatList
         window.localStorage.setItem('chatList', JSON.stringify(chatLists));
-        console.log(chatLists)
+    }
+
+    const deleteAnyChat = (id) => {
+        deleteChatArray.push(id)
+
+        const chatLists = JSON.parse(window.localStorage.getItem('chatList'));
+
+        // 根据传入的id删除当前对话
+        chatLists.state.chats.map((item, index) => {
+            if (item.id === id) {
+                chatLists.state.chats.splice(index, 1)
+            }
+        })
+
+        setChatList(chatLists)
+
+        // 不仅要更新当前历史对话列表，还需要将当前stateId进行设置，只有这样才能将当前对话的上一个对话进行标注
+        setStateId(chatLists.state.chats.at(-1).id)
+
+        // 更新localStorage中的chatList
+        window.localStorage.setItem('chatList', JSON.stringify(chatLists));
+    }
+
+    const handleDeleteClick = () => {
+        document.querySelectorAll('.delete-checkbox').forEach((checkbox) => {
+            if (checkbox.classList.contains('hidden')) {
+                checkbox.classList.remove('hidden')
+            } else {
+                checkbox.classList.add('hidden')
+            }
+        })
     }
 
     useEffect(() => {
-        // 每次添加新的对话内容时，自动将滚动条移动到页面的底部。
         if (endOfMessagesRef.current !== null) {
             endOfMessagesRef.current.scrollTop = endOfMessagesRef.current.scrollHeight;
             endOfMessagesRef.current.scrollIntoView({behavior: "smooth"});
@@ -224,19 +276,16 @@ export default function Chat() {
     }, [shensi_ai_chat])
 
     useEffect(() => {
-        const chatbox = document.getElementsByClassName('chatbox')
-        if (chatbox !== null) {
+        const chatBox = document.getElementsByClassName('chatBox')
+        if (chatBox !== null) {
             if (stateId !== null) {
-                [...chatbox].map((item, index) => {
+                [...chatBox].map((item, index) => {
                     if (item.id === stateId) {
                         item.classList.add('text-blue-500')
                     } else {
                         item.classList.remove('text-blue-500')
                     }
                 })
-            } else {
-                //选择最后一个
-                [...chatbox].at(-1).classList.add('text-blue-500')
             }
         }
     }, [chatList])
@@ -252,7 +301,7 @@ export default function Chat() {
 
     return (<div className="bg-white w-screen h-screen overflow-hidden">
 
-            <div className="flex justify-center w-full my-5 absolute left-1/2 -translate-x-1/2 mb-20">
+            <div className="flex justify-center w-96 absolute left-1/2 -translate-x-1/2 mb-20">
                 <NavTabLists tabList={[
                     {id: 1, name: 'AI写作', link: '/write'},
                     {id: 2, name: 'AI对话', link: '/talk'},
@@ -267,23 +316,36 @@ export default function Chat() {
                     <div className="flex flex-col">
                         <div className="w-full p-2">
                             <div
-                                className="btn rounded-lg w-full btn-outline bg-gray-300 border-s-4 hover:border-gray-500 hover:text-black-100"
+                                className="btn rounded-lg w-full btn-primary border-s-4 hover:border-gray-500 hover:text-black-100"
                                 onClick={createChat}>新建对话
                             </div>
                         </div>
                         <div className="flex flex-col overflow-x-hidden p-2 pb-20 h-full">
-                            {// 渲染对话列表
-                                chatList !== undefined ? chatList.state.chats.map(item => (// eslint-disable-next-line react/jsx-key
-                                    <div key={item.id} id={item.id}
-                                         className="chatbox active:bg-blue-200 border-lime-200 border-b-gray-50 bg-white p-5 rounded-2xl m-2 rounded hover:bg-blue-200 cursor-pointer shadow-accent-content"
-                                         onClick={handleHistoryChat}>
-                                        {item.title}
-                                        {/*<div className="mt-2">*/}
-                                        {/*    <button className="btn btn-sm btn-info mr-1">Deny</button>*/}
-                                        {/*    <button className="btn btn-sm mr-1">Accept</button>*/}
-                                        {/*</div>*/}
-                                    </div>)) : <div key={Math.random()}
-                                                    className="bg-gray-200 p-5 m-2 rounded font-bold">没有对话</div>}
+                            {
+                                chatList !== undefined ? chatList.state.chats.map(item => (
+                                        // eslint-disable-next-line react/jsx-key
+                                        <div key={item.id} className="flex flex-row justify-between items-center">
+                                            <input type="checkbox" onClick={e => deleteAnyChat(item.id)}
+                                                   className="delete-checkbox checkbox-sm checkbox-info hidden"/>
+                                            <div key={item.id} id={item.id}
+                                                 className="chatBox border-2 border-blue-500 active:bg-blue-200 border-lime-200 border-b-gray-50 bg-white p-5 rounded-lg m-2 hover:bg-blue-200 cursor-pointer shadow-accent-content"
+                                                 onClick={handleHistoryChat}>
+                                                {item.title}
+                                            </div>
+                                        </div>
+                                    ))
+                                    : <div key={Math.random()} className="bg-gray-200 p-5 m-2 rounded font-bold">没有对话
+                                    </div>
+                            }
+
+                            <div className="flex flex-row items-center absolute left-0 bottom-0 w-[300px]">
+                                <button className="btn btn-block bg-black w-1/2 text-white focus:bg-indigo-500"
+                                        onClick={handleDeleteClick}>删除对话
+                                </button>
+                                <button className="btn btn-block bg-black w-1/2 text-white"
+                                        onClick={e => router.push('/pay')}>充值中心
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -292,7 +354,7 @@ export default function Chat() {
                     className="sm:w-screen lg:w-1/2 lg:ml-[200px] md:w-full md:ml-[100px] translate-y-10 lg:p-10 sm:py-2 sm:my-10 rounded overflow-y-scroll">
                     <div className="md:w-full h-100 pl-100 pb-36">
                         {messages ? messages.map(m => (<div key={Math.random().toString()}
-                                                            className="bg-white md:w-2/3 lg:w-full  self-center m-2">
+                                                            className="bg-white md:w-2/3 lg:w-full self-center m-2">
                             <div className={m.role === 'user' ? "leading-normal" : ""}>
                                 <div className="text-lg font-bold w-20 h-10">
                                     {m.role === 'user' ? '用户: ' : '深斯AI: '}
@@ -335,8 +397,10 @@ export default function Chat() {
                     >
                         {isSending ? 'AI生成中...' : '发 送'} {/* 按钮文本根据发送状态变化 */}
                     </button>
-                    <select className="select select-bordered outline-0 focus:outline-0 focus:ring-1 focus:ring-indigo-100 w-full max-w-36" onChange={(e) => setModel(e.target.value)}>
-                        <option selected>gpt-4-0125-preview</option>
+                    <select
+                        className="select select-bordered outline-0 focus:outline-0 focus:ring-1 focus:ring-indigo-100 w-full max-w-36"
+                        onChange={(e) => setModel(e.target.value)}>
+                        <option>gpt-4-0125-preview</option>
                         <option>gpt-3.5-turbo</option>
                     </select>
                     <button onClick={clearHistory} className="btn text-white bg-black">清除当前对话</button>

@@ -124,7 +124,7 @@ export default function Chat() {
                     <div className="form-control flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
                         <input
                             type="text"
-                            className="border flex-grow input-bordered focus:outline-0 focus:ring-1 focus:ring-indigo-300 h-12 text-lg rounded px-4" // 使用flex-grow让输入框填满可用空间
+                            className="border flex-grow input-bordered focus:outline-0 focus:ring-1 focus:ring-indigo-300 h-12 text-lg rounded px-4"
                             value={input}
                             placeholder="输入您的问题"
                             onChange={handleInputChange}

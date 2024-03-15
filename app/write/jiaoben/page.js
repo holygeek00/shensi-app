@@ -4,6 +4,8 @@ import Navbar from '../../../components/Navbar'
 import { useCompletion } from 'ai/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import {useAuthUser} from "@/lib/hooks/use-auth-user";
+
 export default function ShortVideoScriptGenerator () {
   const [formData, setFormData] = useState({
     keywordsAndRequirements: '',
@@ -24,8 +26,7 @@ export default function ShortVideoScriptGenerator () {
   const { complete, completion } = useCompletion({
     api: '/api/completion',
     headers: {
-      'Authorization': key,
-      // 其他头部信息
+      'Authorization': key
     },
   })
 
@@ -39,11 +40,9 @@ export default function ShortVideoScriptGenerator () {
   }
 
   const router = useRouter()
+  const {checkToken} = useAuthUser()
   useEffect(() => {
-    const accessToken = localStorage.getItem('access_token')
-    if (!accessToken) {
-      router.push('../login')
-    }
+    checkToken()
   }, [router])
 
   const checkAndPublish = useCallback(async () => {

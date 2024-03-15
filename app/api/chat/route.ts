@@ -5,6 +5,7 @@ import {OpenAIStream, StreamingTextResponse} from 'ai'
 export const runtime = 'edge'
 
 export async function GET(req: Request) {
+
     return new Response('页面测试成功');
 }
 

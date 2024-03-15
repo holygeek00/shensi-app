@@ -6,10 +6,11 @@ import { useChat } from 'ai/react'
 import { useCompletion } from 'ai/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import {useAuthUser} from "@/lib/hooks/use-auth-user";
+
 export default function PoetryGenerator () {
   const [formData, setFormData] = useState({
-    shanglian: '',
-
+    shanglian: ''
   })
   const [isGenerating, setIsGenerating] = useState(false)
   const [content, setContent] = useState('')
@@ -25,8 +26,7 @@ export default function PoetryGenerator () {
   const { complete, completion } = useCompletion({
     api: '/api/completion',
     headers: {
-      'Authorization': key,
-      // 其他头部信息
+      'Authorization': key
     },
   })
 
@@ -62,11 +62,9 @@ export default function PoetryGenerator () {
     await checkAndPublish(messageContent)
   }
   const router = useRouter()
+  const { checkToken } = useAuthUser()
   useEffect(() => {
-    const accessToken = localStorage.getItem('access_token')
-    if (!accessToken) {
-      router.push('../login')
-    }
+    checkToken()
   }, [router])
 
   return (
@@ -107,8 +105,6 @@ export default function PoetryGenerator () {
             </div>
           </div>
         </div>
-
-
       </div>
     </div>
   )

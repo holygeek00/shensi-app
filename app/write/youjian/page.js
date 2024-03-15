@@ -4,6 +4,7 @@ import Navbar from '../../../components/Navbar'
 import { useCompletion } from 'ai/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import {useAuthUser} from "@/lib/hooks/use-auth-user";
 export default function EmailGenerator () {
   const [formData, setFormData] = useState({
     emailOverview: 'A公司想向B公司收购一批银废料，写邮件询问B公司是否有，希望B公司能够给出合理价格', // 示例默认值
@@ -35,11 +36,9 @@ export default function EmailGenerator () {
   }
 
   const router = useRouter()
+  const {checkToken} = useAuthUser()
   useEffect(() => {
-    const accessToken = localStorage.getItem('access_token')
-    if (!accessToken) {
-      router.push('../login')
-    }
+    checkToken()
   }, [router])
 
   const checkAndPublish = useCallback(async () => {

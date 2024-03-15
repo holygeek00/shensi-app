@@ -26,9 +26,7 @@ export default function ArticleMenu() {
         text: "AI文章标题生成器，一键生成引人注目的新媒体文章标题",
         imageUrl: "/headline.png",
         link: './write/biaoti'
-    },
-
-    ]
+    }]
 
     const educationLiteratureCards = [{
         title: "小学生作文写作",
@@ -247,46 +245,19 @@ export default function ArticleMenu() {
     const [isDisabled, setSmsCaptchaDisabled] = useState(false);
     const [countDown, setSmsCaptchaCountDown] = useState(60);
 
+    const [isLogin, setIsLogin] = useState(false)
+
+    const router = useRouter()
+
     const handleTabChange = (tabId) => {
         setActiveTab(tabId)
     }
 
-    const router = useRouter()
-    useEffect(() => {
-        const accessToken = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
-
-        if (accessToken === undefined || accessToken === null || accessToken === "undefined") {
-            document.getElementById('my_modal_1').showModal();
+    const handleEnter = (e) => {
+        if (e.key === 'Enter') {
+            login()
         }
-
-        if (window.localStorage.getItem("key") === null || window.localStorage.getItem("key") === undefined || window.localStorage.getItem("key") === "undefined") {
-            fetchUserData();
-        }
-    }, [router]);
-
-    useEffect(() => {
-        let interval;
-        if (isDisabled) {
-            interval = setInterval(() => {
-                setSmsCaptchaCountDown((prevCount) => {
-                    if (prevCount <= 1) {
-                        clearInterval(interval);
-                        setSmsCaptchaDisabled(false);
-                        return 60; // 重置倒计时
-                    } else {
-                        return prevCount - 1;
-                    }
-                });
-            }, 1000);
-        }
-
-        // 组件卸载时清除定时器
-        return () => {
-            if (interval) {
-                clearInterval(interval);
-            }
-        };
-    }, [isDisabled]); // 依赖项数组中包含isDisabled，这意味着useEffect会在isDisabled变化时重新执行
+    }
 
     const sendSmsCaptcha = () => {
         if (phone && agreement) {
@@ -329,8 +300,8 @@ export default function ArticleMenu() {
                 .then(data => {
                     window.localStorage.setItem('access_token', data.token.access_token);
                     document.getElementById('my_modal_1').close();
-                    window.alert('登录成功')
                     fetchUserData();
+                    setIsLogin(true)
                 })
                 .catch((error) => {
                     console.error('Error:', error);
@@ -344,15 +315,11 @@ export default function ArticleMenu() {
 
     async function fetchUserData() {
 
-        // 从localStorage获取access_token和token_type
         const accessToken = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null
 
-        // 检查确保我们有token
         if (accessToken !== undefined || accessToken !== null || accessToken !== "undefined") {
-            // 设置请求的headers
             const authHeader = `Bearer ${accessToken}`
             const backend = process.env.NEXT_PUBLIC_BACK_END
-            // 发起请求
             fetch(backend + '/users/me', {
                 method: 'GET', headers: {
                     'Authorization': authHeader, 'Content-Type': 'application/json'
@@ -360,13 +327,13 @@ export default function ArticleMenu() {
             })
                 .then(response => {
                     if (response.ok) {
-                        return response.json() // 如果响应是JSON，这里将其解析
+                        return response.json()
                     }
                     throw new Error('Network response was not ok.')
                 })
                 .then(userData => {
                     localStorage.setItem('key', userData.bound_keys)
-                    // console.log(userData.bound_keys)
+
                 })
                 .catch(error => {
                     console.error('There has been a problem with your fetch operation:', error)
@@ -377,6 +344,46 @@ export default function ArticleMenu() {
             ZMessage('No access token or token type available in localStorage', {type: 'error'})
         }
     }
+
+    useEffect(() => {
+        const accessToken = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
+
+        if (accessToken === undefined || accessToken === null || accessToken === "undefined") {
+            document.getElementById('my_modal_1').showModal();
+        }
+
+    }, [router]);
+
+    useEffect(() => {
+        let interval;
+        if (isDisabled) {
+            interval = setInterval(() => {
+                setSmsCaptchaCountDown((prevCount) => {
+                    if (prevCount <= 1) {
+                        clearInterval(interval);
+                        setSmsCaptchaDisabled(false);
+                        return 60;
+                    } else {
+                        return prevCount - 1;
+                    }
+                });
+            }, 1000);
+        }
+
+        // 组件卸载时清除定时器
+        return () => {
+            if (interval) {
+                clearInterval(interval);
+            }
+        };
+    }, [isDisabled]);
+
+    useEffect(() => {
+        document.addEventListener('keydown', handleEnter);
+        return () => {
+            document.removeEventListener('keydown', handleEnter);
+        }
+    }, [handleEnter])
 
 
     return (<div>
@@ -474,7 +481,7 @@ export default function ArticleMenu() {
                 </div>
             </dialog>
             <div className="bg-transparent w-screen h-screen overflow-y-scroll">
-                <Navbar title='深斯AI'></Navbar>
+                <Navbar title='深斯AI'  isLogin={isLogin}></Navbar>
                 <div className="flex justify-center my-5">
                     <NavTabLists tabList={[
                         {id: 1, name: 'AI写作', link: '/write'},

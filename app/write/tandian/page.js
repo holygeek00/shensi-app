@@ -4,6 +4,7 @@ import Navbar from '../../../components/Navbar'
 import { useCompletion } from 'ai/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import {useAuthUser} from "@/lib/hooks/use-auth-user";
 export default function FoodExplorationCopyGenerator () {
   const [formData, setFormData] = useState({
     restaurantName: '川渝食府', // 示例默认值
@@ -39,11 +40,9 @@ export default function FoodExplorationCopyGenerator () {
   }
 
   const router = useRouter()
+  const {checkToken} = useAuthUser()
   useEffect(() => {
-    const accessToken = localStorage.getItem('access_token')
-    if (!accessToken) {
-      router.push('../login')
-    }
+    checkToken()
   }, [router])
 
   const checkAndPublish = useCallback(async () => {

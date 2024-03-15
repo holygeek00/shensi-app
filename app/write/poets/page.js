@@ -2,10 +2,10 @@
 import React, { useEffect, useRef } from 'react'
 import { useState, useCallback } from 'react'
 import Navbar from '../../../components/Navbar'
-import { useChat } from 'ai/react'
 import { useCompletion } from 'ai/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import {useAuthUser} from "@/lib/hooks/use-auth-user";
 export default function PoetryGenerator () {
   const [isGenerating, setIsGenerating] = useState(false)
   const [formData, setFormData] = useState({
@@ -40,11 +40,9 @@ export default function PoetryGenerator () {
     })
   }
   const router = useRouter()
+  const {checkToken} = useAuthUser()
   useEffect(() => {
-    const accessToken = localStorage.getItem('access_token')
-    if (!accessToken) {
-      router.push('../login')
-    }
+    checkToken()
   }, [router])
 
 

@@ -4,6 +4,7 @@ import Navbar from '../../../components/Navbar'
 import { useCompletion } from 'ai/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import {useAuthUser} from "@/lib/hooks/use-auth-user";
 export default function TeachingPlanGenerator () {
   const [formData, setFormData] = useState({
     courseContent: '高中物理牛顿定律', // 示例默认值
@@ -23,8 +24,7 @@ export default function TeachingPlanGenerator () {
   const { complete, completion } = useCompletion({
     api: '/api/completion',
     headers: {
-      'Authorization': key,
-      // 其他头部信息
+      'Authorization': key
     },
   })
 
@@ -38,11 +38,9 @@ export default function TeachingPlanGenerator () {
   }
 
   const router = useRouter()
+  const {checkToken} = useAuthUser()
   useEffect(() => {
-    const accessToken = localStorage.getItem('access_token')
-    if (!accessToken) {
-      router.push('../login')
-    }
+    checkToken()
   }, [router])
 
   const checkAndPublish = useCallback(async () => {
