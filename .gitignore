@@ -38,3 +38,5 @@ next-env.d.ts
 yarn.lock
 
 public/sitemap-0.xml
+/public/robots.txt
+/public/sitemap.xml

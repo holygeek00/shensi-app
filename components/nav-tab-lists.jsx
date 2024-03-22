@@ -29,7 +29,7 @@ export function NavTabLists({tabList}){
                             router.push(tab.link)
                         }}
                            className={clsx("tab hover:bg-blue-300", {['tab-active']: pathname === tab.link})}>{tab.name}</a>
-                    </Link>
+                    </Link>  
                 ))}
                 {/*<Link href='/talk' legacyBehavior>*/}
                 {/*    <a role="tab" className="tab hover:bg-blue-300">AI对话</a>*/}

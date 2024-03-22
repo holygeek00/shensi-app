@@ -249,6 +249,35 @@ export default function ArticleMenu() {
 
     const router = useRouter()
 
+    const tabs = [
+        { id: 'tab1', title: '写作', content: <CategoryCardGroup categoryTitle="写作类" cards={educationLiteratureCards}/> },
+        { id: 'tab2', title: '社媒', content: <CategoryCardGroup categoryTitle="社交媒体类" cards={socialMediaCards}/> },
+        { id: 'tab3', title: '工作', content: <CategoryCardGroup categoryTitle="工作类" cards={workCards}/> },
+        { id: 'tab4', title: '视频', content: <CategoryCardGroup categoryTitle="短视频类" cards={shortVideoCards}/> },
+        { id: 'tab5', title: '电商', content: <CategoryCardGroup categoryTitle="电商类" cards={ecommerceCards}/> },
+        { id: 'tab6', title: '娱乐', content: <CategoryCardGroup categoryTitle="娱乐类" cards={entertainmentCards}/> },
+    ];
+
+    function TabComponent({ activeTab, handleTabChange}) {
+        return (
+            <div>
+            <div className="flex lg:flex-col justify-center justify-items-center align-middle text-center sm:mx-2 rounded lg:mt-28 lg:fixed">
+                {tabs.map(tab => (
+                    <a key={tab.id}
+                       role="tab"
+                       className={`w-28 lg:h-16 sm:h-10 sm:py-3 lg:p-6 shadow m-2 bg-indigo-50 lg:rounded-2xl sm:rounded cursor-pointer font-bold ${activeTab === tab.id ? 'ring-2 ring-blue-500 bg-blue-500 !import' : ''}`}
+                       onClick={() => handleTabChange(tab.id)}>
+                        {tab.title}
+                    </a>
+                ))}
+            </div>
+                {tabs.find(tab => tab.id === activeTab)?.content}
+            </div>
+        );
+    }
+
+
+    //dom
     const handleTabChange = (tabId) => {
         setActiveTab(tabId)
     }
@@ -259,6 +288,7 @@ export default function ArticleMenu() {
         }
     }
 
+    // request
     const sendSmsCaptcha = () => {
         if (phone && agreement) {
             // 匹配手机号的正则
@@ -349,7 +379,7 @@ export default function ArticleMenu() {
         const accessToken = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
 
         if (accessToken === undefined || accessToken === null || accessToken === "undefined") {
-            document.getElementById('my_modal_1').showModal();
+            document.getElementById('my_modal_1').open = true
         }
 
     }, [router]);
@@ -416,10 +446,11 @@ export default function ArticleMenu() {
                                         autoComplete="tel"
                                         onChange={(e) => setPhone(e.target.value)}
                                         required
-                                        className="w-full h-12 pl-2 pr-2 rounded-md text-gray-900 shadow
+                                        className="w-full h-10 pl-2 pr-2 rounded-md text-gray-900 shadow
                                             border-1 focus:border-indigo-300 focus:ring-1 focus:ring-indigo-300
                                             focus:outline-gray-300 placeholder:text-gray-400
-                                            sm:text-sm"
+                                            sm:text-sm
+                                            ring-1 ring-indigo-50"
                                     />
                                 </div>
 
@@ -436,9 +467,9 @@ export default function ArticleMenu() {
                                             type="text"
                                             required
                                             onChange={(e) => setSmsCaptcha(e.target.value)}
-                                            className="w-full lg:w-4/6 sm:3/5 pl-2 rounded-md border-0 py-1.5 text-gray-900 shadow focus:outline-gray-300 placeholder:text-gray-400 focus:border-x-2 focus:border-y-2 focus:border-blue-300 sm:text-sm sm:leading-6"
+                                            className="w-full h-10 lg:w-4/6 sm:3/5 pl-2 rounded-md border-0 text-gray-900 ring-1 ring-indigo-50 shadow focus:outline-gray-400 placeholder:text-gray-400 focus:border-x-2 focus:border-y-2 focus:border-blue-300 sm:text-sm sm:leading-6"
                                         />
-                                        <button className="btn lg:w-2/6 md:2/5 sm:w-2/5 ml-2"
+                                        <button className="btn-sm bg-blue-50 rounded shadow active: h-10 lg:w-2/6 md:2/5 sm:w-3/5 ml-2"
                                                 onClick={sendSmsCaptcha} disabled={isDisabled}>
                                             {isDisabled ? <span>{countDown}秒后重试</span> :
                                                 <span>发送验证码</span>}
@@ -449,7 +480,7 @@ export default function ArticleMenu() {
                                 <div className="mt-10 text-sm text-gray-500 flex flex-row justify-center">
                                     <input id="captcha" type="checkbox" value={agreement}
                                            onChange={(e) => setAgreement(e.target.checked)}
-                                           className="w-3 h-3 mt-1.5 mr-1 checked:bg-blue-500"/>
+                                           className="w-5 h-5 mt-0.5 mr-1 checked:bg-blue-500"/>
                                     <label htmlFor="captcha" className="hover:cursor-pointer">
                                         未注册手机号将自动注册。勾选即代表您阅读并同意
                                         <a href="#"
@@ -489,28 +520,32 @@ export default function ArticleMenu() {
                         {id: 3, name: 'AI绘画', link: '/dalle'},
                     ]}/>
                 </div>
-                <div role="tablist"
-                     className="tabs tabs-lifted text-center bg-indigo-50 sm:mx-2 rounded lg:mt-28 lg:fixed z-20 lg:-left-10 lg:top-1/2 lg:-translate-y-1/2 lg:rotate-90 transform">
-                    <a role="tab" className={`tab tabs w-20  ${activeTab === 'tab1' ? 'tab-active' : ''}`}
-                       onClick={() => handleTabChange('tab1')}>写作</a>
-                    <a role="tab" className={`tab tabs  ${activeTab === 'tab2' ? 'tab-active' : ''}`}
-                       onClick={() => handleTabChange('tab2')}>社媒</a>
+                {/*<div role="tablist"*/}
+                {/*     className="tabs tabs-lifted text-center bg-indigo-50 sm:mx-2 rounded lg:mt-28 lg:fixed z-20 lg:-left-10 lg:top-1/2 lg:-translate-y-1/2 lg:rotate-90 transform">*/}
+                {/*    <a role="tab" className={`tab tabs w-20  ${activeTab === 'tab1' ? 'tab-active' : ''}`}*/}
+                {/*       onClick={() => handleTabChange('tab1')}>写作</a>*/}
+                {/*    <a role="tab" className={`tab tabs  ${activeTab === 'tab2' ? 'tab-active' : ''}`}*/}
+                {/*       onClick={() => handleTabChange('tab2')}>社媒</a>*/}
 
-                    <a role="tab" className={`tab tabs  ${activeTab === 'tab3' ? 'tab-active' : ''}`}
-                       onClick={() => handleTabChange('tab3')}>工作</a>
-                    <a role="tab" className={`tab tabs  ${activeTab === 'tab4' ? 'tab-active' : ''}`}
-                       onClick={() => handleTabChange('tab4')}>视频</a>
-                    <a role="tab" className={`tab tabs  ${activeTab === 'tab5' ? 'tab-active' : ''}`}
-                       onClick={() => handleTabChange('tab5')}>电商</a>
-                    <a role="tab" className={`tab tabs  ${activeTab === 'tab6' ? 'tab-active' : ''}`}
-                       onClick={() => handleTabChange('tab6')}>娱乐</a>
-                </div>
-                {activeTab === 'tab2' && <CategoryCardGroup categoryTitle="社交媒体类" cards={socialMediaCards}/>}
-                {activeTab === 'tab1' && <CategoryCardGroup categoryTitle="写作类" cards={educationLiteratureCards}/>}
-                {activeTab === 'tab3' && <CategoryCardGroup categoryTitle="工作类" cards={workCards}/>}
-                {activeTab === 'tab4' && <CategoryCardGroup categoryTitle="短视频类" cards={shortVideoCards}/>}
-                {activeTab === 'tab5' && <CategoryCardGroup categoryTitle="电商类" cards={ecommerceCards}/>}
-                {activeTab === 'tab6' && <CategoryCardGroup categoryTitle="娱乐类" cards={entertainmentCards}/>}
+                {/*    <a role="tab" className={`tab tabs  ${activeTab === 'tab3' ? 'tab-active' : ''}`}*/}
+                {/*       onClick={() => handleTabChange('tab3')}>工作</a>*/}
+                {/*    <a role="tab" className={`tab tabs  ${activeTab === 'tab4' ? 'tab-active' : ''}`}*/}
+                {/*       onClick={() => handleTabChange('tab4')}>视频</a>*/}
+                {/*    <a role="tab" className={`tab tabs  ${activeTab === 'tab5' ? 'tab-active' : ''}`}*/}
+                {/*       onClick={() => handleTabChange('tab5')}>电商</a>*/}
+                {/*    <a role="tab" className={`tab tabs  ${activeTab === 'tab6' ? 'tab-active' : ''}`}*/}
+                {/*       onClick={() => handleTabChange('tab6')}>娱乐</a>*/}
+                {/*</div>*/}
+                {/*{activeTab === 'tab2' && <CategoryCardGroup categoryTitle="社交媒体类" cards={socialMediaCards}/>}*/}
+                {/*{activeTab === 'tab1' && <CategoryCardGroup categoryTitle="写作类" cards={educationLiteratureCards}/>}*/}
+                {/*{activeTab === 'tab3' && <CategoryCardGroup categoryTitle="工作类" cards={workCards}/>}*/}
+                {/*{activeTab === 'tab4' && <CategoryCardGroup categoryTitle="短视频类" cards={shortVideoCards}/>}*/}
+                {/*{activeTab === 'tab5' && <CategoryCardGroup categoryTitle="电商类" cards={ecommerceCards}/>}*/}
+                {/*{activeTab === 'tab6' && <CategoryCardGroup categoryTitle="娱乐类" cards={entertainmentCards}/>}*/}
+                <TabComponent activeTab={activeTab} handleTabChange={(id) => {
+                    console.log(id)
+                    setActiveTab(id)
+                }}/>
 
 
                 {/* <CategoryCardGroup categoryTitle="社交媒体类" cards={socialMediaCards} />
