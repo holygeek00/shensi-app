@@ -22,8 +22,8 @@ export async function POST (req, res) {
     //console.log(image_url)
 
     return Response.json({ image_url: image_url })
-  } catch (error) {
-    console.error('Error:', error)
-    return Response.json({ message: 'Internal Server Error' })
+  } catch (e) {
+    console.error('Error:', e)
+    return new Response(JSON.stringify({code: e.status, error: e.message, data: {}}), {status: e.status})
   }
 }

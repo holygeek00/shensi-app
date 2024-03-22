@@ -264,8 +264,7 @@ export default function ArticleMenu() {
             <div className="flex lg:flex-col justify-center justify-items-center align-middle text-center sm:mx-2 rounded lg:mt-28 lg:fixed">
                 {tabs.map(tab => (
                     <a key={tab.id}
-                       role="tab"
-                       className={`w-28 lg:h-16 sm:h-10 sm:py-3 lg:p-6 shadow m-2 bg-indigo-50 lg:rounded-2xl sm:rounded cursor-pointer font-bold ${activeTab === tab.id ? 'ring-2 ring-blue-500 bg-blue-500 !import' : ''}`}
+                       className={`w-28 lg:h-16 sm:h-10 sm:py-3 lg:p-6 shadow m-2  border-2 border-black lg:rounded-2xl sm:rounded cursor-pointer font-bold ${activeTab === tab.id ? 'ring-2 ring-blue-500 bg-blue-500 text-white' : ''}`}
                        onClick={() => handleTabChange(tab.id)}>
                         {tab.title}
                     </a>
@@ -302,17 +301,17 @@ export default function ArticleMenu() {
                 })
                     .then(response => response.json())
                     .then(data => {
-                        window.alert("验证码发送成功，请注意查收!")
+                        ZMessage().success("验证码发送成功，请注意查收!")
                     })
                     .catch((error) => {
                         console.error('Error:', error);
-                        window.alert("验证码发送失败，请稍后再试!")
+                        ZMessage().error("验证码发送失败，请稍后再试!")
                     })
             } else {
-                alert('请输入有效的手机号码');
+                ZMessage().warning('请输入有效的手机号码');
             }
         } else {
-            window.alert("请输入正确的手机号并同意协议");
+            ZMessage().warning("请输入正确的手机号并同意协议");
         }
     }
 
@@ -335,11 +334,11 @@ export default function ArticleMenu() {
                 })
                 .catch((error) => {
                     console.error('Error:', error);
-                    window.alert("登陆失败，请检查验证码")
+                    ZMessage().error("登陆失败，请检查验证码")
                     setDisabled(false)
                 })
         } else {
-            window.alert('请输入正确的手机号并同意协议')
+            ZMessage().warning('请输入有效的手机号码和验证码')
         }
     }
 
@@ -367,11 +366,13 @@ export default function ArticleMenu() {
                 })
                 .catch(error => {
                     console.error('There has been a problem with your fetch operation:', error)
-                    ZMessage('用户验证过期', {type: 'error'})
+                    ZMessage().error('用户验证过期')
+                    localStorage.removeItem('access_token')
+                    window.location.href = '/'
                 })
         } else {
             console.error('No access token or token type available in localStorage')
-            ZMessage('No access token or token type available in localStorage', {type: 'error'})
+            ZMessage().error('用户验证过期')
         }
     }
 
@@ -379,6 +380,7 @@ export default function ArticleMenu() {
         const accessToken = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
 
         if (accessToken === undefined || accessToken === null || accessToken === "undefined") {
+            // document.getElementById('my_modal_1').showModal()
             document.getElementById('my_modal_1').open = true
         }
 
@@ -480,7 +482,7 @@ export default function ArticleMenu() {
                                 <div className="mt-10 text-sm text-gray-500 flex flex-row justify-center">
                                     <input id="captcha" type="checkbox" value={agreement}
                                            onChange={(e) => setAgreement(e.target.checked)}
-                                           className="w-5 h-5 mt-0.5 mr-1 checked:bg-blue-500"/>
+                                           className="w-5 h-5 lg:w-5 lg:h-5 lg:mt-0.5 sm:w-7 sm:h-7 sm:-mt-0.5 mt-0.5 mr-1 checked:bg-blue-500"/>
                                     <label htmlFor="captcha" className="hover:cursor-pointer">
                                         未注册手机号将自动注册。勾选即代表您阅读并同意
                                         <a href="#"

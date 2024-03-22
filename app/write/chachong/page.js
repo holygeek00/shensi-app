@@ -6,6 +6,7 @@ import {useRouter} from 'next/navigation'
 import Link from 'next/link'
 import {useAuthUser} from "@/lib/hooks/use-auth-user";
 import {MarkdownPreview} from "../../../components/markdown";
+import {ReturnTabList} from "@/components/return-tab-list";
 
 export default function AcademicPaperGenerator() {
     const [formData, setFormData] = useState({
@@ -74,6 +75,7 @@ export default function AcademicPaperGenerator() {
     return (
         <div>
             <Navbar title='Shensi-AI论文查重'></Navbar>
+            <ReturnTabList />
             <div
                 className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-base-200 to-base-400 p-4">
                 <div className="w-full max-w-3xl bg-white rounded-lg shadow-xl p-6">
@@ -87,10 +89,6 @@ export default function AcademicPaperGenerator() {
                                   value={formData.title}
                                   onChange={handleFormInputChange}/>
                     </div>
-                    {/*<div>*/}
-                    {/*    <label className="text-gray-700">关键词</label>*/}
-                    {/*    <input.js type="text" name="keywords" placeholder="请输入关键词" className="input.js input.js-bordered w-full" value={formData.keywords} onChange={handleFormInputChange} />*/}
-                    {/*</div>*/}
                     <div>
                         <div className="text-gray-700 mb-2">选择如何更改</div>
                         <select className="select select-bordered w-full focus:outline-0 focus:ring-indigo-300"

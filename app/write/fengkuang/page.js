@@ -5,6 +5,7 @@ import {useCompletion} from 'ai/react'
 import {useRouter} from 'next/navigation'
 import Link from 'next/link'
 import {useAuthUser} from "@/lib/hooks/use-auth-user";
+import {ReturnTabList} from "@/components/return-tab-list";
 
 export default function CrazyThursdayCopyGenerator() {
     const [formData, setFormData] = useState({
@@ -69,21 +70,7 @@ export default function CrazyThursdayCopyGenerator() {
     return (
         <div>
             <Navbar title='Shensi-AI写作-AI疯狂星期四文案生成器'></Navbar>
-            <div className="flex justify-center">
-                <div role="tablist" className="tabs tabs-boxed my-5">
-                    <Link href='../write' legacyBehavior>
-                        <a role="tab" className="tab hover:bg-blue-300">返回</a>
-                    </Link>
-                    <Link href='../talk' legacyBehavior>
-                        <a role="tab" className="tab hover:bg-blue-300">AI对话</a>
-                    </Link>
-
-                    <Link href='../image' legacyBehavior>
-                        <a role="tab" className="tab hover:bg-blue-300">AI绘画</a>
-                    </Link>
-
-                </div>
-            </div>
+            <ReturnTabList />
             <div
                 className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-base-200 to-base-400 p-4">
                 <div className="w-full max-w-3xl bg-white rounded-lg shadow-xl p-6">

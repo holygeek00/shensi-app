@@ -1,7 +1,4 @@
 // 使用react函数式组件，封装一个shacdn/ui类似的input组件
-
-import React from 'react';
-
 const Input = ({label, value, onChange, type}) => {
     return (
         <div className="flex flex-col space-y-4">

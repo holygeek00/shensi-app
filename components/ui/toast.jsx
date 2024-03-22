@@ -3,32 +3,10 @@ import {createRoot} from 'react-dom/client';
 import {useCallback, useState} from 'react'
 import {cn} from "classnames";
 
-export function ZMessage(message, {type = 'success', duration = '5000'}) {
+export function ZMessage() {
 
     let containerRoot = null;
-    let timerList = [];
-    let list = [];
 
-    const addMsg = (msg) => {
-        list.push(msg);
-        renderMsgList(msg);
-    }
-
-
-    const removeMsg = (args, id) => {
-        list.splice(id, 1);
-
-        // 先把要删除的计时器清空
-        clearTimeout(timerList[id]);
-        // 再从全局删除
-        timerList.splice(id, 1);
-        renderMsgList();
-    }
-
-    const renderMsgList = (message) => {
-        containerRoot = createContainer();
-        containerRoot.render(<MessageTemplate message={message} list={list} type={type}/>);
-    }
 
     const createContainer = () => {
         if (containerRoot) {
@@ -41,44 +19,111 @@ export function ZMessage(message, {type = 'success', duration = '5000'}) {
         return container;
     }
 
-    // 在计时结束后
     const timer = () => {
         setTimeout(() => {
-            // 删去该条消息并重新渲染
-            removeMsg();
-        }, 5000);
+
+        }, 1000);
     }
 
-    // 第一，将该条消息存入全局并渲染
-    addMsg(message);
+    const showToast = (message) => {
+        const container = createContainer();
+        container.render(
+            <div className="toast toast-top toast-center fixed z-50">
+                <div role="alert" className="p-5 alert shadow-lg alert-info">
+                    {message}
+                </div>
+            </div>
+        );
 
-    timer();
-
-    // 计时器也存储到全局
-    timerList.push(timer);
-}
-
-const MessageTemplate = ({message, list, type}) => {
-    // 如果没有传入参数，设置默认值
-    const getPosition = useCallback(() => {
-        // 传入正确的位置 或 没有传
-        if (posList.includes(position)) {
-            return styles[position]
-        }
-        // 传入错误的位置
-        throw new Error("位置错误");
-    }, [])
-
-    // 点击关闭按钮时执行
-    const quit = (index) => {
-        removeMsg(args, index);
+        setTimeout(() => {
+            container.unmount();
+            containerRoot = null;
+        }, 3000);
     }
 
-    return (<div className="toast toast-top toast-center fixed z-50">
-        {list === undefined ? '' : list.map((item, index) => (// eslint-disable-next-line react/jsx-key
-            <div key={index} role="alert" className={`p-5 alert shadow-lg alert-${type}`}>
-                <span>{item}</span>
-            </div>))}
-    </div>)
-}
+    const info = (message) => {
+        const container = createContainer();
+        container.render(
+            <div className="toast toast-top toast-center fixed z-50">
+                <div role="alert" className="p-5 alert shadow-lg alert-info">
+                    {message}
+                </div>
+            </div>
+        );
 
+        setTimeout(() => {
+            container.unmount();
+            containerRoot = null;
+        }, 3000);
+    }
+
+    const warning = (message) => {
+        const container = createContainer();
+        container.render(
+            <div className="toast toast-top toast-center fixed z-50">
+                <div role="alert" className="alert alert-warning">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none"
+                         viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                    <span>{message}</span>
+                </div>
+            </div>
+        )
+
+        setTimeout(() => {
+            container.unmount();
+            containerRoot = null;
+        }, 3000);
+    }
+
+    const error = (message) => {
+        const container = createContainer();
+        container.render(
+            <div className="toast toast-top toast-center fixed z-50">
+                <div role="alert" className="alert alert-error">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none"
+                         viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span>{message}</span>
+                </div>
+            </div>
+        )
+
+        setTimeout(() => {
+            container.unmount();
+            containerRoot = null;
+        }, 3000);
+    }
+
+    const success = (message) => {
+        const container = createContainer();
+        container.render(
+            <div className="toast toast-top toast-center fixed z-50">
+                <div role="alert" className="alert alert-success">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none"
+                         viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span>{message}</span>
+                </div>
+            </div>
+        )
+
+        setTimeout(() => {
+            container.unmount();
+            containerRoot = null;
+        }, 3000);
+    }
+    return {
+        success,
+        info,
+        warning,
+        error
+    }
+
+}

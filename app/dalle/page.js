@@ -6,6 +6,7 @@ import {useEffect, useRef, useState} from 'react'
 import Markdown from 'react-markdown'
 import {useRouter} from 'next/navigation'
 import {NavTabLists} from "@/components/nav-tab-lists";
+import {ZMessage} from "@/components/ui/toast";
 
 export default function Chat() {
 
@@ -49,11 +50,17 @@ export default function Chat() {
                     'Authorization': key
                 },
                 body: JSON.stringify({messages: input})
+            }).then(response => response.json()).then(response => {
+                console.log(response.code)
+                if (response.code !== 200) {
+                    ZMessage().error(response.error)
+                }else{
+                    setImageUrl(response.imageUrl)
+                }
             })
-            const data = await response.json()
-            setImageUrl(data.image_url) // Add new dalle URL to the array
         } catch (error) {
             console.error('Error generating dalle:', error)
+            ZMessage().error(error.message)
         } finally {
             setIsLoading(false) // Stop loading after dalle generation finishes
         }
