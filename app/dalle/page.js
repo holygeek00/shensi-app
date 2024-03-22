@@ -43,21 +43,24 @@ export default function Chat() {
     const handleImageGeneration = async () => {
         setIsLoading(true) // Start loading when dalle generation starts
         try {
-            const response = await fetch('/api/image', {
+            let response = await fetch('/api/image', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': key
                 },
                 body: JSON.stringify({messages: input})
-            }).then(response => response.json()).then(response => {
-                console.log(response.code)
-                if (response.code !== 200) {
-                    ZMessage().error(response.error)
-                }else{
-                    setImageUrl(response.imageUrl)
-                }
             })
+            let data = await response.json()
+            console.log(data)
+            if (data.code !== 200) {
+                console.log(data.error)
+                ZMessage().error(data.error)
+            }else{
+                ZMessage().success('Image generated successfully')
+                console.log(data.data.image)
+                setImageUrl(data.data.image_url)
+            }
         } catch (error) {
             console.error('Error generating dalle:', error)
             ZMessage().error(error.message)
@@ -74,7 +77,7 @@ export default function Chat() {
     }
 
     return (
-        <div className="bg-transparent h-screen">
+        <div className="w-screen bg-transparent h-screen">
             <Navbar title='深斯AI'></Navbar>
             <div className="flex justify-center">
                 <div className="flex justify-center w-full static left-1/2">
@@ -86,7 +89,7 @@ export default function Chat() {
                 </div>
             </div>
 
-            <div className="flex flex-col w-full mx-auto bg-transparent">
+            <div className="flex flex-col w-screen mx-auto bg-transparent">
                 <div className="flex flex-col flex-grow overflow-auto pb-20">
                     <div className="flex flex-col flex-grow overflow-auto pb-20">
 

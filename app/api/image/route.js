@@ -21,7 +21,13 @@ export async function POST (req, res) {
     const image_url = response.data[0].url
     //console.log(image_url)
 
-    return Response.json({ image_url: image_url })
+    return Response.json({
+    code: 200,
+    message: '图像生成成功',
+    data: {
+      image_url: image_url
+    }
+  }, { status: 200 })
   } catch (e) {
     console.error('Error:', e)
     return new Response(JSON.stringify({code: e.status, error: e.message, data: {}}), {status: e.status})

@@ -315,7 +315,7 @@ export default function Chat() {
 
             <div onSubmit={submit} className="w-full h-full mx-auto bg-white overflow-y-scroll flex flex-row">
                 <div
-                    className="2xl:w-[320px] xl:w-[320px] lg:w-[320px] md:w-[320px] sm:hidden md:block rounded h-screen overflow-y-scroll shadow-2xl border-2 border-pink-50 bg-transparent text-white"
+                    className="2xl:w-[320px] xl:w-[320px] lg:w-[320px] md:w-[320px] sm:hidden md:block rounded h-screen overflow-y-scroll shadow-2xl border-2 border-pink-50 bg-transparent"
                     style={{"background": "#f0f4f9"}}>
                     <div className="flex flex-col">
                         <div className="w-full p-2">
