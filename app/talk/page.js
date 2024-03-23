@@ -8,7 +8,7 @@ import remarkGfm from 'remark-gfm'
 import './page.css'
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github.css';
-import {ZMessage} from "../../components/ui/toast";
+import {ZMessage} from "@/components/ui/toast";
 import {NavTabLists} from "@/components/nav-tab-lists";
 import {useAuthUser} from "@/lib/hooks/use-auth-user";
 import {RxGear} from "react-icons/rx";
@@ -101,9 +101,8 @@ export default function Chat() {
             model
         },
         onError: (error) => {
-            console.error(error)
             if (JSON.parse(error.message).code === 401 || JSON.parse(error.message).code === 403) {
-                ZMessage().warning(error.message)
+                ZMessage().warning(JSON.parse(error.message).error.toString().split("(")[0])
             } else {
                 ZMessage().warning("网络错误，请稍后再试")
             }
@@ -148,7 +147,7 @@ export default function Chat() {
                 window.localStorage.setItem('chatList', JSON.stringify(list))
             }
         }, onResponse: (response) => {
-
+            ZMessage().success('深斯AI已完成处理')
         }
     });
 
@@ -414,6 +413,14 @@ export default function Chat() {
                         <option>gpt-3.5-turbo</option>
                     </select>
                     <button onClick={clearHistory} className="btn text-white bg-black">清除当前对话</button>
+                    <button
+                        className="btn lg:hidden sm:w-1/4 rounded bg-black text-white hover:bg-blue-500 flex flex-row justify-start items-center"
+                        onClick={e => {
+
+                        }}>
+                        <RxGear/>
+                        <div>设置</div>
+                    </button>
                     <button
                         id="sendButton"
                         type="button"

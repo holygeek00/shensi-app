@@ -261,10 +261,10 @@ export default function ArticleMenu() {
     function TabComponent({ activeTab, handleTabChange}) {
         return (
             <div>
-            <div className="flex lg:flex-col justify-center justify-items-center align-middle text-center sm:mx-2 rounded lg:mt-28 lg:fixed">
+            <div className="flex lg:flex-col justify-center text-center sm:mx-2 rounded lg:mt-28 lg:fixed lg:-translate-y-1/2 lg:top-1/3">
                 {tabs.map(tab => (
                     <a key={tab.id}
-                       className={`w-28 lg:h-16 sm:h-10 sm:py-3 lg:p-6 shadow m-2  border-2 border-black lg:rounded-2xl sm:rounded cursor-pointer font-bold ${activeTab === tab.id ? 'ring-2 ring-blue-500 bg-blue-500 text-white' : ''}`}
+                       className={`w-28 lg:h-16 sm:h-10 sm:py-3 lg:p-6 shadow m-2 ring-1 ring-white hover:scale-110 transition hover:bg-blue-500 lg:rounded-2xl sm:rounded cursor-pointer font-bold ${activeTab === tab.id ? 'ring-2 ring-blue-500 bg-blue-500 text-white' : ''}`}
                        onClick={() => handleTabChange(tab.id)}>
                         {tab.title}
                     </a>

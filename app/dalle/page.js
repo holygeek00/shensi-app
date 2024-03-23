@@ -54,11 +54,9 @@ export default function Chat() {
             let data = await response.json()
             console.log(data)
             if (data.code !== 200) {
-                console.log(data.error)
                 ZMessage().error(data.error)
             }else{
                 ZMessage().success('Image generated successfully')
-                console.log(data.data.image)
                 setImageUrl(data.data.image_url)
             }
         } catch (error) {
