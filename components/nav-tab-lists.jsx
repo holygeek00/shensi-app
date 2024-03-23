@@ -2,7 +2,6 @@
 
 import React, {useEffect} from 'react'
 import Link from "next/link";
-import {cn} from "classnames";
 import {clsx} from "clsx";
 import {useRouter, usePathname} from "next/navigation";
 

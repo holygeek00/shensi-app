@@ -109,8 +109,6 @@ export default function PoetryGenerator () {
             </div>
           </div>
         </div>
-
-
       </div>
     </div>
   )

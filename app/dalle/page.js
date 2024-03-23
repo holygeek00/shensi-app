@@ -1,5 +1,5 @@
 'use client'
-import {useChat} from 'ai/react'
+import {useChat, useCompletion} from 'ai/react'
 import Navbar from '../../components/Navbar'
 import Link from 'next/link'
 import {useEffect, useRef, useState} from 'react'
@@ -8,6 +8,7 @@ import {useRouter} from 'next/navigation'
 import {NavTabLists} from "@/components/nav-tab-lists";
 import {ZMessage} from "@/components/ui/toast";
 import {useAuthUser} from "@/lib/hooks/use-auth-user";
+import {LoadingOutlined} from "@/components/loading-outlined";
 
 export default function Chat() {
 
@@ -149,6 +150,21 @@ export default function Chat() {
 
     const [word, setWord] = useState(prompt[0].prompt)
 
+    const {complete, completion} = useCompletion({
+        api: '/api/completion',
+        headers: {
+            'Authorization': key
+        },
+    })
+
+    const [text, setText] = useState(prompt[0].prompt)
+
+    const handleSubmitComplete = async (e) => {
+        const response = await complete(text)
+        setIsLoading(true)
+        setText(response)
+    }
+
     return (
         <div className="flex flex-row w-screen bg-transparent h-screen overflow-y-scroll">
             <div className="absolute top-0 left-0 w-full h-full">
@@ -222,44 +238,55 @@ export default function Chat() {
                     }
                 </div>
 
-                <div className="flex flex-wrap max-h-[20rem] items-center justify-start rounded fixed self-center bottom-40">
-                    {prompt.map((item, index) => {
-                        return (
-                            <div className="card m-2 rounded-xl w-80">
-                                <div className="rounded shadow-md bg-white text-primary">
-                                    <div className="card-body">
-                                        <p>提示词</p>
-                                        <h2 className="card-title text-ellipsis">{item.name}</h2>
-                                        <textarea
-                                            className="text-ellipsis focus:outline-0 ring-1 ring-indigo-50 text-black h-20 rounded p-2"
-                                            value={item.prompt}/>
-                                    </div>
-                                </div>
+                <div
+                    className="flex flex-wrap max-h-[20rem] items-center justify-center rounded fixed self-center bottom-40">
+                    <div className="card m-2 rounded-xl w-80">
+                        <div className="rounded shadow-md bg-white text-primary">
+                            <div className="card-body">
+                                <p>提示词</p>
+                                <select className="card-title text-ellipsis focus:outline-0" onChange={(event) => {
+                                    setWord(event.target.value)
+                                }}>
+                                    {prompt.map((item, index) =>
+                                        // eslint-disable-next-line react/jsx-key
+                                        <option value={item.prompt}>{item.name}</option>
+                                    )}
+                                </select>
+                                <textarea
+                                    className="text-ellipsis focus:outline-0 ring-1 ring-indigo-50 text-black h-24 rounded p-2 leading-normal"
+                                    value={word}
+                                />
                             </div>
-                        )
-                    })}
+                        </div>
+                    </div>
                     <div className="p-0 m-5 rounded-xl w-96">
                         <div className="rounded shadow-md bg-white text-primary">
                             <div className="card-body">
                                 <p>提示词</p>
                                 <h2 className="card-title text-ellipsis">请输入标题生成提示词</h2>
                                 <textarea
-                                    className="text-ellipsis focus:outline-0 ring-1 ring-indigo-50 text-black h-20 rounded p-2"
-                                    value={word}/>
+                                    className="text-ellipsis focus:outline-0 ring-1 ring-indigo-50 text-black h-24 leading-normal rounded p-2"
+                                    value={text}
+                                    onChange={e => {
+                                        setText(e.target.value)
+                                    }}
+                                />
                                 <button
                                     className="btn btn-primary mt-2"
-                                    type="submit">生成
+                                    type="submit"
+                                    onClick={handleSubmitComplete}
+                                >{isLoading ? <LoadingOutlined/> : '生成'}
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <form onSubmit={handleFormSubmit}
-                      className="fixed self-center bottom-0 w-full px-4 pb-4 md:max-w-md rounded-lg">
+                      className="fixed self-center bottom-0 w-screen px-4 pb-4 md:max-w-md rounded-lg">
                     <div className="form-control flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
-                        <input
+                        <textarea
                             type="text"
-                            className="border flex-grow input-bordered focus:outline-0 focus:ring-1 focus:ring-indigo-300 h-12 text-lg rounded px-4"
+                            className="border focus:outline-0 focus:ring-1 focus:ring-indigo-300 text-lg rounded w-[24rem] h-24 p-2"
                             value={input}
                             placeholder="输入您的问题"
                             onChange={handleInputChange}
