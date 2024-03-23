@@ -34,7 +34,7 @@ export function ZMessage() {
         setTimeout(() => {
             container.unmount();
             containerRoot = null;
-        }, 3000);
+        }, 10000);
     }
 
     const info = (message) => {
@@ -123,7 +123,8 @@ export function ZMessage() {
         success,
         info,
         warning,
-        error
+        error,
+        showToast
     }
 
 }

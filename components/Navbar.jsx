@@ -36,9 +36,9 @@ export default function Navbar({title, isLogin}) {
                 })
                 .catch(error => {
                     console.error('There has been a problem with your fetch operation:', error)
-                    ZMessage('用户信息过期，请重新登录', {type: 'error'})
-                    window.localStorage.removeItem('access_token')
-                    router.push('/')
+                    ZMessage().error('获取用户信息失败')
+                    // window.localStorage.removeItem('access_token')
+                    // router.push('/')
                 })
         } else {
             console.error('No access token or token type available in localStorage')
@@ -69,7 +69,7 @@ export default function Navbar({title, isLogin}) {
                 .catch(error => {
                     console.error('There has been a problem with your fetch operation:', error)
                     ZMessage("获取用户额度失败，请重新登录", {type: "error"})
-                    router.push('/')
+                    // router.push('/')
                 })
         } else {
             console.error('No access token or token type available in localStorage')
@@ -100,28 +100,6 @@ export default function Navbar({title, isLogin}) {
                     </div>
                     <ul tabIndex={0}
                         className="mt-3 z-[1] shadow menu menu-sm dropdown-content bg-base-100 rounded-box lg:w-[300px]">
-                        {/* <li>
-                        <Link href="/bind" legacyBehavior>
-                          <a>绑定key</a>
-                        </Link>
-                      </li> */}
-
-                        {/*<li>*/}
-                        {/*    <Link href="/setting" legacyBehavior>*/}
-                        {/*        <a>用户设置</a>*/}
-                        {/*    </Link>*/}
-                        {/*</li>*/}
-                        {/*<li>*/}
-                        {/*    <Link href="/pay" legacyBehavior>*/}
-                        {/*        <a>充值额度</a>*/}
-                        {/*    </Link>*/}
-                        {/*</li>*/}
-                        {/*<li>*/}
-                        {/*    <div onClick={() => logout()}>*/}
-                        {/*        <a>退出登录</a>*/}
-                        {/*    </div>*/}
-                        {/*</li>*/}
-
                         <div className="flex flex-col">
                             {user ? (
                                 <div className='bg-base-100'>

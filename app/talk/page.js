@@ -348,7 +348,7 @@ export default function Chat() {
                                     className="btn-sm w-1/3 m-1 rounded p-2 bg-black text-white focus:bg-indigo-500 hover:bg-blue-500 flex flex-row items-center"
                                     onClick={handleDeleteClick}>
                                     <TbHttpDelete/>
-                                    <div classNam="ml-0">删除对话</div>
+                                    <div className="ml-0">删除对话</div>
                                 </button>
                                 <button
                                     className="btn-sm w-1/3 m-1 btn-block rounded p-2 bg-black text-white hover:bg-blue-500 flex flex-row items-center"
@@ -430,6 +430,7 @@ export default function Chat() {
                         {isSending ? 'AI生成中...' : '发 送'} {/* 按钮文本根据发送状态变化 */}
                     </button>
                 </div>
+
             </div>
         </div>
 
