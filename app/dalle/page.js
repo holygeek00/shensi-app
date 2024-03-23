@@ -158,12 +158,16 @@ export default function Chat() {
     })
 
     const [text, setText] = useState(prompt[0].prompt)
-
+    const [historyImages, setHistoryImages]= useState(null)
     const handleSubmitComplete = async (e) => {
         const response = await complete(text)
         setIsLoading(true)
         setText(response)
     }
+
+    useEffect(() =>{
+        if (window) setHistoryImages(window.localStorage.getItem('historyImagesCollection') ? JSON.parse(window.localStorage.getItem("historyImagesCollection")) : null)
+    }, [router])
 
     return (
         <div className="flex flex-row w-screen bg-transparent h-screen overflow-y-scroll">
@@ -172,7 +176,7 @@ export default function Chat() {
             </div>
             <div
                 className="overflow-y-scroll lg:w-[30rem] lg:h-[calc(100%-0em)] lg:block rounded  pt-20 shadow-2xl sm:hidden">
-                {window.localStorage.getItem("historyImagesCollection") !== null ? JSON.parse(window.localStorage.getItem("historyImagesCollection")).images.map(
+                {historyImages !== null ? historyImages.images.map(
                         (image, index) => (
                             <div className="card w-[25rem] m-auto glass ring-2 ring-indigo-500 mb-10" key={index}>
                                 <figure><img src={image.image_url} onClick={() => {
@@ -244,7 +248,7 @@ export default function Chat() {
                         <div className="rounded shadow-md bg-white text-primary">
                             <div className="card-body">
                                 <p>提示词</p>
-                                <select className="card-title text-ellipsis focus:outline-0" onChange={(event) => {
+                                <select className="card-title text-ellipsis focus:outline-0" value={word} onChange={(event) => {
                                     setWord(event.target.value)
                                 }}>
                                     {prompt.map((item, index) =>
