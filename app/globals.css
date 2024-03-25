@@ -56,7 +56,11 @@ table {
 }
 
 ::-webkit-scrollbar {
-    width: 2px;
+    width: 0px;
     background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #ffffff;
 }
 

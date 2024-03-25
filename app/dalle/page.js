@@ -23,12 +23,7 @@ export default function Chat() {
         }
     }, [])
 
-    const {messages, input, handleInputChange, handleSubmit} = useChat({
-        api: '/api/dalle',
-        headers: {
-            'Authorization': key,
-        },
-    })
+    const {messages, input, handleInputChange, handleSubmit, setInput} = useChat({})
 
     const endOfMessagesRef = useRef(null)
     const router = useRouter()
@@ -42,7 +37,7 @@ export default function Chat() {
     }, [messages])
 
     const handleImageGeneration = async () => {
-        setIsLoading(true) // Start loading when dalle generation starts
+        setIsLoading(true)
         try {
             let response = await fetch('/api/image', {
                 method: 'POST',
@@ -53,7 +48,6 @@ export default function Chat() {
                 body: JSON.stringify({messages: input})
             })
             let data = await response.json()
-            console.log(data)
             if (data.code !== 200) {
                 ZMessage().error(data.error.split("(")[0])
             } else {
@@ -69,6 +63,7 @@ export default function Chat() {
                         }],
                         version: "1.0.0"
                     }))
+                    setHistoryImages(JSON.parse(window.localStorage.getItem('historyImagesCollection')))
                 } else {
                     window.localStorage.setItem('historyImagesCollection', JSON.stringify({
                         images: [{
@@ -93,8 +88,9 @@ export default function Chat() {
     const lastMessage = messages.length > 0 ? messages[messages.length - 1] : null
     const handleFormSubmit = (e) => {
         e.preventDefault()
+        console.log(e.target)
         // handleSubmit(e)
-        handleImageGeneration()
+        // handleImageGeneration()
     }
 
     const copyImgUrl = (imageUrl) => {
@@ -110,11 +106,9 @@ export default function Chat() {
     const deleteImage = (id) => {
         let h = window.localStorage.getItem("historyImagesCollection")
         h = JSON.parse(h)
-        console.log(h, id)
         h.images = h.images.filter(item => item.id !== id)
-        console.log(h)
         window.localStorage.setItem("historyImagesCollection", JSON.stringify(h))
-        setImageUrl("")
+        setHistoryImages(h)
     }
 
     const prompt = [
@@ -150,24 +144,32 @@ export default function Chat() {
 
     const [word, setWord] = useState(prompt[0].prompt)
 
-    const {complete, completion} = useCompletion({
-        api: '/api/completion',
-        headers: {
-            'Authorization': key
-        },
-    })
-
-    const [text, setText] = useState(prompt[0].prompt)
-    const [historyImages, setHistoryImages]= useState(null)
+    const [historyImages, setHistoryImages] = useState(null)
     const handleSubmitComplete = async (e) => {
-        const response = await complete(text)
         setIsLoading(true)
-        setText(response)
+        const response = await fetch('/api/completion', {
+            method: 'POST',
+            headers: {
+                'authorization': key,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                prompt: word,
+                model: 'gpt-3.5-turbo'
+            })
+        })
+        const data = await response.text()
+        setInput(data)
+        setIsLoading(false)
     }
 
-    useEffect(() =>{
+    useEffect(() => {
         if (window) setHistoryImages(window.localStorage.getItem('historyImagesCollection') ? JSON.parse(window.localStorage.getItem("historyImagesCollection")) : null)
     }, [router])
+
+    useEffect(() => {
+        setInput(word + "请根据要求生成新的dalle的提示词")
+    }, [word])
 
     return (
         <div className="flex flex-row w-screen bg-transparent h-screen overflow-y-scroll">
@@ -178,7 +180,7 @@ export default function Chat() {
                 className="overflow-y-scroll lg:w-[30rem] lg:h-[calc(100%-0em)] lg:block rounded  pt-20 shadow-2xl sm:hidden">
                 {historyImages !== null ? historyImages.images.map(
                         (image, index) => (
-                            <div className="card w-[25rem] m-auto glass ring-2 ring-indigo-500 mb-10" key={index}>
+                            <div className="card w-[29rem] m-auto glass ring-2 ring-gray-200 mb-10 shadow-2xl" key={index}>
                                 <figure><img src={image.image_url} onClick={() => {
                                     setImageUrl(image.image_url)
                                 }}
@@ -233,7 +235,7 @@ export default function Chat() {
                                     </div>
                                 ) : (
                                     <div className="text-center text-gray-500">
-                                        例如输入关键词：生成以一个背景图
+                                        例如输入关键词：生成背景图
                                     </div>
                                 )}
                                 {/*</div>*/}
@@ -242,67 +244,45 @@ export default function Chat() {
                     }
                 </div>
 
-                <div
-                    className="flex flex-wrap max-h-[20rem] items-center justify-center rounded fixed self-center bottom-40">
-                    <div className="card m-2 rounded-xl w-80">
-                        <div className="rounded shadow-md bg-white text-primary">
-                            <div className="card-body">
-                                <p>提示词</p>
-                                <select className="card-title text-ellipsis focus:outline-0" value={word} onChange={(event) => {
-                                    setWord(event.target.value)
-                                }}>
+                <form onSubmit={handleFormSubmit}
+                      className="fixed self-center bottom-0 lg:w-[34rem] lg:px-4 lg:pb-4 md:max-w-md rounded-lg">
+                    {/*<div className="form-control flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">*/}
+                    <div className="lg:w-[34rem] sm:w-screen sm:flex-col lg:h-72 sm:h-64 rounded p-2 bg-white flex flex-row justify-center items-end">
+                        <div className="sm:w-full">
+                            <div className="flex lg:flex-row justify-start items-center sm:mt-0">
+                                <select
+                                    className="h-8 ring-1 ring-gray-300 text-ellipsis focus:outline-0 focus:ring-2 focus:ring-gray-300 rounded mr-2"
+                                    value={word}
+                                    onChange={(event) => {
+                                        setWord(event.target.value)
+                                    }}>
                                     {prompt.map((item, index) =>
                                         // eslint-disable-next-line react/jsx-key
-                                        <option value={item.prompt}>{item.name}</option>
+                                        <option value={item.prompt} key={index}>{item.name}</option>
                                     )}
                                 </select>
-                                <textarea
-                                    className="text-ellipsis focus:outline-0 ring-1 ring-indigo-50 text-black h-24 rounded p-2 leading-normal"
-                                    value={word}
-                                />
+                                {isLoading ? <LoadingOutlined/> :
+                                    <button className="btn w-[8rem] h-8" onClick={handleSubmitComplete}>
+                                        生成提示词
+                                    </button>}
                             </div>
+                            <textarea
+                                type="text"
+                                className="focus:outline-0 text-lg rounded lg:w-[28rem] sm:w-full h-36 p-2 resize-none"
+                                value={input}
+                                placeholder="输入您的问题"
+                                onChange={handleInputChange}
+                                required
+                            />
                         </div>
-                    </div>
-                    <div className="p-0 m-5 rounded-xl w-96">
-                        <div className="rounded shadow-md bg-white text-primary">
-                            <div className="card-body">
-                                <p>提示词</p>
-                                <h2 className="card-title text-ellipsis">请输入标题生成提示词</h2>
-                                <textarea
-                                    className="text-ellipsis focus:outline-0 ring-1 ring-indigo-50 text-black h-24 leading-normal rounded p-2"
-                                    value={text}
-                                    onChange={e => {
-                                        setText(e.target.value)
-                                    }}
-                                />
-                                <button
-                                    className="btn btn-primary mt-2"
-                                    type="submit"
-                                    onClick={handleSubmitComplete}
-                                >{isLoading ? <LoadingOutlined/> : '生成'}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <form onSubmit={handleFormSubmit}
-                      className="fixed self-center bottom-0 w-screen px-4 pb-4 md:max-w-md rounded-lg">
-                    <div className="form-control flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
-                        <textarea
-                            type="text"
-                            className="border focus:outline-0 focus:ring-1 focus:ring-indigo-300 text-lg rounded w-[24rem] h-24 p-2"
-                            value={input}
-                            placeholder="输入您的问题"
-                            onChange={handleInputChange}
-                            required
-                        />
                         <button
-                            type="submit"
-                            className="btn w-full md:w-auto h-12 rounded bg-blue-500 hover:bg-blue-600 text-white" // 将按钮和输入框并排放置
+                            onClick={handleImageGeneration}
+                            className="btn w-full bg-black md:w-auto h-12 rounded border-0 hover:bg-blue-600 text-white"
                         >
                             发 送
                         </button>
                     </div>
+                    {/*</div>*/}
                 </form>
             </div>
         </div>

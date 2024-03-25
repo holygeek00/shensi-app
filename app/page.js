@@ -3,7 +3,7 @@
 import MaxWidthWrapper from "../components/MaxWidthWrapper";
 import {buttonVariants} from "../components/ui/button";
 import {Card, CardDescription, CardTitle} from "../components/ui/card";
-import ChatwootWidget from "../components/chatwoot"
+// import ChatwootWidget from "../components/chatwoot"
 import Link from "next/link";
 import Image from "next/image";
 import {cn} from "../lib/utils";
@@ -123,16 +123,6 @@ export default function Home() {
                                     <span className="text-xl font-semibold">
                     注册您的账户
                   </span>
-                                    {/* <span className="mt-2 text-zinc-700">
-                Either starting out with a free plan or choose our{" "}
-                <Link
-                  href="/pricing"
-                  className="text-blue-700 underline underline-offset-2"
-                >
-                  pro plan
-                </Link>
-                .
-              </span> */}
                                 </div>
                             </li>
                             <li className="md:flex-1">

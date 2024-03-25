@@ -36,12 +36,12 @@ export default function Navbar({title, isLogin}) {
                 })
                 .catch(error => {
                     console.error('There has been a problem with your fetch operation:', error)
-                    ZMessage().error('获取用户信息失败')
+                    ZMessage().error('登录过期，请重新登录')
                     window.localStorage.removeItem('access_token')
                     router.push('/')
                 })
         } else {
-            console.error('No access token or token type available in localStorage')
+            console.error("NavTab: access_token is undefined or null")
         }
     }
 

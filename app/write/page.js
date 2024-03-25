@@ -522,60 +522,11 @@ export default function ArticleMenu() {
                         {id: 3, name: 'AI绘画', link: '/dalle'},
                     ]}/>
                 </div>
-                {/*<div role="tablist"*/}
-                {/*     className="tabs tabs-lifted text-center bg-indigo-50 sm:mx-2 rounded lg:mt-28 lg:fixed z-20 lg:-left-10 lg:top-1/2 lg:-translate-y-1/2 lg:rotate-90 transform">*/}
-                {/*    <a role="tab" className={`tab tabs w-20  ${activeTab === 'tab1' ? 'tab-active' : ''}`}*/}
-                {/*       onClick={() => handleTabChange('tab1')}>写作</a>*/}
-                {/*    <a role="tab" className={`tab tabs  ${activeTab === 'tab2' ? 'tab-active' : ''}`}*/}
-                {/*       onClick={() => handleTabChange('tab2')}>社媒</a>*/}
 
-                {/*    <a role="tab" className={`tab tabs  ${activeTab === 'tab3' ? 'tab-active' : ''}`}*/}
-                {/*       onClick={() => handleTabChange('tab3')}>工作</a>*/}
-                {/*    <a role="tab" className={`tab tabs  ${activeTab === 'tab4' ? 'tab-active' : ''}`}*/}
-                {/*       onClick={() => handleTabChange('tab4')}>视频</a>*/}
-                {/*    <a role="tab" className={`tab tabs  ${activeTab === 'tab5' ? 'tab-active' : ''}`}*/}
-                {/*       onClick={() => handleTabChange('tab5')}>电商</a>*/}
-                {/*    <a role="tab" className={`tab tabs  ${activeTab === 'tab6' ? 'tab-active' : ''}`}*/}
-                {/*       onClick={() => handleTabChange('tab6')}>娱乐</a>*/}
-                {/*</div>*/}
-                {/*{activeTab === 'tab2' && <CategoryCardGroup categoryTitle="社交媒体类" cards={socialMediaCards}/>}*/}
-                {/*{activeTab === 'tab1' && <CategoryCardGroup categoryTitle="写作类" cards={educationLiteratureCards}/>}*/}
-                {/*{activeTab === 'tab3' && <CategoryCardGroup categoryTitle="工作类" cards={workCards}/>}*/}
-                {/*{activeTab === 'tab4' && <CategoryCardGroup categoryTitle="短视频类" cards={shortVideoCards}/>}*/}
-                {/*{activeTab === 'tab5' && <CategoryCardGroup categoryTitle="电商类" cards={ecommerceCards}/>}*/}
-                {/*{activeTab === 'tab6' && <CategoryCardGroup categoryTitle="娱乐类" cards={entertainmentCards}/>}*/}
                 <TabComponent activeTab={activeTab} handleTabChange={(id) => {
                     console.log(id)
                     setActiveTab(id)
                 }}/>
-
-
-                {/* <CategoryCardGroup categoryTitle="社交媒体类" cards={socialMediaCards} />
-      <CategoryCardGroup categoryTitle="写作类" cards={educationLiteratureCards} />
-      <CategoryCardGroup categoryTitle="社交媒体类" cards={workCards} />
-      <CategoryCardGroup categoryTitle="短视频类" cards={shortVideoCards} />
-      <CategoryCardGroup categoryTitle="社交媒体类" cards={ecommerceCards} />
-      <CategoryCardGroup categoryTitle="娱乐类" cards={entertainmentCards} /> */}
-                <div className="flex flex-wrap justify-center  gap-10 m-8 p-4 ">
-
-                    {/* {cards.map((card, index) => (
-          <div key={index} className="card max-w-xs md:max-w-xs lg:w-1/5 bg-gradient-to-b from-base-200 to-base-400 shadow-xl">
-            <figure className="px-10 pt-10">
-              <Image src={card.imageUrl} alt="logo" className="rounded" width={60} height={60} />
-            </figure>
-            <div className="card-body items-center text-center">
-              <h2 className="card-title">{card.title}</h2>
-              <p>{card.text}</p>
-              <div className="card-actions">
-                <Link href={card.link}>
-                  <button className="btn btn-primary">开始使用</button>
-                </Link>
-              </div>
-            </div>
-          </div>
-
-        ))} */}
-                </div>
             </div>
         </div>
 

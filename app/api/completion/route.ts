@@ -7,7 +7,7 @@ export const runtime = 'edge';
 
 export async function POST(req: Request) {
   // Extract the `prompt` from the body of the request
-  const { prompt } = await req.json();
+  const { prompt, model, streaming } = await req.json();
   const authHeader = req.headers.get('Authorization');
   // const authHeader = 'sk-NKt5fonF0F563xye73D7D329E72749F49473FeA3C33b0e13'
   const openai = new OpenAI({
@@ -17,7 +17,7 @@ export async function POST(req: Request) {
   });
   // Request the OpenAI API for the response based on the prompt
   const response = await openai.chat.completions.create({
-    model: 'gpt-4-0125-preview',
+    model: model || 'gpt-4-0125-preview',
     stream: true,
     // a precise prompt is important for the AI to reply with the correct tokens
     messages: [
