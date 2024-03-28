@@ -1,7 +1,7 @@
 'use client'
 import {useChat, useCompletion} from 'ai/react'
 import Navbar from '../../components/Navbar'
-import Link from 'next/link'
+import {CiPaperplane, CiPill} from "react-icons/ci";
 import {useEffect, useRef, useState} from 'react'
 import Markdown from 'react-markdown'
 import {useRouter} from 'next/navigation'
@@ -76,6 +76,7 @@ export default function Chat() {
                     }))
                 }
                 setImageUrl(data.data.image_url)
+                setHistoryImages(JSON.parse(window.localStorage.getItem('historyImagesCollection')))
             }
         } catch (error) {
             console.error('Error generating dalle:', error)
@@ -173,11 +174,11 @@ export default function Chat() {
 
     return (
         <div className="flex flex-row w-screen bg-transparent h-screen overflow-y-scroll">
-            <div className="absolute top-0 left-0 w-full h-full">
+            <div className="absolute top-0 left-0 w-full h-screen">
                 <Navbar title='深斯AI'></Navbar>
             </div>
             <div
-                className="overflow-y-scroll lg:w-[30rem] lg:h-[calc(100%-0em)] lg:block rounded  pt-20 shadow-2xl sm:hidden">
+                className="overflow-y-scroll lg:w-[30rem] lg:h-[calc(100%-0em)] lg:block md:w-full rounded  pt-20 shadow-2xl sm:hidden">
                 {historyImages !== null ? historyImages.images.map(
                         (image, index) => (
                             <div className="card w-[29rem] m-auto glass ring-2 ring-gray-200 mb-10 shadow-2xl" key={index}>
@@ -226,7 +227,6 @@ export default function Chat() {
                         <div className="overflow-y-scroll">
                             <div
                                 className="mx-auto flex max-w-6xl justify-center lg:px-8l">
-                                {/*<div className="mt-8 flow-root sm:mt-16">*/}
                                 {imageUrl ? (
                                     <div
                                         className="relative mx-auto flex max-w-2xl items-center justify-center sm:px-6 lg:px-8 shadow-2xl rounded">
@@ -238,20 +238,20 @@ export default function Chat() {
                                         例如输入关键词：生成背景图
                                     </div>
                                 )}
-                                {/*</div>*/}
                             </div>
                         </div>
                     }
                 </div>
 
                 <form onSubmit={handleFormSubmit}
-                      className="fixed self-center bottom-0 lg:w-[34rem] lg:px-4 lg:pb-4 md:max-w-md rounded-lg">
+                      className="fixed self-center bottom-0 lg:w-[34rem] lg:px-4 lg:pb-4 md:w-2/3 md:m-auto rounded-lg lg:bottom-2">
                     {/*<div className="form-control flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">*/}
-                    <div className="lg:w-[34rem] sm:w-screen sm:flex-col lg:h-72 sm:h-64 rounded p-2 bg-white flex flex-row justify-center items-end">
-                        <div className="sm:w-full">
-                            <div className="flex lg:flex-row justify-start items-center sm:mt-0">
+                    <div
+                        className="lg:w-[34rem] md:w-full sm:w-screen sm:flex-col lg:h-60 md:h-72 sm:h-60 rounded p-2 bg-white flex flex-row justify-start items-end ring-1 ring-gray-300 overflow-y-scroll">
+                        <div className="md:w-full sm:w-full">
+                            <div className="flex lg:flex-row justify-start items-start lg:m-0">
                                 <select
-                                    className="h-8 ring-1 ring-gray-300 text-ellipsis focus:outline-0 focus:ring-2 focus:ring-gray-300 rounded mr-2"
+                                    className="h-11 ring-1 ring-gray-300 text-ellipsis focus:outline-0 focus:ring-2 focus:ring-gray-300 rounded mr-2"
                                     value={word}
                                     onChange={(event) => {
                                         setWord(event.target.value)
@@ -262,13 +262,14 @@ export default function Chat() {
                                     )}
                                 </select>
                                 {isLoading ? <LoadingOutlined/> :
-                                    <button className="btn w-[8rem] h-8" onClick={handleSubmitComplete}>
+                                    <button className="btn w-[8rem] h-8 ring-1 ring-indigo-50" onClick={handleSubmitComplete}>
+                                        <CiPill />
                                         生成提示词
                                     </button>}
                             </div>
                             <textarea
                                 type="text"
-                                className="focus:outline-0 text-lg rounded lg:w-[28rem] sm:w-full h-36 p-2 resize-none"
+                                className="focus:outline-0 text-lg rounded lg:w-[28rem] sm:w-full h-44 p-2 resize-none sm:h-32"
                                 value={input}
                                 placeholder="输入您的问题"
                                 onChange={handleInputChange}
@@ -279,6 +280,7 @@ export default function Chat() {
                             onClick={handleImageGeneration}
                             className="btn w-full bg-black md:w-auto h-12 rounded border-0 hover:bg-blue-600 text-white"
                         >
+                            <CiPaperplane size={24}/>
                             发 送
                         </button>
                     </div>

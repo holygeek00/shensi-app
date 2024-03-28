@@ -15,7 +15,7 @@ export default function RootLayout({children}) {
     return (
         <html lang="zh-cn">
         <head>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
             <script async src="https://www.googletagmanager.com/gtag/js?id=G-0BKCT3XTPZ"></script>
             <script
                 dangerouslySetInnerHTML={{
@@ -28,7 +28,9 @@ export default function RootLayout({children}) {
                 }}
             />
         </head>
-        <body className={inter.className} style={{"backgroundImage": "url('./bg-page.jpeg')", "backgroundSize": "100% 100%", "backgroundPosition": "center", "backgroundRepeat": "no-repeat"}}>
+        <body className={inter.className} style={{
+            "backgroundImage": "url('./bg-page.jpeg')",
+            "backgroundSize": "100% 100%", "backgroundPosition": "center", "backgroundRepeat": "no-repeat"}}>
         {children}
         </body>
 
