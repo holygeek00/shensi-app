@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* Reset CSS */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+
+body {
+    line-height: 1;
+    background-image: url("../public/bg-page.jpeg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+@keyframes colorCycle {
+    0% {
+        background: linear-gradient(to right, #bb313e25, #bb313e25, #d7222925, #dd4a1625, #e4761525, #f5c50025, #f0e92725, #b1ce2425, #48a93525, #03944525, #157c4f25, #176a5825, #1b556325, #1d386f25, #1d386f25, #20277825, #52266325, #8a244b25);
+    }
+    25% {
+        background: linear-gradient(to right, #bb313e50, #bb313e50, #d7222950, #dd4a1650, #e4761550, #f5c50050, #f0e92750, #b1ce2450, #48a93550, #03944550, #157c4f50, #176a5850, #1b556350, #1d386f50, #1d386f50, #20277850, #52266350, #8a244b50);
+    }
+    50% {
+        background: linear-gradient(to right, #bb313e75, #bb313e75, #d7222975, #dd4a1675, #e4761575, #f5c50075, #f0e92775, #b1ce2475, #48a93575, #03944575, #157c4f75, #176a5875, #1b556375, #1d386f75, #1d386f75, #20277875, #52266375, #8a244b75);
+    }
+    75% {
+        background: linear-gradient(to right, #bb313eff, #bb313eff, #d72229ff, #dd4a16ff, #e47615ff, #f5c500ff, #f0e927ff, #b1ce24ff, #48a935ff, #039445ff, #157c4fff, #176a58ff, #1b5563ff, #1d386fff, #1d386fff, #202778ff, #522663ff, #8a244bff);
+    }
+    100% {
+        background: linear-gradient(to right, #bb313e25, #bb313e25, #d7222925, #dd4a1625, #e4761525, #f5c50025, #f0e92725, #b1ce2425, #48a93525, #03944525, #157c4f25, #176a5825, #1b556325, #1d386f25, #1d386f25, #20277825, #52266325, #8a244b25);
+    }
+}
+
+
+ol, ul {
+    list-style: none;
+}
+
+blockquote, q {
+    quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #ffffff;
+}
+
