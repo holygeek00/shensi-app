@@ -2,7 +2,7 @@ module.exports = {
   apps: [{
     name: 'shensi-app',
     script: 'pnpm',
-    args: 'start -p 80',
+    args: 'dev -p 3000',
     watch: '.',
     env: {
       NODE_ENV: 'production',
