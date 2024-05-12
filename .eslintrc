@@ -1,0 +1,6 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 2020,  // 或更高，确保支持ES6功能
+    "sourceType": "module"  // 关键：这告诉ESLint你的代码使用ES6模块
+  }
+}
