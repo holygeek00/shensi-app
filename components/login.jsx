@@ -115,7 +115,10 @@ export function Login() {
 
 
     useEffect(() => {
-        document.getElementById('my_modal_1').showModal();
+        const userInfo = JSON.parse(window.localStorage.getItem('userInfo'))
+        if (!userInfo){
+            document.getElementById('my_modal_1').showModal();
+        }
     }, []);
 
     return (

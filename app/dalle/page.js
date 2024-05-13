@@ -172,7 +172,7 @@ export default function Chat() {
                 <Navbar title='深斯AI'></Navbar>
             </div>
             <div
-                className="overflow-y-scroll lg:w-[30rem] lg:h-[calc(100%-0em)] lg:block md:w-full rounded  pt-20 shadow-2xl sm:hidden">
+                className="overflow-y-scroll lg:w-[30rem] lg:h-[calc(100%-0em)] lg:block md:w-full rounded pt-20 shadow sm:hidden">
                 {historyImages !== null ? historyImages.images.map(
                         (image, index) => (
                             <div className="card w-[29rem] m-auto glass ring-2 ring-gray-200 mb-10 shadow-2xl" key={index}>
