@@ -15,11 +15,17 @@ export default function Navbar({title, isLogin}) {
                 const params = new URLSearchParams({ api_key: userInfo.key });
                 const response = await fetch(`/api/user/info?${params}`, {
                     method: "GET",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Token': `${userInfo.token}`
+                    }
                 });
 
+                console.log(response)
                 // 检查响应状态
                 if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
+                    window.localStorage.removeItem('userInfo')
+                    router.replace('/write')
                 }
 
                 const userData = await response.json();
@@ -28,9 +34,12 @@ export default function Navbar({title, isLogin}) {
                 setUserInfo(userInfo)
             } catch (error) {
                 console.error('Error fetching user data:', error);
+                if (window.localStorage.getItem('userInfo') === null || window.localStorage.getItem('userInfo') === undefined) {
+                    router.replace('/write')
+                }
             }
         })()
-    }, []);
+    }, [router]);
 
     useEffect(() => {
         if (isLogin){
