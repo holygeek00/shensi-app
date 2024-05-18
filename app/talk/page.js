@@ -304,7 +304,7 @@ export default function Chat() {
             <div onSubmit={submit}
                  className="w-screen h-screen bg-white flex flex-row justify-start items-start align-center">
                 <div
-                    className="lg:w-[320px] sm:hidden md:block rounded h-screen overflow-y-scroll border-2 border-pink-50 bg-transparent"
+                    className="lg:w-[320px] sm:hidden md:block rounded h-screen border-2 border-pink-50 bg-transparent"
                     style={{"background": "#f0f4f9"}}>
                     <div className="w-[320px] flex flex-col">
                         <div className="w-[320px] p-2">
@@ -358,7 +358,7 @@ export default function Chat() {
                 </div>
                 <div
                     id="chat"
-                    className="lg:w-[calc(100vw-320px)] sm:w-screen md:w-full lg:p-10 sm:py-2 rounded overflow-y-scroll relative top-0 h-screen">
+                    className="lg:w-[calc(100vw-320px)] sm:w-screen md:w-full lg:p-10 sm:py-2 rounded relative top-0 h-screen">
                     <div className="flex justify-center w-96 absolute left-1/2 -translate-x-1/2 top-0">
                         <NavTabLists tabList={[
                             {id: 1, name: 'AI写作', link: '/write'},
@@ -366,7 +366,7 @@ export default function Chat() {
                             {id: 3, name: 'AI绘画', link: '/dalle'},
                         ]}/>
                     </div>
-                    <div className="lg:w-[60rem] md:w-full pb-36 lg:mx-auto lg:mt-20">
+                    <div className="lg:w-[60rem] md:w-full pb-36 lg:mx-auto h-[50rem] overflow-y-scroll">
                         {messages ? messages.map(m => (<div key={Math.random().toString()}
                                                             className="bg-white md:w-2/3 lg:w-full self-center m-2">
                             <div className={m.role === 'user' ? "leading-normal" : ""}>

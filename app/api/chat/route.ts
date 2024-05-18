@@ -1,4 +1,4 @@
-import OpenAI from 'openai'
+import {OpenAI} from 'openai'
 import {OpenAIStream, StreamingTextResponse} from 'ai'
 import {execSql} from "../lib/db";
 import {jwtVerify} from "jose";
@@ -46,10 +46,16 @@ const chatStreamText = async (req) => {
         // 查询当前用户余额
         const result = await execSql('SELECT * FROM users WHERE api_key = $1', [apiKey]);
 
+        // 查询api_key
+        const user = result.rows[0];
 
-        console.log(result.rowCount)
+        if (!user) {
+            return new Response(JSON.stringify({code: 401, message: '请传入正确的api key', data: {}}), {status: 401})
+        }
 
-        const response = await openai.chat.completions.create({
+        console.log('user', user)
+
+        const r = await openai.chat.completions.create({
             model: model,
             stream: true,
             messages,
@@ -59,7 +65,18 @@ const chatStreamText = async (req) => {
             presence_penalty: 0,
             max_tokens: 4096
         })
-        const stream = OpenAIStream(response);
+
+        r.tee().map((event) => {
+            console.log(event)
+        })
+
+        const stream = OpenAIStream(r);
+        console.log(user.phone_number)
+        // 更新用户余额
+        const updateResult = await execSql('UPDATE users SET quota = $1 WHERE phone_number = $2', [user.quota-100, user.phone_number]);
+
+        // console.log('updateResult', updateResult)
+
         return new StreamingTextResponse(stream);
     } catch (e) {
         console.log(e)
