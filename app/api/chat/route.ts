@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     try{
         let result = await jwtVerify(token, new TextEncoder().encode(process.env.SECRET_KEY))
     }catch (e){
-        return new Response(JSON.stringify({code: 401, message: '验证过期请重新登录', data: {}}), {status: 401})
+        return new Response(JSON.stringify({code: 401, message: '验证过期，请重新登录', data: {}}), {status: 401})
     }
     return chatStreamText(req)
 }

@@ -4,7 +4,6 @@ import Navbar from '../../components/Navbar'
 import {CiPaperplane, CiPill} from "react-icons/ci";
 import {useEffect, useRef, useState} from 'react'
 import {useRouter} from 'next/navigation'
-import {NavTabLists} from "@/components/nav-tab-lists";
 import {ZMessage} from "@/components/ui/toast";
 import {LoadingOutlined} from "@/components/loading-outlined";
 
@@ -143,10 +142,11 @@ export default function Chat() {
     const [historyImages, setHistoryImages] = useState(null)
     const handleSubmitComplete = async (e) => {
         setIsLoading(true)
-        const response = await fetch('/api/completion', {
+        const response = await fetch('/api/chat', {
             method: 'POST',
             headers: {
                 'authorization': key,
+                'token': token,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
@@ -204,19 +204,19 @@ export default function Chat() {
             </div>
             <div
                 className="flex flex-col lg:w-[calc(100%-30rem)] sm:w-full lg:h-screen bg-transparent overflow-y-scroll">
-                <div className="flex justify-center my-5 sm:mt-10">
-                    <NavTabLists tabList={[
-                        {id: 1, name: 'AI写作', link: '/write'},
-                        {id: 2, name: 'AI对话', link: '/talk'},
-                        {id: 3, name: 'AI绘画', link: '/dalle'},
-                    ]}/>
-                </div>
-                <div className="overflow-y-scroll">
+                {/*<div className="flex justify-center my-5 sm:mt-10">*/}
+                {/*    <NavTabLists tabList={[*/}
+                {/*        {id: 1, name: 'AI写作', link: '/write'},*/}
+                {/*        {id: 2, name: 'AI对话', link: '/talk'},*/}
+                {/*        {id: 3, name: 'AI绘画', link: '/dalle'},*/}
+                {/*    ]}/>*/}
+                {/*</div>*/}
+                <div className="overflow-y-scroll mt-9">
                     {isLoading ? (
                             <div className="flex flex-col justify-center items-center text-center">
                                 {"稍等片刻即生成您想要的图片"}
                                 <span
-                                    className="loading loading-spinner w-10 h-10 flex items-center justify-center"></span>
+                                    className="loading loading-spinner w-10 h-10 flex items-center justify-center m-5"></span>
                             </div>
                         ) :
                         <div className="overflow-y-scroll">

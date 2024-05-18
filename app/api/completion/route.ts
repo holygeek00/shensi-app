@@ -1,22 +1,60 @@
 import OpenAI from 'openai';
 import { OpenAIStream, StreamingTextResponse } from 'ai';
 import { textCensorHandler } from './check'
+import {jwtVerify} from "jose";
+import {execSql} from "../lib/db";
 export const runtime = 'edge';
 
 
 
 export async function POST(req: Request) {
-  // Extract the `prompt` from the body of the request
+
+  return new Response("", {
+    status: 500
+  })
+
   const { prompt, model, streaming } = await req.json();
-  // const authHeader = req.headers.get('Authorization');
-  const authHeader = process.env.OPENAI_API_KEY;
+  const token = req.headers.get('token');
+  console.log('token', token)
+  if (!token) {
+    return new Response(JSON.stringify({code: 401, message: '验证过期请重新登录!', data: {}}), {status: 401})
+  }
+  try{
+    let result = await jwtVerify(token, new TextEncoder().encode(process.env.SECRET_KEY))
+  }catch (e){
+    return new Response(JSON.stringify({code: 401, message: '验证过期请重新登录', data: {}}), {status: 401})
+  }
+
+  // 拿到headers中的key
+  const apiKey = req.headers.get('Authorization');
+
+  if (!apiKey) {
+    return new Response(JSON.stringify({code: 401, message: '请传入正确的api key', data: {}}), {status: 401})
+  }
+  // 查询当前用户余额
+  const result = await execSql('SELECT * FROM users WHERE api_key = $1', [apiKey]);
+
+  // 查询api_key
+  const user = result.rows[0];
+
+  if (!user) {
+    return new Response(JSON.stringify({code: 401, message: '请传入正确的api key', data: {}}), {status: 401})
+  }
+
+  console.log('user', user)
+
+  if (user.quota <= 0) {
+    return new Response(JSON.stringify({code: 402, message: '余额不足', data: {}}), {status: 402})
+  }
+
+
   const openai = new OpenAI({
-    apiKey: authHeader,
+    apiKey: process.env.OPENAI_API_KEY,
     baseURL: `${process.env.OPENAI_PROXY_URL}/v1`
   });
   // Request the OpenAI API for the response based on the prompt
   const response = await openai.chat.completions.create({
-    model: model || 'gpt-4-0125-preview',
+    model: model || 'gpt-3.5-turbo-0125',
     stream: true,
     // a precise prompt is important for the AI to reply with the correct tokens
     messages: [

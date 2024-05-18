@@ -1,9 +1,9 @@
 'use client'
-import { useState, useEffect } from "react";
-import { ZMessage } from "@/components/ui/toast"
-import { useRouter } from 'next/navigation'
+import {useState, useEffect} from "react";
+import {ZMessage} from "@/components/ui/toast"
+import {useRouter} from 'next/navigation'
 
-export function Login() {
+export function Login({isLogin, setIsLogin}) {
     let [phone, setPhone] = useState('');
     let [smsCaptcha, setSmsCaptcha] = useState('');
     const [disabled, setDisabled] = useState(false);
@@ -86,6 +86,7 @@ export function Login() {
                         window.localStorage.setItem('userInfo', JSON.stringify(data.body.data));
                         document.getElementById('my_modal_1').close();
                         ZMessage().success(data.body.message)
+                        setIsLogin(true)
                     } else {
                         ZMessage().error(data.body.message)
                         setDisabled(false)
@@ -116,8 +117,8 @@ export function Login() {
 
     useEffect(() => {
         const userInfo = JSON.parse(window.localStorage.getItem('userInfo'))
-        if (!userInfo){
-            document.getElementById('my_modal_1').showModal();
+        if (!userInfo) {
+            document.getElementById('my_modal_1').open = true
         }
     }, []);
 
@@ -140,7 +141,7 @@ export function Login() {
                         <div className="space-y-6">
                             <div className="mt-5">
                                 <label htmlFor="phone"
-                                    className="block text-sm font-medium leading-6 text-gray-900">
+                                       className="block text-sm font-medium leading-6 text-gray-900">
                                     手机号码
                                 </label>
                                 <input
@@ -161,7 +162,7 @@ export function Login() {
 
                             <div className="mt-5">
                                 <label htmlFor="smsCaptcha"
-                                    className="block text-sm font-medium leading-6 text-gray-900">
+                                       className="block text-sm font-medium leading-6 text-gray-900">
                                     验证码
                                 </label>
                                 <div className="mt-2 flex flex-row">
@@ -174,7 +175,8 @@ export function Login() {
                                         onChange={(e) => setSmsCaptcha(e.target.value)}
                                         className="w-full h-10 lg:w-4/6 sm:3/5 pl-2 rounded-md border-0 focus:outline-none text-gray-900 ring-1 ring-indigo-50 shadow placeholder:text-gray-400 focus:border-x-2 focus:border-y-2 focus:border-blue-500 sm:text-sm sm:leading-6"
                                     />
-                                    <button className="btn-sm bg-blue-50  disabled:bg-gray-200 rounded shadow active:bg-blue-200 h-10 lg:w-2/6 md:2/5 sm:w-3/5 ml-2"
+                                    <button
+                                        className="btn-sm bg-blue-50  disabled:bg-gray-200 rounded shadow active:bg-blue-200 h-10 lg:w-2/6 md:2/5 sm:w-3/5 ml-2"
                                         onClick={sendSmsCaptcha} disabled={isDisabled}>
                                         {isDisabled ? <span>{countDown}秒后重试</span> :
                                             <span>发送验证码</span>}
@@ -184,17 +186,17 @@ export function Login() {
 
                             <div className="mt-10 text-sm text-gray-500 flex flex-row justify-center">
                                 <input id="captcha" type="checkbox" value={agreement}
-                                    onChange={(e) => setAgreement(e.target.checked)}
-                                    className="w-5 h-5 lg:w-5 lg:h-5 lg:mt-0.5 sm:w-7 sm:h-7 sm:-mt-0.5 mt-0.5 mr-1 checked:bg-blue-500" />
+                                       onChange={(e) => setAgreement(e.target.checked)}
+                                       className="w-5 h-5 lg:w-5 lg:h-5 lg:mt-0.5 sm:w-7 sm:h-7 sm:-mt-0.5 mt-0.5 mr-1 checked:bg-blue-500"/>
                                 <label htmlFor="captcha" className="hover:cursor-pointer">
                                     未注册手机号将自动注册。勾选即代表您阅读并同意
                                     <a href="#"
-                                        className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+                                       className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
                                         《用户协议》
                                     </a>
                                     和
                                     <a href="#"
-                                        className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+                                       className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
                                         《隐私政策协议》
                                     </a>
                                 </label>

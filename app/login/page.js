@@ -16,6 +16,8 @@ export default function Login() {
   const [showCaptchaLoading, setShowCaptchaLoading] = useState(false) // 弹窗状态
   const backend = process.env.NEXT_PUBLIC_BACK_END;
 
+
+
   const sendVerificationCode = async () => {
     if (!account) {
       setError('请输入账号！');
@@ -149,6 +151,11 @@ export default function Login() {
     }
     return () => clearTimeout(timer)
   }, [countdown])
+
+  useEffect(() => {
+    router.replace('/write')
+  }, []);
+
   // 弹窗组件
   const CaptchaLoadingModal = () => (
     <div className={`modal ${showCaptchaLoading ? 'modal-open' : ''}`}>

@@ -9,13 +9,12 @@ import './page.css'
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github.css';
 import {ZMessage} from "@/components/ui/toast";
-import {NavTabLists} from "@/components/nav-tab-lists";
 import {useAuthUser} from "@/lib/hooks/use-auth-user";
-import {RxDash, RxGear, RxSection} from "react-icons/rx";
+import {RxGear, RxReload} from "react-icons/rx";
 import {TbBrandAlipay} from "react-icons/tb";
 import {TbHttpDelete} from "react-icons/tb";
 import {CiChat1} from "react-icons/ci";
-import {RiChatDeleteLine, RiDeleteBin5Line} from "react-icons/ri";
+import {RiDeleteBin5Line} from "react-icons/ri";
 
 export default function Chat() {
     const [isSending, setIsSending] = useState(false) // 新增状态来追踪消息是否正在发送
@@ -101,7 +100,7 @@ export default function Chat() {
         onError: (error) => {
             if (JSON.parse(error.message).code === 401 || JSON.parse(error.message).code === 403) {
                 ZMessage().warning(JSON.parse(error.message).message)
-                window.localStorage.removeItem("userInfo")
+                // window.localStorage.removeItem("userInfo")
                 // window.location.replace("/write")
             } else {
                 ZMessage().warning(JSON.parse(error.message).message)
@@ -155,8 +154,13 @@ export default function Chat() {
     const {checkToken} = useAuthUser()
     useEffect(() => {
         let userInfo = JSON.parse(window.localStorage.getItem('userInfo'))
-        setKey(userInfo.key)
-        setToken(userInfo.token)
+        try {
+            setKey(userInfo.key)
+            setToken(userInfo.token)
+        }catch (e){
+            ZMessage().warning('请先登录')
+            router.push('/write')
+        }
     }, [router])
 
 
@@ -330,8 +334,9 @@ export default function Chat() {
                                         // eslint-disable-next-line react/jsx-key
                                         <div key={item.id} className="flex flex-row pl-2 justify-start items-center">
                                             <div type="checkbox" onClick={e => deleteAnyChat(item.id)}
-                                                   className="delete-checkbox hidden">
-                                            <RiDeleteBin5Line size={24} className="cursor-pointer mr-5 hover:text-red-500" />
+                                                 className="delete-checkbox hidden">
+                                                <RiDeleteBin5Line size={24}
+                                                                  className="cursor-pointer mr-5 hover:text-red-500"/>
                                             </div>
                                             <div key={item.id} id={item.id}
                                                  className="chatBox border-2 border-blue-500 active:bg-blue-200 border-b-gray-50 bg-white p-5 rounded-r-badge hover:bg-blue-200 cursor-pointer shadow-accent-content"
@@ -371,13 +376,13 @@ export default function Chat() {
                 <div
                     id="chat"
                     className="lg:w-[calc(100vw-320px)] sm:w-screen md:w-full lg:p-10 sm:py-2 rounded relative top-0 h-screen">
-                    <div className="flex justify-center w-96 absolute left-1/2 -translate-x-1/2 top-0">
-                        <NavTabLists tabList={[
-                            {id: 1, name: 'AI写作', link: '/write'},
-                            {id: 2, name: 'AI对话', link: '/talk'},
-                            {id: 3, name: 'AI绘画', link: '/dalle'},
-                        ]}/>
-                    </div>
+                    {/*<div className="flex justify-center w-96 absolute left-1/2 -translate-x-1/2 top-0">*/}
+                    {/*    <NavTabLists tabList={[*/}
+                    {/*        {id: 1, name: 'AI写作', link: '/write'},*/}
+                    {/*        {id: 2, name: 'AI对话', link: '/talk'},*/}
+                    {/*        {id: 3, name: 'AI绘画', link: '/dalle'},*/}
+                    {/*    ]}/>*/}
+                    {/*</div>*/}
                     <div className="lg:w-[60rem] md:w-full pb-36 lg:mx-auto h-[50rem] overflow-y-scroll">
                         {messages ? messages.map(m => (<div key={Math.random().toString()}
                                                             className="bg-white md:w-2/3 lg:w-full self-center m-2">
@@ -428,8 +433,8 @@ export default function Chat() {
                                     onClick={e => {
 
                                     }}>
-                                    <RxGear/>
-                                    <div>设置</div>
+                                    <RxReload/>
+                                    <div>返回</div>
                                 </button>
                                 <button
                                     id="sendButton"

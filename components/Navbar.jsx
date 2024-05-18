@@ -1,10 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import useAuth from '../lib/auth'
 import React, {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
-import useAuthUser from "@/lib/hooks/use-auth-user";
-import {ZMessage} from "@/components/ui/toast";
 export default function Navbar({title, isLogin}) {
 
     const [userInfo, setUserInfo] = useState(null)
@@ -26,8 +23,9 @@ export default function Navbar({title, isLogin}) {
                 }
 
                 const userData = await response.json();
-                userInfo.key = userData.api_key
+                userInfo.quota = userData.data.quota
                 window.localStorage.setItem('userInfo', JSON.stringify(userInfo))
+                setUserInfo(userInfo)
             } catch (error) {
                 console.error('Error fetching user data:', error);
             }
@@ -35,13 +33,15 @@ export default function Navbar({title, isLogin}) {
     }, []);
 
     useEffect(() => {
-        setUserInfo(JSON.parse(window.localStorage.getItem('userInfo')))
+        if (isLogin){
+            setUserInfo(JSON.parse(window.localStorage.getItem('userInfo')))
+        }
     }, [isLogin])
 
     return (
         <div className="navbar bg-transparent static top-0 left-0 right-0 z-20">
             <div className="flex-1">
-                <a className="btn btn-ghost text-xl text-black">{title}</a>
+                <Link prefetch={true} href="/write" className="btn btn-ghost text-xl text-black">{title}</Link>
             </div>
             <div className="flex-none gap-2">
 

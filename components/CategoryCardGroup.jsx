@@ -1,6 +1,5 @@
 import React from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 
 const CategoryCardGroup = ({ categoryTitle, cards }) => {
   return (
@@ -10,13 +9,13 @@ const CategoryCardGroup = ({ categoryTitle, cards }) => {
         {cards.map((card, index) => (
           <div key={index} className="max-w-xs md:max-w-xs lg:w-1/4 shadow-xl border-white rounded-xl hover:scale-105 transition cursor-pointer" style={{"border": "2px solid white", "background": "linear-gradient(143deg, #f8f9ff, #fbfbff, 0.5)"}}>
             <figure className="px-10 pt-10">
-              <Image src={card.imageUrl} alt="logo" width={60} height={60} />
+              <img src={card.imageUrl} alt="logo" width={60} height={60} />
             </figure>
             <div className="card-body items-start text-start leading-normal">
               <h2 className="card-title">{card.title}</h2>
               <p>{card.text}</p>
               <div className="card-actions">
-                <Link href={card.link}>
+                <Link prefix={true} href={card.link}>
                   <button className="btn btn-primary">开始使用</button>
                 </Link>
               </div>

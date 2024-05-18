@@ -50,7 +50,7 @@ export async function POST(req, res) {
             code: 200,
             message: '图像生成成功',
             data: {
-                image_url: "image_url"
+                image_url: image_url
             }
         }, {status: 200})
     } catch (e) {
