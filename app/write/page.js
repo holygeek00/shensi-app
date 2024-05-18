@@ -275,8 +275,7 @@ export default function ArticleMenu() {
 
     return (<div>
             <Login/>
-            <Notice noticeText={"网站正在维护，预计2天后正常使用(The website is under maintenance and is expected to be back up in 2 days.\n" +
-                ")"}/>
+            <Notice noticeText={"Functions are opening up one by one"}/>
             <div className="bg-transparent w-screen h-screen overflow-y-scroll">
                 <Navbar title='深斯AI' isLogin={isLogin}></Navbar>
                 <div className="flex justify-center my-5">
