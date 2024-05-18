@@ -21,7 +21,7 @@ export default function Navbar({title, isLogin}) {
                     }
                 });
 
-                console.log(response)
+                console.log(response.status)
                 // 检查响应状态
                 if (response.status !== 200) {
                     window.localStorage.removeItem('userInfo')
