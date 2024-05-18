@@ -3,9 +3,6 @@ import {OpenAIStream, StreamingTextResponse} from 'ai'
 import {execSql} from "../lib/db";
 import {jwtVerify} from "jose";
 
-import { openai } from '@ai-sdk/openai';
-
-
 export const runtime = 'edge'
 
 export async function GET(req: Request) {
@@ -54,6 +51,8 @@ const chatStreamText = async (req) => {
         }
 
         console.log('user', user)
+
+        console.log(openai)
 
         const r = await openai.chat.completions.create({
             model: model,
