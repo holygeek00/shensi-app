@@ -22,6 +22,7 @@ export function ZMessage() {
     }
 
     const showToast = (message) => {
+        // 实现堆叠样式
         const container = createContainer();
         container.render(
             <div className="toast toast-top toast-center fixed z-50">
@@ -30,6 +31,8 @@ export function ZMessage() {
                 </div>
             </div>
         );
+
+        // 实现堆叠
 
         setTimeout(() => {
             container.unmount();

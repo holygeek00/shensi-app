@@ -47,7 +47,8 @@ export default function Chat() {
             })
             let data = await response.json()
             if (data.code !== 200) {
-                ZMessage().error(data.error.split("(")[0])
+                console.log(data)
+                ZMessage().error(data.message)
             } else {
                 ZMessage().success('Image generated successfully')
                 let hisic = window.localStorage.getItem("historyImagesCollection")

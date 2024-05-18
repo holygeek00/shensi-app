@@ -11,10 +11,11 @@ import 'highlight.js/styles/github.css';
 import {ZMessage} from "@/components/ui/toast";
 import {NavTabLists} from "@/components/nav-tab-lists";
 import {useAuthUser} from "@/lib/hooks/use-auth-user";
-import {RxGear} from "react-icons/rx";
+import {RxDash, RxGear, RxSection} from "react-icons/rx";
 import {TbBrandAlipay} from "react-icons/tb";
 import {TbHttpDelete} from "react-icons/tb";
 import {CiChat1} from "react-icons/ci";
+import {RiChatDeleteLine, RiDeleteBin5Line} from "react-icons/ri";
 
 export default function Chat() {
     const [isSending, setIsSending] = useState(false) // 新增状态来追踪消息是否正在发送
@@ -103,7 +104,7 @@ export default function Chat() {
                 window.localStorage.removeItem("userInfo")
                 // window.location.replace("/write")
             } else {
-                ZMessage().warning("网络错误，请稍后再试")
+                ZMessage().warning(JSON.parse(error.message).message)
             }
         }, onFinish: (response) => {
             // 在每次有新的消息时，将它们存储到 localStorage 中
@@ -234,8 +235,11 @@ export default function Chat() {
     }
 
     const deleteAnyChat = (id) => {
+        console.log("deleteAnyChat", id)
+        // 待删除的Array
         deleteChatArray.push(id)
 
+        // 现有对话历史
         const chatLists = JSON.parse(window.localStorage.getItem('chatList'));
 
         // 根据传入的id删除当前对话
@@ -248,13 +252,18 @@ export default function Chat() {
         setChatList(chatLists)
 
         // 不仅要更新当前历史对话列表，还需要将当前stateId进行设置，只有这样才能将当前对话的上一个对话进行标注
-        setStateId(chatLists.state.chats.at(-1).id)
+        console.log("deleteChatArray", deleteChatArray)
+        // 判断chatLists.state.chats是否是最后一个
+        if (chatLists.state.chats.length !== 0) {
+            setStateId(chatLists.state.chats.at(-1).id)
+        }
 
         // 更新localStorage中的chatList
         window.localStorage.setItem('chatList', JSON.stringify(chatLists));
     }
 
     const handleDeleteClick = () => {
+        // 实现按钮点击切换不同颜色
         document.querySelectorAll('.delete-checkbox').forEach((checkbox) => {
             if (checkbox.classList.contains('hidden')) {
                 checkbox.classList.remove('hidden')
@@ -306,7 +315,7 @@ export default function Chat() {
                 <div
                     className="lg:w-[320px] sm:hidden md:block rounded h-screen border-2 border-pink-50 bg-transparent"
                     style={{"background": "#f0f4f9"}}>
-                    <div className="w-[320px] flex flex-col">
+                    <div className="w-[320px] flex flex-col justify-evenly">
                         <div className="w-[320px] p-2">
                             <div
                                 className="w-1/2 ml-2 border-2 border-solid text-white rounded-r-badge bg-black p-2 flex flex-row justify-center align-center items-center hover:border-black hover:text-black-100 text-sm cursor-pointer"
@@ -319,11 +328,13 @@ export default function Chat() {
                             {
                                 chatList !== undefined ? chatList.state.chats.map(item => (
                                         // eslint-disable-next-line react/jsx-key
-                                        <div key={item.id} className="flex flex-row justify-between items-center">
-                                            <input type="checkbox" onClick={e => deleteAnyChat(item.id)}
-                                                   className="delete-checkbox checkbox-sm checkbox-info hidden"/>
+                                        <div key={item.id} className="flex flex-row pl-2 justify-start items-center">
+                                            <div type="checkbox" onClick={e => deleteAnyChat(item.id)}
+                                                   className="delete-checkbox hidden">
+                                            <RiDeleteBin5Line size={24} className="cursor-pointer mr-5 hover:text-red-500" />
+                                            </div>
                                             <div key={item.id} id={item.id}
-                                                 className="chatBox border-2 border-blue-500 active:bg-blue-200 border-lime-200 border-b-gray-50 bg-white p-5 rounded-r-badge m-2 hover:bg-blue-200 cursor-pointer shadow-accent-content"
+                                                 className="chatBox border-2 border-blue-500 active:bg-blue-200 border-b-gray-50 bg-white p-5 rounded-r-badge hover:bg-blue-200 cursor-pointer shadow-accent-content"
                                                  onClick={handleHistoryChat}>
                                                 {item.title}
                                             </div>
@@ -335,7 +346,8 @@ export default function Chat() {
 
                             <div className="flex flex-row items-center absolute left-0 bottom-0 w-[320px]">
                                 <button
-                                    className="btn-sm w-1/3 m-1 rounded p-2 bg-black text-white focus:bg-indigo-500 hover:bg-blue-500 flex flex-row items-center"
+                                    id="delete-button"
+                                    className="btn-sm w-1/3 m-1 rounded p-2 bg-black text-white hover:bg-blue-500 flex flex-row items-center"
                                     onClick={handleDeleteClick}>
                                     <TbHttpDelete/>
                                     <div className="ml-0">删除对话</div>

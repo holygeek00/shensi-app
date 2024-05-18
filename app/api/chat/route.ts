@@ -52,8 +52,9 @@ const chatStreamText = async (req) => {
 
         console.log('user', user)
 
-        console.log(openai)
-
+        if (user.quota <= 0) {
+            return new Response(JSON.stringify({code: 402, message: '余额不足', data: {}}), {status: 402})
+        }
         const r = await openai.chat.completions.create({
             model: model,
             stream: true,
@@ -70,7 +71,6 @@ const chatStreamText = async (req) => {
         })
 
         const stream = OpenAIStream(r);
-        console.log(user.phone_number)
         // 更新用户余额
         const updateResult = await execSql('UPDATE users SET quota = $1 WHERE phone_number = $2', [user.quota-100, user.phone_number]);
 
