@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import React, {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
+
 export default function Navbar({title, isLogin}) {
 
     const [userInfo, setUserInfo] = useState(null)
@@ -12,7 +13,7 @@ export default function Navbar({title, isLogin}) {
         (async () => {
             try {
                 // 构建查询参数
-                const params = new URLSearchParams({ api_key: userInfo.key });
+                const params = new URLSearchParams({api_key: userInfo.key});
                 const response = await fetch(`/api/user/info?${params}`, {
                     method: "GET",
                     headers: {
@@ -21,7 +22,7 @@ export default function Navbar({title, isLogin}) {
                     }
                 });
 
-                console.log(response.status)
+                console.log(response.status !== 200)
                 // 检查响应状态
                 if (response.status !== 200) {
                     window.localStorage.removeItem('userInfo')
@@ -42,7 +43,7 @@ export default function Navbar({title, isLogin}) {
     }, [router]);
 
     useEffect(() => {
-        if (isLogin){
+        if (isLogin) {
             setUserInfo(JSON.parse(window.localStorage.getItem('userInfo')))
         }
     }, [isLogin])
