@@ -23,7 +23,7 @@ export default function Navbar({title, isLogin}) {
 
                 console.log(response)
                 // 检查响应状态
-                if (!response.ok) {
+                if (response.status !== 200) {
                     window.localStorage.removeItem('userInfo')
                     router.replace('/write')
                 }
