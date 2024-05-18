@@ -10,8 +10,8 @@ import hljs from 'highlight.js';
 import 'highlight.js/styles/github.css';
 import {ZMessage} from "@/components/ui/toast";
 import {useAuthUser} from "@/lib/hooks/use-auth-user";
-import {RxGear, RxReload} from "react-icons/rx";
-import {TbBrandAlipay} from "react-icons/tb";
+import {RxChatBubble, RxGear, RxPieChart, RxReload} from "react-icons/rx";
+import {TbBoxModel, TbBrandAlipay, TbClearAll, TbSend} from "react-icons/tb";
 import {TbHttpDelete} from "react-icons/tb";
 import {CiChat1} from "react-icons/ci";
 import {RiDeleteBin5Line} from "react-icons/ri";
@@ -258,7 +258,6 @@ export default function Chat() {
         if (chatLists.state.chats.length !== 0) {
             setStateId(chatLists.state.chats.at(-1).id)
         }
-        // 更新localStorage中的chatList
 
         window.localStorage.setItem('chatList', JSON.stringify(chatLists));
         setChatList(chatLists)
@@ -325,9 +324,9 @@ export default function Chat() {
                     <div className="w-[320px] flex flex-col justify-evenly">
                         <div className="w-[320px] p-2">
                             <div
-                                className="w-1/2 ml-2 border-2 border-solid text-white rounded-r-badge bg-black p-2 flex flex-row justify-center align-center items-center hover:border-black hover:text-black-100 text-sm cursor-pointer"
+                                className="w-1/2 ml-2 border-2 border-solid text-white rounded-badge bg-black p-2 flex flex-row justify-center align-center items-center hover:border-black hover:text-black-100 text-sm cursor-pointer"
                                 onClick={createChat}>
-                                <CiChat1 size={30} className="mr-3 align-middle"/>
+                                <RxChatBubble size={30} className="mr-3 align-middle"/>
                                 新建对话
                             </div>
                         </div>
@@ -368,9 +367,9 @@ export default function Chat() {
                                 </button>
                                 <button
                                     className="btn-sm w-1/3 m-1 btn-block rounded bg-black text-white hover:bg-blue-500 flex flex-row items-center"
-                                    onClick={e => router.push('/person')}>
-                                    <RxGear/>
-                                    <div className="pl-2">设置</div>
+                                    onClick={e => router.push('/write')}>
+                                    <RxReload/>
+                                    <div className="pl-2">返回</div>
                                 </button>
                             </div>
                         </div>
@@ -423,21 +422,15 @@ export default function Chat() {
                             <div
                                 className="w-full lg:m-0 sm:m-auto flex flex-row justify-end mt-2 mr-2">
                                 <select
-                                    className="select select-bordered border-gray-300 focus:outline-0 focus:ring-1 focus:ring-indigo-100 w-full max-w-36 rounded-sm hover:ring-indigo-500"
+                                    className="select select-bordered border-gray-300 focus:outline-0 focus:ring-1 focus:ring-indigo-100 w-full max-w-42 rounded-sm hover:ring-indigo-500"
                                     onChange={(e) => setModel(e.target.value)}>
                                     <option className="m-10">gpt-4-0125-preview</option>
                                     <option>gpt-3.5-turbo</option>
                                 </select>
                                 <button onClick={clearHistory}
-                                        className="btn bg-white text-black hover:bg-indigo-500 rounded-sm border-gray-300 ml-2 mr-2">清除当前对话
-                                </button>
-                                <button
-                                    className="btn lg:hidden sm:w-1/4 bg-white rounded text-white hover:bg-indigo-500 flex flex-row justify-start items-center rounded-sm border-gray-300"
-                                    onClick={e => {
-
-                                    }}>
-                                    <RxReload/>
-                                    <div>返回</div>
+                                        className="btn bg-white text-black hover:bg-indigo-500 rounded-sm border-gray-300 ml-2 mr-2">
+                                    <TbClearAll/>
+                                    清除当前对话
                                 </button>
                                 <button
                                     id="sendButton"
@@ -445,6 +438,7 @@ export default function Chat() {
                                     onClick={handleSubmit}
                                     className="btn md:w-auto h-12 rounded-md bg-white hover:bg-indigo-500 text-black rounded-sm border-gray-300"
                                 >
+                                    <TbSend />
                                     {isSending ? 'AI生成中...' : '发 送'} {/* 按钮文本根据发送状态变化 */}
                                 </button>
                             </div>
