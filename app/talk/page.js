@@ -249,17 +249,17 @@ export default function Chat() {
             }
         })
 
-        setChatList(chatLists)
-
         // 不仅要更新当前历史对话列表，还需要将当前stateId进行设置，只有这样才能将当前对话的上一个对话进行标注
+
         console.log("deleteChatArray", deleteChatArray)
         // 判断chatLists.state.chats是否是最后一个
         if (chatLists.state.chats.length !== 0) {
             setStateId(chatLists.state.chats.at(-1).id)
         }
-
         // 更新localStorage中的chatList
+
         window.localStorage.setItem('chatList', JSON.stringify(chatLists));
+        setChatList(chatLists)
     }
 
     const handleDeleteClick = () => {

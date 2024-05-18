@@ -27,7 +27,7 @@ export default function Navbar({title, isLogin}) {
 
                 const userData = await response.json();
                 userInfo.key = userData.api_key
-                window.localStorage.setItem('userInfo', JSON.stringify(userData))
+                window.localStorage.setItem('userInfo', JSON.stringify(userInfo))
             } catch (error) {
                 console.error('Error fetching user data:', error);
             }
