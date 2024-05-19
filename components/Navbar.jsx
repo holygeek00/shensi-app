@@ -25,8 +25,10 @@ export default function Navbar({title, isLogin}) {
                 console.log(response.status !== 200)
                 // 检查响应状态
                 if (response.status !== 200) {
+                    console.log("User not found or token expired")
                     window.localStorage.removeItem('userInfo')
                     router.replace('/write')
+                    return
                 }
 
                 const userData = await response.json();
