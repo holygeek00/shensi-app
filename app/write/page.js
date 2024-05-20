@@ -63,7 +63,7 @@ export default function ArticleMenu() {
 
     return (<div>
         <Login isLogin={isLogin} setIsLogin={setIsLogin}/>
-        <Notice noticeText={"Functions are opening up one by one"}/>
+        {/*<Notice noticeText={"Functions are opening up one by one"}/>*/}
         <div className="bg-transparent w-screen h-screen overflow-y-scroll">
             <Navbar title='深斯AI' isLogin={isLogin}></Navbar>
             {/*<div className="flex justify-center my-5">*/}
