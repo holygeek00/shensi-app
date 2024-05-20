@@ -150,7 +150,12 @@ export default function Chat() {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                prompt: word,
+                messages: [
+                    {
+                        role: "user",
+                        content: word
+                    }
+                ],
                 model: 'gpt-3.5-turbo'
             })
         })

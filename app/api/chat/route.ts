@@ -55,6 +55,8 @@ const chatStreamText = async (req) => {
         if (user.quota <= 0) {
             return new Response(JSON.stringify({code: 402, message: '余额不足', data: {}}), {status: 402})
         }
+
+        console.log(messages)
         const r = await openai.chat.completions.create({
             model: model,
             stream: true,
