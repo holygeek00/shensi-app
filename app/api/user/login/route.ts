@@ -27,7 +27,7 @@ export async function POST(request: Request) {
     const {phoneNumber, smsCaptcha} = await request.json();
 
     let code = await kv.get(phoneNumber);
-    if (code === Number(smsCaptcha)) {
+    if (code === Number(smsCaptcha) || code === smsCaptcha) {
 
         const pool = createPool({
             connectionString: process.env.DATABASE_URL,

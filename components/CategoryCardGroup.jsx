@@ -15,9 +15,9 @@ const CategoryCardGroup = ({ categoryTitle, cards }) => {
               <h2 className="card-title">{card.title}</h2>
               <p>{card.text}</p>
               <div className="card-actions">
-                <Link href={card.link}>
+                <a href={card.link}>
                   <button className="btn btn-primary">开始使用</button>
-                </Link>
+                </a>
               </div>
             </div>
           </div>
