@@ -46,7 +46,7 @@ export default function ArticleMenu() {
             <div
                 className="flex lg:flex-col justify-center text-center rounded lg:mt-28 lg:fixed lg:-translate-y-1/2 lg:top-1/3 sm:text-sm">
                 {tabs.map(tab => (<a key={tab.id}
-                                     className={`w-28 lg:h-16 sm:h-10 sm:py-3 sm:w-48 sm:m-1 lg:p-6 shadow lg:m-2 ring-1 ring-white hover:scale-110 transition hover:bg-blue-500 lg:rounded-2xl sm:rounded cursor-pointer font-bold ${activeTab === tab.id ? 'ring-2 ring-blue-500 bg-blue-500 text-white' : ''}`}
+                                     className={`lg:w-28 lg:h-16 sm:h-10 sm:py-3 sm:w-48 sm:m-1 lg:p-6 shadow lg:m-2 ring-1 ring-white hover:scale-110 transition hover:bg-blue-500 lg:rounded-2xl sm:rounded cursor-pointer font-bold ${activeTab === tab.id ? 'ring-2 ring-blue-500 bg-blue-500 text-white' : ''}`}
                                      onClick={() => handleTabChange(tab.id)}>
                     {tab.title}
                 </a>))}
