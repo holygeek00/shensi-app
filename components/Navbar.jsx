@@ -93,7 +93,7 @@ export default function Navbar({title, isLogin}) {
                                     </div>
                                     <div className="flex flex-row justify-between items-center px-7 py-3">
                                         <button className="btn btn-primary"
-                                                onClick={e => router.push('/pay')}>充值中心
+                                                onClick={e => router.push('/feedback')}>反馈中心
                                         </button>
                                         <button className="btn btn-outline" onClick={e => logout()}>退出登录</button>
                                     </div>
