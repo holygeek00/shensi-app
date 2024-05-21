@@ -35,18 +35,18 @@ export default function ArticleMenu() {
     }, {
         id: 'tab5', title: '电商', content: <CategoryCardGroup categoryTitle="电商类" cards={ecommerceCards}/>
     }, {id: 'tab6', title: '娱乐', content: <CategoryCardGroup categoryTitle="娱乐类" cards={entertainmentCards}/>}, {
-        id: 'tab7', title: 'AI对话', content: <CategoryCardGroup categoryTitle="AI类" cards={AiChat}/>
+        id: 'tab7', title: '对话', content: <CategoryCardGroup categoryTitle="AI类" cards={AiChat}/>
     }, {
-    id: 'tab8', title: 'AI绘图', content: <CategoryCardGroup categoryTitle="AI类" cards={AiDrawer}/>
+    id: 'tab8', title: '绘图', content: <CategoryCardGroup categoryTitle="AI类" cards={AiDrawer}/>
     }
     ];
 
     function TabComponent({activeTab, handleTabChange}) {
         return (<div>
             <div
-                className="flex lg:flex-col justify-center text-center sm:mx-2 rounded lg:mt-28 lg:fixed lg:-translate-y-1/2 lg:top-1/3">
+                className="flex lg:flex-col justify-center text-center rounded lg:mt-28 lg:fixed lg:-translate-y-1/2 lg:top-1/3 sm:text-sm">
                 {tabs.map(tab => (<a key={tab.id}
-                                     className={`w-28 lg:h-16 sm:h-10 sm:py-3 lg:p-6 shadow m-2 ring-1 ring-white hover:scale-110 transition hover:bg-blue-500 lg:rounded-2xl sm:rounded cursor-pointer font-bold ${activeTab === tab.id ? 'ring-2 ring-blue-500 bg-blue-500 text-white' : ''}`}
+                                     className={`w-28 lg:h-16 sm:h-10 sm:py-3 sm:w-48 sm:m-1 lg:p-6 shadow lg:m-2 ring-1 ring-white hover:scale-110 transition hover:bg-blue-500 lg:rounded-2xl sm:rounded cursor-pointer font-bold ${activeTab === tab.id ? 'ring-2 ring-blue-500 bg-blue-500 text-white' : ''}`}
                                      onClick={() => handleTabChange(tab.id)}>
                     {tab.title}
                 </a>))}

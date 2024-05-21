@@ -43,7 +43,6 @@ export async function POST(req, res) {
               n: 1,
               size: size,
           })
-          console.log(response)
           const image_url = response.data[0].url
 
         return Response.json({

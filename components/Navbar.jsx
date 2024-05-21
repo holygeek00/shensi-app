@@ -69,7 +69,7 @@ export default function Navbar({title, isLogin}) {
                         </div>
                     </div>
                     <ul tabIndex={0}
-                        className="mt-3 z-[1] shadow menu menu-sm dropdown-content bg-base-100 rounded-box lg:w-[300px]">
+                        className="sm:w-96 mt-3 z-[1] shadow menu menu-sm dropdown-content bg-base-100 rounded-box lg:w-[300px]">
                         <div className="flex flex-col">
                             {userInfo ? (
                                 <div className='bg-base-100'>
