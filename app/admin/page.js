@@ -17,9 +17,9 @@ export default function Admin() {
 
     function changeContent() {
         if (item) {
-            let button = document.getElementById(item);
-            console.log(button)
-            button.classList.add('bg-gray-200')
+            // let button = document.getElementById(item);
+            // console.log(button)
+            // button.classList.add('bg-gray-200')
         }
         switch (item) {
             case 'dashboard':

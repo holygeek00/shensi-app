@@ -32,7 +32,7 @@ export async function POST(req, res) {
         }
 
         console.log('user', user)
-        if (user.quota < 500) {
+        if (user.quota < 1000) {
             return new Response(JSON.stringify({code: 402, message: '余额不足', data: {}}), {status: 402})
         }
         const updateResult = await execSql('UPDATE users SET quota = $1 WHERE phone_number = $2', [user.quota - 1000, user.phone_number]);
