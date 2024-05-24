@@ -77,7 +77,7 @@ const chatStreamText = async (req) => {
         console.log(`Total token count: ${totalTokens}`);
 
         const readableStream = OpenAIStream(stream[0]);
-        const updateResult = await execSql('UPDATE users SET quota = $1 WHERE phone_number = $2', [user.quota - totalTokens - totalTokens - messageToken - messageToken, user.phone_number]);
+        const updateResult = await execSql('UPDATE users SET quota = $1 WHERE phone_number = $2', [user.quota - totalTokens - totalTokens - messageToken, user.phone_number]);
 
         return new StreamingTextResponse(readableStream);
     } catch (e) {
