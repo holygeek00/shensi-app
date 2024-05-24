@@ -35,7 +35,7 @@ export async function POST(req, res) {
         if (user.quota < 500) {
             return new Response(JSON.stringify({code: 402, message: '余额不足', data: {}}), {status: 402})
         }
-        const updateResult = await execSql('UPDATE users SET quota = $1 WHERE phone_number = $2', [user.quota - 500, user.phone_number]);
+        const updateResult = await execSql('UPDATE users SET quota = $1 WHERE phone_number = $2', [user.quota - 1000, user.phone_number]);
         const {messages, size} = await req.json()
           const response = await openai.images.generate({
               model: "dall-e-3",
