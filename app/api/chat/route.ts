@@ -72,7 +72,7 @@ const chatStreamText = async (req) => {
         const stream = r.tee();
         const reader = OpenAIStream(stream[1]).getReader();
 
-        const totalTokens = await processStream(reader, 'gpt-4-32k');
+        const totalTokens = await processStream(reader, model);
 
         console.log(`Total token count: ${totalTokens}`);
 
