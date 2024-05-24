@@ -58,6 +58,11 @@ const nextConfig = {
         config.resolve.alias['@/styles'] = path.resolve(__dirname, 'styles');
         config.resolve.alias['@/lib'] = path.resolve(__dirname, 'lib');
         config.resolve.alias['@/app'] = path.resolve(__dirname, 'app');
+
+        config.experiments = {
+            asyncWebAssembly: true,
+            layers: true,
+        };
         return config;
     },
 

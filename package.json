@@ -39,7 +39,8 @@
     "rehype-react": "^8.0.0",
     "remark": "^15.0.1",
     "remark-gfm": "^4.0.0",
-    "tailwind-merge": "^2.2.1"
+    "tailwind-merge": "^2.2.1",
+    "tiktoken": "^1.0.15"
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.6",

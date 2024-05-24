@@ -1,38 +1,41 @@
 'use client'
 
-import UserContent from "@/app/admin/user";
-import {useState} from "react";
+import UserContent from "@/app/admin/users";
+import {useEffect, useState} from "react";
 import DashboardContent from "@/app/admin/dashboard";
 import {useRouter} from "next/navigation";
+import AnalysisContent from "@/app/admin/analysis";
+import SettingsContent from "@/app/admin/settings";
 
 export default function Admin() {
 
     const [item, setItem] = useState('dashboard')
 
-    const navItems = [{
-
-    }]
+    const navItems = [{}]
 
     const router = useRouter()
 
-    function changeContent(){
-        console.log(item)
+    function changeContent() {
+        if (item) {
+            let button = document.getElementById(item);
+            console.log(button)
+            button.classList.add('bg-gray-200')
+        }
         switch (item) {
             case 'dashboard':
-
-                return <DashboardContent />
+                return <DashboardContent/>
                 break
-            case 'user':
-                return <UserContent />
+            case 'users':
+                return <UserContent/>
                 break
             case 'analysis':
-                return <UserContent />
+                return <AnalysisContent/>
                 break
             case 'settings':
-                return <UserContent />
+                return <SettingsContent/>
                 break
             default:
-                return <DashboardContent />
+                return <DashboardContent/>
 
         }
     }
@@ -104,6 +107,7 @@ export default function Admin() {
                         <aside className="border-r p-4 bg-transparent">
                             <nav className="grid gap-2">
                                 <button
+                                    id="dashboard"
                                     className="inline-flex items-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 justify-start gap-2"
                                     onClick={() => {
                                         setItem("dashboard")
@@ -128,6 +132,7 @@ export default function Admin() {
                                     Dashboard
                                 </button>
                                 <button
+                                    id="analysis"
                                     className="inline-flex items-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 justify-start gap-2"
                                     onClick={() => {
                                         setItem("analysis")
@@ -151,7 +156,12 @@ export default function Admin() {
                                     Analytics
                                 </button>
                                 <button
-                                    className="inline-flex items-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 justify-start gap-2">
+                                    id="users"
+                                    className="inline-flex items-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 justify-start gap-2"
+                                    onClick={() => {
+                                        setItem("users")
+                                    }}
+                                >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         width="24"
@@ -172,7 +182,12 @@ export default function Admin() {
                                     Users
                                 </button>
                                 <button
-                                    className="inline-flex items-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 justify-start gap-2">
+                                    id="settings"
+                                    className="inline-flex items-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 justify-start gap-2"
+                                    onClick={() => {
+                                        setItem("settings")
+                                    }}
+                                >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         width="24"
