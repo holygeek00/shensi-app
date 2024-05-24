@@ -2,9 +2,11 @@ import {OpenAI} from 'openai'
 import {OpenAIStream, StreamingTextResponse} from 'ai'
 import {execSql} from "../lib/db";
 import {jwtVerify} from "jose";
-import {encoding_for_model} from 'tiktoken'
+import wasm from "tiktoken/lite/tiktoken_bg.wasm?module";
+import model from "tiktoken/encoders/cl100k_base.json";
+import {init, Tiktoken} from "tiktoken/lite/init";
 
-// export const runtime = 'edge'
+export const runtime = 'edge'
 
 export async function GET(req: Request) {
 
@@ -87,7 +89,14 @@ const chatStreamText = async (req) => {
 }
 
 async function processStream(reader, model) {
-    const encoder = encoding_for_model(model);
+    await init((imports) => WebAssembly.instantiate(wasm, imports));
+
+    const encoder = new Tiktoken(
+        model.bpe_ranks,
+        model.special_tokens,
+        model.pat_str
+    );
+
     const decoder = new TextDecoder();
     let totalTokens = 0;
 
@@ -98,6 +107,7 @@ async function processStream(reader, model) {
 
             const text = decoder.decode(value);
             const tokens = encoder.encode(text);
+            console.log(`Token count: ${tokens.length}`)
             totalTokens += tokens.length;
             // console.log(`Token count: ${tokens.length}`);
         }
@@ -109,11 +119,24 @@ async function processStream(reader, model) {
 }
 
 async function processMessageToken(message, model) {
-    const encoder = encoding_for_model(model);
+    console.log(message)
+    await init((imports) => WebAssembly.instantiate(wasm, imports));
+    console.log(2)
+
+    const encoder = new Tiktoken(
+        model.bpe_ranks,
+        model.special_tokens,
+        model.pat_str
+    );
+    console.log(encoder)
+
     let totalTokens = 0;
 
+    console.log(3)
     try {
+        console.log(1)
         const tokens = encoder.encode(message);
+        console.log(`Token count: ${tokens}`)
         totalTokens += tokens.length;
     } catch (error) {
         console.error(error);
