@@ -2,11 +2,9 @@ import {OpenAI} from 'openai'
 import {OpenAIStream, StreamingTextResponse} from 'ai'
 import {execSql} from "../lib/db";
 import {jwtVerify} from "jose";
-import wasm from "tiktoken/lite/tiktoken_bg.wasm?module";
-import model from "tiktoken/encoders/cl100k_base.json";
-import {init, Tiktoken} from "tiktoken/lite/init";
+import {getEncoding, encodingForModel, getEncodingNameForModel} from "js-tiktoken";
 
-export const runtime = 'edge'
+export const config = { runtime: "edge" };
 
 export async function GET(req: Request) {
 
@@ -89,13 +87,8 @@ const chatStreamText = async (req) => {
 }
 
 async function processStream(reader, model) {
-    await init((imports) => WebAssembly.instantiate(wasm, imports));
 
-    const encoder = new Tiktoken(
-        model.bpe_ranks,
-        model.special_tokens,
-        model.pat_str
-    );
+    const enc = getEncoding(getEncodingNameForModel("gpt-4-turbo"));
 
     const decoder = new TextDecoder();
     let totalTokens = 0;
@@ -106,10 +99,8 @@ async function processStream(reader, model) {
             if (done) break;
 
             const text = decoder.decode(value);
-            const tokens = encoder.encode(text);
-            console.log(`Token count: ${tokens.length}`)
+            const tokens = enc.encode(text);
             totalTokens += tokens.length;
-            // console.log(`Token count: ${tokens.length}`);
         }
     } catch (error) {
         console.error(error);
@@ -118,25 +109,14 @@ async function processStream(reader, model) {
     return totalTokens;
 }
 
-async function processMessageToken(message, model) {
-    console.log(message)
-    await init((imports) => WebAssembly.instantiate(wasm, imports));
-    console.log(2)
-
-    const encoder = new Tiktoken(
-        model.bpe_ranks,
-        model.special_tokens,
-        model.pat_str
-    );
-    console.log(encoder)
+async function processMessageToken(message:string, gtpModel: string) {
+    const enc = getEncoding(getEncodingNameForModel("gpt-4-turbo"));
 
     let totalTokens = 0;
 
-    console.log(3)
     try {
         console.log(1)
-        const tokens = encoder.encode(message);
-        console.log(`Token count: ${tokens}`)
+        const tokens = enc.encode(message);
         totalTokens += tokens.length;
     } catch (error) {
         console.error(error);
