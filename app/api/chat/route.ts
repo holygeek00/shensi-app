@@ -4,7 +4,7 @@ import {execSql} from "../lib/db";
 import {jwtVerify} from "jose";
 import {getEncoding, encodingForModel, getEncodingNameForModel} from "js-tiktoken";
 
-export const config = { runtime: "edge" };
+export const runtime = 'nodejs'
 
 export async function GET(req: Request) {
 
