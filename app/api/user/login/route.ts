@@ -33,35 +33,6 @@ export async function POST(request: Request) {
             connectionString: process.env.DATABASE_URL,
         });
 
-        // 创建api_keys数据表
-        //     let apiKeyRes = await pool.sql`
-        //     CREATE TABLE IF NOT EXISTS api_keys (
-        //         id SERIAL PRIMARY KEY,
-        //         api_key VARCHAR(255) UNIQUE
-        // );
-        // `;
-
-        // console.log(apiKeyRes)
-
-        // 创建用户数据表
-        //     let r = await pool.sql`
-        //     CREATE TABLE IF NOT EXISTS users (
-        //         id SERIAL PRIMARY KEY,
-        //         phone_number VARCHAR(255) NOT NULL,
-        //         email VARCHAR(255) UNIQUE,
-        //         password VARCHAR(255),
-        //         api_key VARCHAR(255) NOT NULL,
-        //         quota FLOAT DEFAULT 1000,
-        //         is_active BOOLEAN DEFAULT true,
-        //         is_admin BOOLEAN DEFAULT false,
-        //         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-        //         FOREIGN KEY (api_key) REFERENCES api_keys(api_key),
-        //         UNIQUE(phone_number, api_key)
-        // );
-        // `;
-
-        // console.log(r)
-
         // 查询当前用户是否已经注册
         let userRes = await pool.sql`
         SELECT * FROM users WHERE phone_number = ${phoneNumber}
@@ -72,7 +43,7 @@ export async function POST(request: Request) {
             .setIssuedAt()
             .setIssuer('urn:shensiai:issuer')
             .setAudience('urn:shensiai:audience')
-            .setExpirationTime('1d')
+            .setExpirationTime('30d')
             .sign(new TextEncoder().encode(process.env.SECRET_KEY));
         if (userRes.rowCount === 0) {
             let key = "sk-" + generateApiKey()

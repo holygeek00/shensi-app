@@ -7,13 +7,13 @@ const nextConfig = {
     output: 'standalone',
 
     // 自动静态优化超时
-    // staticPageGenerationTimeout: 60,
+    staticPageGenerationTimeout: 60,
 
     // React 版本的设置（例如启用React 18的并发特性）
-    // reactStrictMode: true,
+    reactStrictMode: true,
 
     // 使用SWC进行代码压缩
-    // swcMinify: true,
+    swcMinify: true,
 
     images: {
         remotePatterns: [
@@ -63,18 +63,6 @@ const nextConfig = {
             asyncWebAssembly: true,
             layers: true,
         };
-
-        // turn off static file serving of WASM files
-        // we need to let Webpack handle WASM import
-        // config.module.rules
-        //     .find((i) => "oneOf" in i)
-        //     .oneOf.find((i) => i.type === "asset/resource")
-        //     .exclude.push(/\.wasm$/);
-
-
-
-
-
 
         return config;
     },
