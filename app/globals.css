@@ -20,8 +20,7 @@ time, mark, audio, video {
     margin: 0;
     padding: 0;
     border: 0;
-    font-size: 100%;
-    font: inherit;
+    font-size: 16px;
     vertical-align: baseline;
 }
 
@@ -79,11 +78,11 @@ table {
 }
 
 ::-webkit-scrollbar {
-    width: 0px;
-    background-color: #F5F5F5;
+    background-color: #3fc1c9;
 }
 
 ::-webkit-scrollbar-track {
-    background-color: #ffffff;
+    width: 2px;
+    height: 2px;
+    background-color: #3fc1c9;
 }
-

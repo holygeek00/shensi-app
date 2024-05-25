@@ -21,6 +21,14 @@ const nextConfig = {
                 protocol: 'https',
                 hostname: 'daisyui.com'
             },
+            {
+                protocol: 'https',
+                hostname: 'images.unsplash.com'
+            },
+            {
+                protocol: 'https',
+                hostname: 'placeimg.com'
+            }
         ]
     },
 

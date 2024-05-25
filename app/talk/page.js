@@ -11,9 +11,10 @@ import 'highlight.js/styles/github.css'
 import {ZMessage} from "@/components/ui/toast"
 import {useAuthUser} from "@/lib/hooks/use-auth-user"
 import {RxChatBubble, RxReload} from "react-icons/rx"
-import {TbBrandAlipay, TbClearAll, TbHttpDelete, TbSend} from "react-icons/tb"
+import {TbBrandAlipay, TbClearAll, TbHistory, TbHttpDelete, TbMenu, TbMenu2, TbSend} from "react-icons/tb"
 import {RiDeleteBin5Line} from "react-icons/ri"
 import Navbar from "@/components/Navbar";
+import {Button} from "@/components/ui/button";
 
 export default function Chat() {
     const [isSending, setIsSending] = useState(false) // 新增状态来追踪消息是否正在发送
@@ -350,14 +351,25 @@ export default function Chat() {
         }
     }, [input])
 
-    return (<div className="bg-white w-screen h-screen relative">
+    let menuButtonRef = useRef(null);
+    let chatMenuRef = useRef(null);
+
+    useEffect(() => {
+        menuButtonRef.current.addEventListener("click", () => {
+            chatMenuRef.current.classList.toggle("block")
+            chatMenuRef.current.classList.add("block")
+        })
+    }, []);
+    return (
+        <div className="bg-white w-screen h-screen relative">
             <div onSubmit={submit}
                  className="w-screen h-screen bg-white flex flex-row justify-start items-start align-center">
                 <div
-                    className="lg:w-[320px] sm:hidden md:block rounded h-screen border-2 border-pink-50 bg-transparent"
+                    ref={chatMenuRef}
+                    className="lg:w-[20rem] sm:hidden md:block rounded h-screen border-2 border-pink-50 bg-transparent"
                     style={{"background": "#f0f4f9"}}>
-                    <div className="w-[320px] flex flex-col justify-evenly">
-                        <div className="w-[320px] p-2">
+                    <div className="w-[20rem] flex flex-col justify-evenly">
+                        <div className="w-[320px] h-[100vw-10rem] p-2 overflow-y-auto">
                             <div
                                 className="w-1/2 ml-2 border-2 border-solid text-white rounded-badge bg-black p-2 flex flex-row justify-center align-center items-center hover:border-black hover:text-black-100 text-sm cursor-pointer"
                                 onClick={createChat}>
@@ -365,7 +377,7 @@ export default function Chat() {
                                 新建对话
                             </div>
                         </div>
-                        <div className="w-[320px] flex flex-col overflow-x-hidden p-2 pb-20 h-full">
+                        <div className="w-[20rem] flex flex-col overflow-x-hidden p-2 pb-20 h-full">
                             {
                                 chatList !== undefined ? chatList.state.chats.map(item => (
                                         // eslint-disable-next-line react/jsx-key
@@ -386,22 +398,22 @@ export default function Chat() {
                                     </div>
                             }
 
-                            <div className="flex flex-row items-center absolute left-0 bottom-0 w-[320px]">
+                            <div className="flex flex-row items-center absolute left-0 bottom-0 w-[20rem]">
                                 <button
                                     id="delete-button"
-                                    className="btn-sm w-1/3 m-1 rounded p-2 bg-black text-white hover:bg-blue-500 flex flex-row items-center"
+                                    className="btn-sm w-1/3 m-1 rounded p-2 bg-black text-white hover:bg-blue-500 flex flex-row items-center text-sm"
                                     onClick={handleDeleteClick}>
                                     <TbHttpDelete/>
                                     <div className="ml-0">删除对话</div>
                                 </button>
                                 <button
-                                    className="btn-sm w-1/3 m-1 btn-block rounded p-2 bg-black text-white hover:bg-blue-500 flex flex-row items-center"
+                                    className="btn-sm w-1/3 m-1 btn-block rounded p-2 bg-black text-white hover:bg-blue-500 flex flex-row items-center text-sm"
                                     onClick={e => router.push('/pay')}>
                                     <TbBrandAlipay/>
                                     <div className="ml-2">反馈中心</div>
                                 </button>
                                 <button
-                                    className="btn-sm w-1/3 m-1 btn-block rounded bg-black text-white hover:bg-blue-500 flex flex-row items-center"
+                                    className="btn-sm w-1/3 m-1 btn-block rounded bg-black text-white hover:bg-blue-500 flex flex-row items-center text-sm"
                                     onClick={e => router.push('/write')}>
                                     <RxReload/>
                                     <div className="pl-2">返回</div>
@@ -412,18 +424,21 @@ export default function Chat() {
                 </div>
                 <div
                     id="chat"
-                    className="lg:w-[calc(100vw-320px)] sm:w-screen md:w-full lg:p-10 sm:py-2 rounded relative top-0 h-screen">
-                    <Navbar/>
+                    className="lg:w-[calc(100vw-20rem)] sm:w-screen md:w-full lg:p-10 sm:py-2 rounded relative top-0 h-screen">
+                    <Navbar title="深斯AI"/>
+                    {/*<TbMenu2 size={24} className="absolute top-2 left-2"/>*/}
                     <div
-                        className="2xl:h-[65rem] lg:w-[50rem] 2xl:w-[60rem] md:w-full 2xl:pb-16 lg:mx-auto lg:h-[60rem] sm:h-[50rem] overflow-y-scroll">
+                        className="2xl:h-[65rem] lg:w-[30rem] 2xl:w-[60rem] md:w-full 2xl:pb-16 sm:pb-48 lg:mx-auto 2xl:h-[60rem] lg:h-[41rem] md:h-[20rem] sm:h-[50rem] overflow-y-scroll">
                         {messages ? messages.map(m => (<div key={Math.random().toString()}
                                                             className="bg-white md:w-2/3 lg:w-full self-center m-2">
                             <div className={m.role === 'user' ? "leading-normal" : ""}>
-                                <div className="text-lg font-bold w-20 h-10">
-                                    {m.role === 'user' ? '用户: ' : '深斯AI: '}
+                                <div
+                                    className="text-white text-lg font-bold w-20 h-10 rounded-r-badge bg-gray-200 text-gray-600 text-center p-2"
+                                    style={m.role === 'user' ? {"background-color": "#f9ed69"} : {"background-color": "#f08a5d"}}>
+                                    {m.role === 'user' ? '用户' : '深斯AI: '}
                                 </div>
                                 <div
-                                    className={m.role === 'user' ? 'p-0 rounded-sm' : 'p-0.5 bg-gray-100 rounded'}>
+                                    className={m.role === 'user' ? 'p-5 rounded-sm shadow' : 'p-5 shadow rounded'}>
                                     {/* eslint-disable-next-line react/no-children-prop */}
                                     <Markdown className={m.role === 'user' ? 'rounded' : 'markdown-body ='}
                                               markPlugins={[remarkGfm]}>{m.content}
@@ -435,7 +450,7 @@ export default function Chat() {
                         <div ref={endOfMessagesRef}/>
                     </div>
                     <div
-                        className="lg:w-1/3 sm:w-screen lg:left-1/2 lg:right-1/2 bottom-2 lg:-translate-x-1/2 flex flex-col justify-start absolute bottom-0">
+                        className="lg:w-[30rem] sm:w-screen lg:left-1/2 lg:right-1/2 bottom-2 lg:-translate-x-1/2 flex flex-col justify-start absolute bottom-0">
                         <div
                             className="lg:w-full sm:w-11/12 sm:m-auto bg-white border-2 border-solid border-blue-500 rounded-lg p-1">
                         <textarea
@@ -451,8 +466,17 @@ export default function Chat() {
                         />
                             <div
                                 className="w-full lg:m-0 sm:m-auto flex flex-row justify-end mt-2 mr-2">
+                                <button
+                                    ref={menuButtonRef}
+                                    type="button"
+                                    className="btn md:w-auto h-12 rounded-md bg-white text-black rounded-sm border-gray-300 lg:hidden"
+                                    disabled={isSending}
+                                >
+                                    <TbMenu2/>
+                                    Menu
+                                </button>
                                 <select
-                                    className="select select-bordered border-gray-300 focus:outline-0 focus:ring-1 focus:ring-indigo-100 lg:w-[10rem] sm:w-28 rounded-sm hover:ring-indigo-500"
+                                    className="select select-bordered border-gray-300 focus:outline-0 focus:ring-1 focus:ring-indigo-100 lg:w-[10rem] sm:w-[4.8rem] rounded-sm hover:ring-indigo-500"
                                     onChange={(e) => setModel(e.target.value)}
                                     disabled={isSending}
                                 >
@@ -462,11 +486,11 @@ export default function Chat() {
                                 </select>
                                 <button
                                     onClick={clearHistory}
-                                    className="btn bg-white text-black hover:bg-indigo-500 rounded-sm border-gray-300 ml-2 mr-2"
+                                    className="btn sm:w-28 bg-white text-black hover:bg-indigo-500 rounded-sm border-gray-300 ml-2 mr-2 sm:mr-0 sm:ml-0 "
                                     disabled={isSending}
                                 >
                                     <TbClearAll/>
-                                    清除当前对话
+                                    清楚对话
                                 </button>
                                 <button
                                     id="sendButton"

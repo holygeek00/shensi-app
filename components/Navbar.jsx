@@ -53,7 +53,7 @@ export default function Navbar({title, isLogin}) {
     return (
         <div className="navbar bg-transparent static top-0 left-0 right-0 z-20">
             <div className="flex-1">
-                <Link prefetch={true} href="/write" className="btn btn-ghost text-xl text-black">{title}</Link>
+                <Link prefetch={true} href="/write" className="btn btn-ghost text-xl border-2 border-black text-black">{title}</Link>
             </div>
             <div className="flex-none gap-2">
 
