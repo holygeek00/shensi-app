@@ -2,11 +2,13 @@ import Link from 'next/link'
 import Image from 'next/image'
 import React, {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
+import {useAuthUser}  from '@/lib/hooks/use-auth-user'
 
 export default function Navbar({title, isLogin}) {
 
     const [userInfo, setUserInfo] = useState(null)
     const router = useRouter()
+    const {logout} = useAuthUser()
 
     useEffect(() => {
         let userInfo = JSON.parse(window.localStorage.getItem('userInfo'));
@@ -100,7 +102,10 @@ export default function Navbar({title, isLogin}) {
                                 </div>
                             ) : (
                                 <div className='btn'>
-                                    <button onClick={e => router.replace('/')}>请登录</button>
+                                    <button onClick={e => {
+                                        window.localStorage.removeItem('userInfo')
+                                        window.location.replace('/write')
+                                    }}>请登录</button>
                                 </div>
                             )}
                         </div>

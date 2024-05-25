@@ -14,7 +14,6 @@ export async function OPTIONS(request: Request) {
 }
 
 export async function POST(request: Request) {
-
     const headers = {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "POST, OPTIONS",
@@ -32,7 +31,24 @@ export async function POST(request: Request) {
         }))
     }
 
-    // send the OPT to the phone number
+    // 检查验证码是否过期
+    const kv = createClient({
+        url: process.env.KV_REST_API_URL,
+        token: process.env.KV_REST_API_TOKEN,
+    })
+
+    let code = await kv.get(phoneNumber)
+
+    if (code) {
+        return new Response(JSON.stringify({
+            code: 500,
+            body: {
+                code: 400,
+                message: "验证码已发送，请勿重复发送，验证码有效期1天"
+            }
+        }), {status: 500, headers: headers})
+    }
+
     let {status, body} = await SMSClient.sendMessageCode(phoneNumber);
     if (status === 200) {
         return new Response(JSON.stringify({
