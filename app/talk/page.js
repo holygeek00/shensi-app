@@ -435,7 +435,7 @@ export default function Chat() {
                                 <div
                                     className="text-white text-lg font-bold w-20 h-10 rounded-r-badge bg-gray-200 text-gray-600 text-center p-2"
                                     style={m.role === 'user' ? {"background-color": "#f9ed69"} : {"background-color": "#f08a5d"}}>
-                                    {m.role === 'user' ? '用户' : '深斯AI: '}
+                                    {m.role === 'user' ? '用户' : '深斯AI'}
                                 </div>
                                 <div
                                     className={m.role === 'user' ? 'p-5 rounded-sm shadow' : 'p-5 shadow rounded'}>
