@@ -490,7 +490,7 @@ export default function Chat() {
                                     disabled={isSending}
                                 >
                                     <TbClearAll/>
-                                    清楚对话
+                                    清除对话
                                 </button>
                                 <button
                                     id="sendButton"
