@@ -473,7 +473,6 @@ export default function Chat() {
                                     disabled={isSending}
                                 >
                                     <TbMenu2/>
-                                    Menu
                                 </button>
                                 <select
                                     className="select select-bordered border-gray-300 focus:outline-0 focus:ring-1 focus:ring-indigo-100 lg:w-[10rem] sm:w-[4.8rem] rounded-sm hover:ring-indigo-500"
