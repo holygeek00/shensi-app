@@ -355,10 +355,10 @@ export default function Chat() {
     let chatMenuRef = useRef(null);
 
     useEffect(() => {
-        menuButtonRef.current.addEventListener("click", () => {
-            chatMenuRef.current.classList.toggle("block")
-            chatMenuRef.current.classList.add("block")
-        })
+        // menuButtonRef.current.addEventListener("click", () => {
+        //     chatMenuRef.current.classList.toggle("block")
+        //     chatMenuRef.current.classList.add("block")
+        // })
     }, []);
     return (
         <div className="bg-white w-screen h-screen relative">
@@ -428,7 +428,7 @@ export default function Chat() {
                     <Navbar title="深斯AI"/>
                     {/*<TbMenu2 size={24} className="absolute top-2 left-2"/>*/}
                     <div
-                        className="2xl:h-[65rem] lg:w-[30rem] 2xl:w-[60rem] md:w-full 2xl:pb-16 sm:pb-48 lg:mx-auto 2xl:h-[60rem] lg:h-[41rem] md:h-[20rem] sm:h-[50rem] overflow-y-scroll">
+                        className="2xl:h-[65rem] lg:w-[30rem] 2xl:w-[60rem] md:w-full 2xl:pb-16 sm:pb-16 lg:mx-auto 2xl:h-[60rem] lg:h-[41rem] md:h-[20rem] sm:h-[40rem] overflow-y-scroll">
                         {messages ? messages.map(m => (<div key={Math.random().toString()}
                                                             className="bg-white md:w-2/3 lg:w-full self-center m-2">
                             <div className={m.role === 'user' ? "leading-normal" : ""}>
@@ -466,16 +466,16 @@ export default function Chat() {
                         />
                             <div
                                 className="w-full lg:m-0 sm:m-auto flex flex-row justify-end mt-2 mr-2">
-                                <button
-                                    ref={menuButtonRef}
-                                    type="button"
-                                    className="btn md:w-auto h-12 rounded-md bg-white text-black rounded-sm border-gray-300 lg:hidden"
-                                    disabled={isSending}
-                                >
-                                    <TbMenu2/>
-                                </button>
+                                {/*<button*/}
+                                {/*    ref={menuButtonRef}*/}
+                                {/*    type="button"*/}
+                                {/*    className="btn md:w-auto h-12 rounded-md bg-white text-black rounded-sm border-gray-300 lg:hidden"*/}
+                                {/*    disabled={isSending}*/}
+                                {/*>*/}
+                                {/*    <TbMenu2/>*/}
+                                {/*</button>*/}
                                 <select
-                                    className="select select-bordered border-gray-300 focus:outline-0 focus:ring-1 focus:ring-indigo-100 lg:w-[10rem] sm:w-[4.8rem] rounded-sm hover:ring-indigo-500"
+                                    className="select select-bordered border-gray-300 focus:outline-0 focus:ring-1 focus:ring-indigo-100 lg:w-[10rem] sm:w-[7rem] rounded-sm hover:ring-indigo-500"
                                     onChange={(e) => setModel(e.target.value)}
                                     disabled={isSending}
                                 >
