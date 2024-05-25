@@ -1,4 +1,3 @@
-import {sign, verify} from "jsonwebtoken";
 import {jwtVerify, SignJWT} from "jose";
 
 export function generateApiKey(length = 32) {
