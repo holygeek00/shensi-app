@@ -11,10 +11,9 @@ import 'highlight.js/styles/github.css'
 import {ZMessage} from "@/components/ui/toast"
 import {useAuthUser} from "@/lib/hooks/use-auth-user"
 import {RxChatBubble, RxReload} from "react-icons/rx"
-import {TbBrandAlipay, TbClearAll, TbHistory, TbHttpDelete, TbMenu, TbMenu2, TbSend} from "react-icons/tb"
+import {TbBrandAlipay, TbClearAll, TbHttpDelete, TbSend} from "react-icons/tb"
 import {RiDeleteBin5Line} from "react-icons/ri"
 import Navbar from "@/components/Navbar";
-import {Button} from "@/components/ui/button";
 
 export default function Chat() {
     const [isSending, setIsSending] = useState(false) // 新增状态来追踪消息是否正在发送
@@ -410,7 +409,7 @@ export default function Chat() {
                                     className="btn-sm w-1/3 m-1 btn-block rounded p-2 bg-black text-white hover:bg-blue-500 flex flex-row items-center text-sm"
                                     onClick={e => router.push('/pay')}>
                                     <TbBrandAlipay/>
-                                    <div className="ml-2">反馈中心</div>
+                                    <div className="ml-2" style={{fontSize: '14px'}}>反馈中心</div>
                                 </button>
                                 <button
                                     className="btn-sm w-1/3 m-1 btn-block rounded bg-black text-white hover:bg-blue-500 flex flex-row items-center text-sm"
@@ -428,7 +427,7 @@ export default function Chat() {
                     <Navbar title="深斯AI"/>
                     {/*<TbMenu2 size={24} className="absolute top-2 left-2"/>*/}
                     <div
-                        className="2xl:h-[65rem] lg:w-[30rem] 2xl:w-[60rem] md:w-full 2xl:pb-16 sm:pb-16 lg:mx-auto 2xl:h-[60rem] lg:h-[41rem] md:h-[20rem] sm:h-[40rem] overflow-y-scroll">
+                        className="2xl:h-[65rem] lg:w-[30rem] 2xl:w-[60rem] md:w-full 2xl:pb-16 sm:pb-16 lg:mx-auto 2xl:h-[48rem] lg:h-[40rem] md:h-[20rem] sm:h-[40rem] overflow-y-scroll">
                         {messages ? messages.map(m => (<div key={Math.random().toString()}
                                                             className="bg-white md:w-2/3 lg:w-full self-center m-2">
                             <div className={m.role === 'user' ? "leading-normal" : ""}>
