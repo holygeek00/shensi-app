@@ -1,18 +1,18 @@
 'use client'
 
-import {useChat} from 'ai/react'
-import {useEffect, useRef, useState} from 'react'
+import { useChat } from 'ai/react'
+import { useEffect, useRef, useState } from 'react'
 import Markdown from 'react-markdown'
-import {useRouter} from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import remarkGfm from 'remark-gfm'
 import './page.css'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/github.css'
-import {ZMessage} from "@/components/ui/toast"
-import {useAuthUser} from "@/lib/hooks/use-auth-user"
-import {RxChatBubble, RxReload} from "react-icons/rx"
-import {TbBrandAlipay, TbClearAll, TbHttpDelete, TbSend} from "react-icons/tb"
-import {RiDeleteBin5Line} from "react-icons/ri"
+import { ZMessage } from "@/components/ui/toast"
+import { useAuthUser } from "@/lib/hooks/use-auth-user"
+import { RxChatBubble, RxReload } from "react-icons/rx"
+import { TbBrandAlipay, TbClearAll, TbHttpDelete, TbSend } from "react-icons/tb"
+import { RiDeleteBin5Line } from "react-icons/ri"
 import Navbar from "@/components/Navbar";
 
 export default function Chat() {
@@ -121,7 +121,7 @@ export default function Chat() {
         }
     }, [])
 
-    const {messages, input, handleInputChange, handleSubmit, setMessages} = useChat({
+    const { messages, input, handleInputChange, handleSubmit, setMessages } = useChat({
         headers: {
             'Authorization': key,
             'Token': token,
@@ -184,7 +184,7 @@ export default function Chat() {
     const endOfMessagesRef = useRef(null)
 
     const router = useRouter()
-    const {checkToken} = useAuthUser()
+    const { checkToken } = useAuthUser()
     useEffect(() => {
         let userInfo = JSON.parse(window.localStorage.getItem('userInfo'))
         try {
@@ -312,7 +312,7 @@ export default function Chat() {
     useEffect(() => {
         if (endOfMessagesRef.current !== null) {
             endOfMessagesRef.current.scrollTop = endOfMessagesRef.current.scrollHeight
-            endOfMessagesRef.current.scrollIntoView({behavior: "smooth"})
+            endOfMessagesRef.current.scrollIntoView({ behavior: "smooth" })
         }
 
         return () => {
@@ -362,37 +362,37 @@ export default function Chat() {
     return (
         <div className="bg-white w-screen h-screen relative">
             <div onSubmit={submit}
-                 className="w-screen h-screen bg-white flex flex-row justify-start items-start align-center">
+                className="w-screen h-screen bg-white flex flex-row justify-start items-start align-center">
                 <div
                     ref={chatMenuRef}
                     className="lg:w-[20rem] sm:hidden md:block rounded h-screen border-2 border-pink-50 bg-transparent"
-                    style={{"background": "#f0f4f9"}}>
+                    style={{ "background": "#f0f4f9" }}>
                     <div className="w-[20rem] flex flex-col justify-evenly">
                         <div className="w-[320px] h-[100vw-10rem] p-2 overflow-y-auto">
                             <div
                                 className="w-1/2 ml-2 border-2 border-solid text-white rounded-badge bg-black p-2 flex flex-row justify-center align-center items-center hover:border-black hover:text-black-100 text-sm cursor-pointer"
                                 onClick={createChat}>
-                                <RxChatBubble size={30} className="mr-3 align-middle"/>
+                                <RxChatBubble size={30} className="mr-3 align-middle" />
                                 新建对话
                             </div>
                         </div>
                         <div className="w-[20rem] flex flex-col overflow-x-hidden p-2 pb-20 h-full">
                             {
                                 chatList !== undefined ? chatList.state.chats.map(item => (
-                                        // eslint-disable-next-line react/jsx-key
-                                        <div key={item.id} className="flex flex-row pl-2 justify-start items-center mb-2">
-                                            <div type="checkbox" onClick={e => deleteAnyChat(item.id)}
-                                                 className="delete-checkbox hidden">
-                                                <RiDeleteBin5Line size={24}
-                                                                  className="cursor-pointer mr-5 hover:text-red-500"/>
-                                            </div>
-                                            <div key={item.id} id={item.id}
-                                                 className="chatBox border-2 border-blue-500 active:bg-blue-200 border-b-gray-50 bg-white p-5 rounded-r-badge hover:bg-blue-200 cursor-pointer shadow-accent-content"
-                                                 onClick={handleHistoryChat}>
-                                                {item.title}
-                                            </div>
+                                    // eslint-disable-next-line react/jsx-key
+                                    <div key={item.id} className="flex flex-row pl-2 justify-start items-center mb-2">
+                                        <div type="checkbox" onClick={e => deleteAnyChat(item.id)}
+                                            className="delete-checkbox hidden">
+                                            <RiDeleteBin5Line size={24}
+                                                className="cursor-pointer mr-5 hover:text-red-500" />
                                         </div>
-                                    ))
+                                        <div key={item.id} id={item.id}
+                                            className="chatBox border-2 border-blue-500 active:bg-blue-200 border-b-gray-50 bg-white p-5 rounded-r-badge hover:bg-blue-200 cursor-pointer shadow-accent-content"
+                                            onClick={handleHistoryChat}>
+                                            {item.title}
+                                        </div>
+                                    </div>
+                                ))
                                     : <div key={Math.random()} className="bg-gray-200 p-5 m-2 rounded font-bold">没有对话
                                     </div>
                             }
@@ -402,104 +402,109 @@ export default function Chat() {
                                     id="delete-button"
                                     className="btn-sm w-1/3 m-1 rounded p-2 bg-black text-white hover:bg-blue-500 flex flex-row items-center text-sm"
                                     onClick={handleDeleteClick}>
-                                    <TbHttpDelete/>
+                                    <TbHttpDelete />
                                     <div className="ml-0">删除对话</div>
                                 </button>
                                 <button
                                     className="btn-sm w-1/3 m-1 btn-block rounded p-2 bg-black text-white hover:bg-blue-500 flex flex-row items-center text-sm"
                                     onClick={e => router.push('/pay')}>
-                                    <TbBrandAlipay/>
-                                    <div className="ml-2" style={{fontSize: '14px'}}>反馈中心</div>
+                                    <TbBrandAlipay />
+                                    <div className="ml-2" style={{ fontSize: '14px' }}>反馈中心</div>
                                 </button>
                                 <button
                                     className="btn-sm w-1/3 m-1 btn-block rounded bg-black text-white hover:bg-blue-500 flex flex-row items-center text-sm"
                                     onClick={e => router.push('/write')}>
-                                    <RxReload/>
+                                    <RxReload />
                                     <div className="pl-2">返回</div>
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div
-                    id="chat"
-                    className="lg:w-[calc(100vw-20rem)] sm:w-screen md:w-full lg:p-10 sm:py-2 rounded relative top-0 h-screen">
-                    <Navbar title="深斯AI"/>
-                    {/*<TbMenu2 size={24} className="absolute top-2 left-2"/>*/}
-                    <div
-                        className="2xl:h-[65rem] lg:w-[30rem] 2xl:w-[60rem] md:w-full 2xl:pb-16 sm:pb-16 lg:mx-auto 2xl:h-[48rem] lg:h-[40rem] md:h-[20rem] sm:h-[40rem] overflow-y-scroll">
-                        {messages ? messages.map(m => (<div key={Math.random().toString()}
-                                                            className="bg-white md:w-2/3 lg:w-full self-center m-2">
-                            <div className={m.role === 'user' ? "leading-normal" : ""}>
-                                <div
-                                    className="text-white text-lg font-bold w-20 h-10 rounded-r-badge bg-gray-200 text-gray-600 text-center p-2"
-                                    style={m.role === 'user' ? {"background-color": "#f9ed69"} : {"background-color": "#f08a5d"}}>
-                                    {m.role === 'user' ? '用户' : '深斯AI'}
-                                </div>
-                                <div
-                                    className={m.role === 'user' ? 'p-5 rounded-sm shadow' : 'p-5 shadow rounded'}>
-                                    {/* eslint-disable-next-line react/no-children-prop */}
-                                    <Markdown className={m.role === 'user' ? 'rounded' : 'markdown-body ='}
-                                              markPlugins={[remarkGfm]}>{m.content}
-                                    </Markdown>
-                                </div>
-                            </div>
-                        </div>)) : (<div>加载中...</div>)
-                        }
-                        <div ref={endOfMessagesRef}/>
+                <div className='lg:w-[calc(100vw-20rem)] sm:w-screen relative'>
+                    <div className="lg:w-[calc(100vw-20rem)] sm:w-screen md:w-full sm:bg-white absolute top-0 left-0">
+                        <Navbar title="深斯AI" />
                     </div>
                     <div
-                        className="lg:w-[30rem] sm:w-screen lg:left-1/2 lg:right-1/2 bottom-2 lg:-translate-x-1/2 flex flex-col justify-start absolute bottom-0">
+                        id="chat"
+                        className="lg:w-[calc(100vw-20rem)] sm:w-screen md:w-full lg:p-10 sm:py-2 rounded absoulte top-0 h-screen">
                         <div
-                            className="lg:w-full sm:w-11/12 sm:m-auto bg-white border-2 border-solid border-blue-500 rounded-lg p-1">
-                        <textarea
-                            type="text"
-                            name=""
-                            id="userInput"
-                            value={input}
-                            onChange={handleInputChange}
-                            placeholder="输入您的问题"
-                            className="lg:w-full lg:p-3.5 h-28 bg-white sm:w-full text-gray-700 border border-gray-300 rounded
+                            className="2xl:h-[65rem] lg:w-[30rem] 2xl:w-[60rem] md:w-full 2xl:pb-16 2xl:pt-5 sm:pb-16 lg:mx-auto 2xl:h-[43rem] lg:h-[40rem] md:h-[20rem] sm:h-[40rem] overflow-y-scroll">
+                            {messages ? messages.map(m => (<div key={Math.random().toString()}
+                                className="bg-white md:w-2/3 lg:w-full self-center m-2">
+                                <div className={m.role === 'user' ? "leading-normal" : ""}>
+                                    <div
+                                        className="text-white text-lg font-bold w-20 h-10 rounded-r-badge bg-gray-200 text-gray-600 text-center p-2"
+                                        style={m.role === 'user' ? { "background-color": "#f9ed69" } : { "background-color": "#f08a5d" }}>
+                                        {m.role === 'user' ? '用户' : '深斯AI'}
+                                    </div>
+                                    <div
+                                        className={m.role === 'user' ? 'p-5 rounded-sm shadow' : 'p-5 shadow rounded'}>
+                                        {/* eslint-disable-next-line react/no-children-prop */}
+                                        <Markdown className={m.role === 'user' ? 'rounded' : 'markdown-body ='}
+                                            markPlugins={[remarkGfm]}>{m.content}
+                                        </Markdown>
+                                    </div>
+                                </div>
+                            </div>)) : (<div>加载中...</div>)
+                            }
+                        </div>
+                        <div ref={endOfMessagesRef} />
+                    </div>
+                    <div className='flex flex-row justify-between items-center w-full relative bottom-0'>
+                        <div
+                            className="lg:w-[30rem] sm:w-screen lg:left-1/2 bottom-2 lg:-translate-x-1/2 flex flex-col justify-start absolute bottom-0">
+                            <div
+                                className="lg:w-full sm:w-11/12 sm:m-auto bg-white border-2 border-solid border-blue-500 rounded-lg p-1">
+                                <textarea
+                                    type="text"
+                                    name=""
+                                    id="userInput"
+                                    value={input}
+                                    onChange={handleInputChange}
+                                    placeholder="输入您的问题"
+                                    className="lg:w-full lg:p-3.5 h-28 bg-white sm:w-full text-gray-700 border border-gray-300 rounded
                                                   focus:border-indigo-500 focus:ring-indigo-500 p-2 border-none
                                                   transition duration-150 ease-in-out focus:outline-none resize-none"
-                        />
-                            <div
-                                className="w-full lg:m-0 sm:m-auto flex flex-row justify-end mt-2 mr-2">
-                                {/*<button*/}
-                                {/*    ref={menuButtonRef}*/}
-                                {/*    type="button"*/}
-                                {/*    className="btn md:w-auto h-12 rounded-md bg-white text-black rounded-sm border-gray-300 lg:hidden"*/}
-                                {/*    disabled={isSending}*/}
-                                {/*>*/}
-                                {/*    <TbMenu2/>*/}
-                                {/*</button>*/}
-                                <select
-                                    className="select select-bordered border-gray-300 focus:outline-0 focus:ring-1 focus:ring-indigo-100 lg:w-[10rem] sm:w-[7rem] rounded-sm hover:ring-indigo-500"
-                                    onChange={(e) => setModel(e.target.value)}
-                                    disabled={isSending}
-                                >
-                                    {models.map((m) => (
-                                        <option key={m}>{m.name}</option>
-                                    ))}
-                                </select>
-                                <button
-                                    onClick={clearHistory}
-                                    className="btn sm:w-28 bg-white text-black hover:bg-indigo-500 rounded-sm border-gray-300 ml-2 mr-2 sm:mr-0 sm:ml-0 "
-                                    disabled={isSending}
-                                >
-                                    <TbClearAll/>
-                                    清除对话
-                                </button>
-                                <button
-                                    id="sendButton"
-                                    type="button"
-                                    onClick={handleSubmit}
-                                    className="btn md:w-auto h-12 rounded-md bg-white hover:bg-indigo-500 text-black rounded-sm border-gray-300"
-                                    disabled={isSending}
-                                >
-                                    <TbSend/>
-                                    {isSending ? 'AI生成中...' : '发 送'}
-                                </button>
+                                />
+                                <div
+                                    className="w-full lg:m-0 sm:m-auto flex flex-row justify-end mt-2 mr-2">
+                                    {/*<button*/}
+                                    {/*    ref={menuButtonRef}*/}
+                                    {/*    type="button"*/}
+                                    {/*    className="btn md:w-auto h-12 rounded-md bg-white text-black rounded-sm border-gray-300 lg:hidden"*/}
+                                    {/*    disabled={isSending}*/}
+                                    {/*>*/}
+                                    {/*    <TbMenu2/>*/}
+                                    {/*</button>*/}
+                                    <select
+                                        className="select select-bordered border-gray-300 focus:outline-0 focus:ring-1 focus:ring-indigo-100 lg:w-[10rem] sm:w-[7rem] rounded-sm hover:ring-indigo-500"
+                                        onChange={(e) => setModel(e.target.value)}
+                                        disabled={isSending}
+                                    >
+                                        {models.map((m) => (
+                                            <option key={m}>{m.name}</option>
+                                        ))}
+                                    </select>
+                                    <button
+                                        onClick={clearHistory}
+                                        className="btn sm:w-28 bg-white text-black hover:bg-indigo-500 rounded-sm border-gray-300 ml-2 mr-2 sm:mr-0 sm:ml-0 "
+                                        disabled={isSending}
+                                    >
+                                        <TbClearAll />
+                                        清除对话
+                                    </button>
+                                    <button
+                                        id="sendButton"
+                                        type="button"
+                                        onClick={handleSubmit}
+                                        className="btn md:w-auto h-12 rounded-md bg-white hover:bg-indigo-500 text-black rounded-sm border-gray-300"
+                                        disabled={isSending}
+                                    >
+                                        <TbSend />
+                                        {isSending ? 'AI生成中...' : '发 送'}
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
