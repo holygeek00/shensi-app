@@ -85,9 +85,3 @@ table {
 ::-webkit-scrollbar-thumb {
     background-color: #3fc1c9;
 }
-
-::-webkit-scrollbar-track {
-    width: 2px;
-    height: 2px;
-    background-color: #3fc1c9;
-}

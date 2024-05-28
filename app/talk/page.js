@@ -429,7 +429,7 @@ export default function Chat() {
                         id="chat"
                         className="lg:w-[calc(100vw-20rem)] sm:w-screen md:w-full lg:p-10 sm:py-2 rounded absoulte top-0 h-screen">
                         <div
-                            className="2xl:h-[65rem] lg:w-[30rem] 2xl:w-[60rem] md:w-full 2xl:pb-16 2xl:pt-5 sm:pb-16 lg:mx-auto 2xl:h-[43rem] lg:h-[40rem] md:h-[20rem] sm:h-[40rem] overflow-y-scroll">
+                            className="2xl:h-[65rem] lg:w-[30rem] 2xl:w-[60rem] md:w-full 2xl:pb-16 2xl:pt-5 sm:pb-16 lg:mx-auto 2xl:h-[85vh] lg:h-[75vh] md:h-[20rem] sm:h-[85vh] overflow-y-scroll">
                             {messages ? messages.map(m => (<div key={Math.random().toString()}
                                 className="bg-white md:w-2/3 lg:w-full self-center m-2">
                                 <div className={m.role === 'user' ? "leading-normal" : ""}>
