@@ -9,7 +9,7 @@ export const maxDuration = '300';
 
 export async function GET(req: Request) {
 
-    return new Response('页面测试成功');
+    return new Response('Internal Server Error');
 }
 
 export async function POST(req: Request) {
