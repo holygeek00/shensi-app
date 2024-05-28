@@ -5,7 +5,7 @@ import {jwtVerify} from "jose";
 import {getEncoding, encodingForModel, getEncodingNameForModel} from "js-tiktoken";
 
 export const runtime = 'nodejs'
-export const maxDuration = '300s';
+export const maxDuration = '300';
 
 export async function GET(req: Request) {
 
