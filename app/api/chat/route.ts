@@ -107,7 +107,7 @@ async function processStream(reader, model) {
         console.error(error);
     }
 
-    return Math.floor(totalTokens+totalTokens*0.75);
+    return Math.floor(totalTokens+totalTokens*0.5);
 }
 
 async function processMessageToken(message:string, gtpModel: string) {
